@@ -4,15 +4,13 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 
+use App\Http\Controllers\UserController;
+
 Route::get('/', function () {
     return Inertia::render('TaskBoard');
 })->name('homepage');
 
 
-Route::get('/login', function () {
-    return Inertia::render('Login');
-})->name('site.login');
-
-Route::get('/registre-se', function () {
-    return Inertia::render('Register');
-})->name('site.register');
+Route::get('/login', [UserController::class, 'login'])->name('site.login');
+Route::get('/registre-se', [UserController::class, 'create'])->name('site.register');
+Route::post('/registre-se', [UserController::class, 'store'])->name('site.register');

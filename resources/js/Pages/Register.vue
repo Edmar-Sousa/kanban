@@ -17,7 +17,11 @@
                             name="user-name"
                             id="input-user-name"
                             class="w-full h-10 border border-[#E2E8F0] rounded text-sm px-3 outline-none hover:border-[#7C3AED] focus:border-[#7C3AED]"
-                            placeholder="Digite seu nome" />
+                            :class="{ 'border-red-400': errors.username }"
+                            placeholder="Digite seu nome"
+                            v-model="form.username" />
+                        
+                        <p v-show="errors.username" class="text-xs text-red-400 mt-2">{{ errors.username }}</p>
                     </div>
 
                     <div class="mt-4">
@@ -29,7 +33,11 @@
                             name="email"
                             id="input-email"
                             class="w-full h-10 border border-[#E2E8F0] rounded text-sm px-3 outline-none hover:border-[#7C3AED] focus:border-[#7C3AED]"
-                            placeholder="Digite seu e-mail" />
+                            :class="{ 'border-red-400': errors.email }"
+                            placeholder="Digite seu e-mail"
+                            v-model="form.email" />
+
+                        <p v-show="errors.email" class="text-xs text-red-400 mt-2">{{ errors.email }}</p>
                     </div>
 
                     <div class="mt-4">
@@ -42,13 +50,18 @@
                             name="password"
                             id="input-password"
                             class="w-full h-10 border border-[#E2E8F0] rounded text-sm px-3 outline-none hover:border-[#7C3AED] focus:border-[#7C3AED]"
-                            placeholder="Digite sua senha" />
+                            :class="{ 'border-red-400': errors.password }"
+                            placeholder="Digite sua senha"
+                            v-model="form.password" />
+
+                        <p v-show="errors.password" class="text-xs text-red-400 mt-2">{{ errors.password }}</p>
                     </div>
 
                     <button
                         arial-label="Botão para fazer login"
                         type="submit" 
-                        class="w-full h-10 text-base font-bold rounded text-white my-9 bg-[#7C3AED] hover:bg-[#9F67FF]">
+                        class="w-full h-10 text-base font-bold rounded text-white my-9 bg-[#7C3AED] hover:bg-[#9F67FF]"
+                        @click="register">
                             Registre-se
                     </button>
 
@@ -68,5 +81,26 @@
 
 <script>
 
+export default {
+    data() {
+        return {
+            form: this.$inertia.form({
+                username: '',
+                email: '',
+                password: ''
+            }),
+
+            errors: {}
+        }
+    },
+
+    methods: {
+        register: function () {
+            this.form.post(route('site.register'), {
+                onError: (messages) => this.errors = messages
+            })
+        }
+    }
+}
 
 </script>
