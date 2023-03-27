@@ -11,4 +11,8 @@ Route::get('/', function () {
 
 Route::get('/login', function () {
     return Inertia::render('Login');
-})->name('login');
+})->name('site.login');
+
+Route::get('/registre-se', function () {
+    return Inertia::render('Register');
+})->name('site.register');
