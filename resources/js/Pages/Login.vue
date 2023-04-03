@@ -17,7 +17,11 @@
                             name="email"
                             id="input-email"
                             class="w-full h-10 border border-[#E2E8F0] rounded text-sm px-3 outline-none hover:border-[#7C3AED] focus:border-[#7C3AED]"
-                            placeholder="Digite seu e-mail" />
+                            :class="{ 'border-red-400': errors.email }"
+                            placeholder="Digite seu e-mail"
+                            v-model="form.email" />
+                        
+                        <p v-show="errors.email" class="text-xs text-red-400 mt-2">{{ errors.email }}</p>
                     </div>
 
                     <div class="mt-4">
@@ -33,10 +37,15 @@
                             name="password"
                             id="input-password"
                             class="w-full h-10 border border-[#E2E8F0] rounded text-sm px-3 outline-none hover:border-[#7C3AED] focus:border-[#7C3AED]"
-                            placeholder="Digite sua senha" />
+                            :class="{ 'border-red-400': errors.password }"
+                            placeholder="Digite sua senha"
+                            v-model="form.password" />
+
+                        <p v-show="errors.password" class="text-xs text-red-400 mt-2">{{ errors.password }}</p>
                     </div>
 
                     <button
+                        @click="login()"
                         arial-label="Botão para fazer login"
                         type="submit" 
                         class="w-full h-10 text-base font-bold rounded text-white my-9 bg-[#7C3AED] hover:bg-[#9F67FF]">
@@ -44,7 +53,8 @@
                     </button>
 
                     <p class="text-base font-normal text-[#475569]">
-                        Ainda não tem uma conta? <a :href="route('site.register')" class="font-bold text-[#7C3AED]">Inscreva-se</a>
+                        Ainda não tem uma conta? 
+                        <Link :href="route('register')" class="font-bold text-[#7C3AED]">Inscreva-se</Link>
                     </p>
                 </form>
             </div>
@@ -57,7 +67,26 @@
 </template>
 
 
-<script>
+<script setup>
 
+import { ref } from 'vue'
+import { useForm, Link } from '@inertiajs/inertia-vue3'
+
+
+const form = useForm({
+    email: '',
+    password: ''
+})
+
+const errors = ref({
+    email: '',
+    password: ''
+})
+
+function login() {
+    form.post(route('login'), {
+        onError: (message) => errors.value = message
+    })
+}
 
 </script>

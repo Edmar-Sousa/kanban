@@ -15,7 +15,7 @@ class UserStoreRequest extends FormRequest
     {
         return [
             'username' => ['required', 'min:3', 'max:40'],
-            'email'    => ['required', 'email'],
+            'email'    => ['required', 'email', 'unique:users,email'],
             'password' => ['required', 'min:6', 'max:40'],
         ];
     }

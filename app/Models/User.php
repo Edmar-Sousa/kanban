@@ -30,6 +30,12 @@ class User extends Authenticatable
     ];
 
 
+    public function getAuthPassword()
+    {
+        return $this->email;
+    }
+    
+
     public function store(array $userdata)
     {
         return $this->create([

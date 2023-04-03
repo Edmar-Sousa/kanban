@@ -66,7 +66,8 @@
                     </button>
 
                     <p class="text-base font-normal text-[#475569]">
-                        Ja tem uma conta? <a :href="route('site.login')" class="font-bold text-[#7C3AED]">Login</a>
+                        Ja tem uma conta? 
+                        <Link :href="route('login')" class="font-bold text-[#7C3AED]">Login</Link>
                     </p>
                 </form>
             </div>
@@ -79,28 +80,29 @@
 </template>
 
 
-<script>
+<script setup>
 
-export default {
-    data() {
-        return {
-            form: this.$inertia.form({
-                username: '',
-                email: '',
-                password: ''
-            }),
+import { ref } from 'vue'
+import { useForm, Link } from '@inertiajs/inertia-vue3'
 
-            errors: {}
-        }
-    },
+const form = useForm({
+    username: '',
+    email: '',
+    password: ''
+})
 
-    methods: {
-        register: function () {
-            this.form.post(route('site.register'), {
-                onError: (messages) => this.errors = messages
-            })
-        }
-    }
+const errors = ref({
+    username: '',
+    email: '',
+    password: ''
+})
+
+
+function register() {
+    form.post(route('register'), {
+        onError: (messages) => errors.value = messages
+    })
 }
+
 
 </script>

@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
+
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 use App\Models\User;
 use App\Http\Requests\UserStoreRequest;
+use App\Http\Requests\LoginRequest;
 
 class UserController extends Controller
 {
@@ -27,12 +30,22 @@ class UserController extends Controller
 
     public function store(UserStoreRequest $request)
     {
-        return $this->user_model->store($request->validated());
+        $this->user_model->store($request->validated());
+        return redirect()->route('login');
     }
 
 
     public function login()
     {
         return Inertia::render('Login');
+    }
+
+
+    public function auth(LoginRequest $request)
+    {
+        $user = $request->validated();
+
+        if ( Auth::attempt( [ 'email' => $user['email'], 'password' => $user['password'] ] ) )
+            return redirect()->route('homepage');
     }
 }
