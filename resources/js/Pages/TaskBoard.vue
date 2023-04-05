@@ -40,25 +40,15 @@
         <div class="w-[368px]">
           <h2 class="font-bold text-xl text-[#403937]">A fazer</h2>
 
-          <Task />
-          <Task />
-          <Task />
+          <Task v-for="task in task_to_do" :key="task.id" :task="task" />
         </div>
 
         <div class="w-[368px]">
           <h2 class="font-bold text-xl text-[#403937]">Fazendo</h2>
-
-          <Task />
-          <Task />
-          <Task />
         </div>
 
         <div class="w-[368px]">
           <h2 class="font-bold text-xl text-[#403937]">Feito</h2>
-
-          <Task />
-          <Task />
-          <Task />
         </div>
       </div>
     </main>
@@ -67,7 +57,15 @@
 
 <script setup>
 
+import { computed } from "vue"
+
 import Layout from "../Template/Layout.vue"
 import Task from "../Components/Task.vue"
+
+
+const props = defineProps( ['tasks'] )
+
+
+const task_to_do = computed(() => props.tasks.filter( task => task.state == 1 ) )
 
 </script>

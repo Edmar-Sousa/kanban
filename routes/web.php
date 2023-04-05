@@ -1,16 +1,15 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
 
 
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\TaskController;
+
 
 Route::middleware('auth')->group(function () {
-    Route::get('/', function () {
-        return Inertia::render('TaskBoard');
-    })->name('homepage');
+    Route::get('/', [TaskController::class, 'index'])->name('homepage');
 });
 
 
