@@ -4,13 +4,11 @@ namespace App\Http\Controllers;
 
 
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 use App\Models\User;
 use App\Http\Requests\UserStoreRequest;
-use App\Http\Requests\LoginRequest;
 
 class UserController extends Controller
 {
@@ -41,17 +39,4 @@ class UserController extends Controller
         return Inertia::render('Login');
     }
 
-
-    public function auth(LoginRequest $request)
-    {
-        $user_credentials = $request->validated();
-
-        $user = $this->user_model->find_by_email($user_credentials['email']);
-
-        if ( Hash::check($user_credentials['password'], $user->password) )
-        {
-            Auth::login( $user );
-            return redirect()->route('homepage');
-        }
-    }
 }

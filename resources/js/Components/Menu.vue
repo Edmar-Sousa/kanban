@@ -20,8 +20,13 @@
         </li>
         
         <li class="flex gap-4 items-center">
-          <img src="images/config.svg" alt="Icone de configuração">
+          <img src="images/config.svg" alt="Icone de configuração" />
           <a href="#" class="font-medium text-4 text-[#CAB3FF]">Ajustes</a>
+        </li>
+
+        <li class="flex gap-4 items-center">
+          <img src="images/log-out.svg" alt="Icone de logout" />
+          <a :href="route('logout')" class="font-medium text-4 text-[#CAB3FF]">Sair</a>
         </li>
       </ul>
     </nav>
