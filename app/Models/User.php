@@ -8,6 +8,8 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
+use Illuminate\Support\Facades\Hash;
+
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
@@ -41,7 +43,12 @@ class User extends Authenticatable
         return $this->create([
             'name'     => $userdata['username'],
             'email'    => $userdata['email'],
-            'password' => $userdata['password']
+            'password' => Hash::make($userdata['password']), 
         ]);
+    }
+
+    public function find_by_email(string $email)
+    {
+        return $this->where('email', $email)->first();
     }
 }

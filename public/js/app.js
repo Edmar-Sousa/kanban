@@ -750,15 +750,35 @@ __webpack_require__.r(__webpack_exports__);
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 var map = {
-	"./Teste": [
-		"./resources/js/Pages/Teste.vue",
+	"./Login": [
+		"./resources/js/Pages/Login.vue",
 		"/js/vendor",
-		"resources_js_Pages_Teste_vue"
+		"resources_js_Pages_Login_vue"
 	],
-	"./Teste.vue": [
-		"./resources/js/Pages/Teste.vue",
+	"./Login.vue": [
+		"./resources/js/Pages/Login.vue",
 		"/js/vendor",
-		"resources_js_Pages_Teste_vue"
+		"resources_js_Pages_Login_vue"
+	],
+	"./Register": [
+		"./resources/js/Pages/Register.vue",
+		"/js/vendor",
+		"resources_js_Pages_Register_vue"
+	],
+	"./Register.vue": [
+		"./resources/js/Pages/Register.vue",
+		"/js/vendor",
+		"resources_js_Pages_Register_vue"
+	],
+	"./TaskBoard": [
+		"./resources/js/Pages/TaskBoard.vue",
+		"/js/vendor",
+		"resources_js_Pages_TaskBoard_vue"
+	],
+	"./TaskBoard.vue": [
+		"./resources/js/Pages/TaskBoard.vue",
+		"/js/vendor",
+		"resources_js_Pages_TaskBoard_vue"
 	]
 };
 function webpackAsyncContext(req) {

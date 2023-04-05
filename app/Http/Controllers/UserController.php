@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -43,9 +44,14 @@ class UserController extends Controller
 
     public function auth(LoginRequest $request)
     {
-        $user = $request->validated();
+        $user_credentials = $request->validated();
 
-        if ( Auth::attempt( [ 'email' => $user['email'], 'password' => $user['password'] ] ) )
+        $user = $this->user_model->find_by_email($user_credentials['email']);
+
+        if ( Hash::check($user_credentials['password'], $user->password) )
+        {
+            Auth::login( $user );
             return redirect()->route('homepage');
+        }
     }
 }
