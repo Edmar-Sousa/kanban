@@ -36,19 +36,30 @@
         </button>
       </div>
       
-      <div class="w-full min-h-[821px] mt-8 flex justify-between">
-        <div class="w-[368px]">
-          <h2 class="font-bold text-xl text-[#403937]">A fazer</h2>
-
-          <Task v-for="task in task_to_do" :key="task.id" :task="task" />
+      <div class="w-full min-h-[821px] mt-8 flex justify-between gap-2">
+        <div 
+          class="w-[368px]" 
+          @drop="drop($event, 1)"
+          @dragover.prevent 
+          @dragenter.prevent>
+            <h2 class="font-bold text-xl text-[#403937]">A fazer</h2>
+            <Task v-for="task in taskToDo" :key="task.id" :task="task" @dragStart="dragStart" />
         </div>
 
-        <div class="w-[368px]">
-          <h2 class="font-bold text-xl text-[#403937]">Fazendo</h2>
-        </div>
-
-        <div class="w-[368px]">
-          <h2 class="font-bold text-xl text-[#403937]">Feito</h2>
+        <div class="w-[368px]"
+          @drop="drop($event, 2)"
+          @dragover.prevent
+          @dragenter.prevent>
+            <h2 class="font-bold text-xl text-[#403937]">Fazendo</h2>
+            <Task v-for="task in taskDoing" :key="task.id" :task="task" @dragStart="dragStart" />
+          </div>
+          
+          <div class="w-[368px]"
+            @drop="drop($event, 3)"
+            @dragover.prevent
+            @dragenter.prevent>
+              <h2 class="font-bold text-xl text-[#403937]">Feito</h2>
+              <Task v-for="task in taskDone" :key="task.id" :task="task" @dragStart="dragStart" />
         </div>
       </div>
     </main>
@@ -65,7 +76,23 @@ import Task from "../Components/Task.vue"
 
 const props = defineProps( ['tasks'] )
 
+const tasks = props.tasks
 
-const task_to_do = computed(() => props.tasks.filter( task => task.state == 1 ) )
+const taskToDo = computed( () => tasks.filter( task => task.state == 1 ) )
+const taskDoing = computed( () => tasks.filter( task => task.state == 2 ) )
+const taskDone = computed( () => tasks.filter( task => task.state == 3 ) )
+
+function dragStart( event, item ) {
+  event.dataTransfer.dropEffect = "move"
+  event.dataTransfer.effectAllowed = "move"
+  event.dataTransfer.setData('id', item.id)
+}
+
+function drop( event, state ) {
+  const taskId = event.dataTransfer.getData('id')
+  const task = tasks.find( task => task.id == taskId )
+
+  task.state = state
+}
 
 </script>
