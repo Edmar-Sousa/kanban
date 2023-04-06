@@ -17,4 +17,10 @@ class Task extends Model
         return $this->all();
     }
 
+
+    public function update_state( array $task )
+    {
+        return $this->where( 'id', $task['id'] )
+                    ->update( ['state' => $task['state'] ]);
+    }
 }

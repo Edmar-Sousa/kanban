@@ -42,7 +42,16 @@
           @drop="drop($event, 1)"
           @dragover.prevent 
           @dragenter.prevent>
-            <h2 class="font-bold text-xl text-[#403937]">A fazer</h2>
+            <div class="w-full flex justify-between items-center">
+              <h2 class="font-bold text-xl text-[#403937]">A fazer</h2>
+
+              <button 
+                arial-label="Adicionar tarefa"
+                class="bg-[#7C3AED] rounded hover:scale-95">
+                  <img src="images/plus.svg" alt="Plus icon" />
+              </button>
+            </div>
+
             <Task v-for="task in taskToDo" :key="task.id" :task="task" @dragStart="dragStart" />
         </div>
 
@@ -69,18 +78,31 @@
 <script setup>
 
 import { computed } from "vue"
+import { useForm } from "@inertiajs/inertia-vue3"
 
 import Layout from "../Template/Layout.vue"
 import Task from "../Components/Task.vue"
 
 
 const props = defineProps( ['tasks'] )
-
 const tasks = props.tasks
 
-const taskToDo = computed( () => tasks.filter( task => task.state == 1 ) )
+const taskToDo  = computed( () => tasks.filter( task => task.state == 1 ) )
 const taskDoing = computed( () => tasks.filter( task => task.state == 2 ) )
-const taskDone = computed( () => tasks.filter( task => task.state == 3 ) )
+const taskDone  = computed( () => tasks.filter( task => task.state == 3 ) )
+
+
+function updateTaskState(id, state) {
+  return new Promise( (resolve, reject) => {
+    const form = useForm( { id, state } )
+
+    form.put( route('task'), {
+      onSuccess: resolve,
+      onError: reject
+    } )
+  } )
+}
+
 
 function dragStart( event, item ) {
   event.dataTransfer.dropEffect = "move"
@@ -92,7 +114,9 @@ function drop( event, state ) {
   const taskId = event.dataTransfer.getData('id')
   const task = tasks.find( task => task.id == taskId )
 
-  task.state = state
+  updateTaskState(task.id, state)
+    .then( () => task.state = state )
+    .catch( (err) => console.log(err) )
 }
 
 </script>
