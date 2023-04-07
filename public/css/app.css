@@ -468,8 +468,23 @@ video {
   --tw-backdrop-saturate:  ;
   --tw-backdrop-sepia:  ;
 }
+.fixed {
+  position: fixed;
+}
 .relative {
   position: relative;
+}
+.bottom-0 {
+  bottom: 0px;
+}
+.left-0 {
+  left: 0px;
+}
+.right-0 {
+  right: 0px;
+}
+.top-0 {
+  top: 0px;
 }
 .m-auto {
   margin: auto;
@@ -617,6 +632,10 @@ video {
   --tw-bg-opacity: 1;
   background-color: rgb(226 214 255 / var(--tw-bg-opacity));
 }
+.bg-black {
+  --tw-bg-opacity: 1;
+  background-color: rgb(0 0 0 / var(--tw-bg-opacity));
+}
 .bg-white {
   --tw-bg-opacity: 1;
   background-color: rgb(255 255 255 / var(--tw-bg-opacity));
@@ -743,6 +762,9 @@ video {
   --tw-text-opacity: 1;
   color: rgb(255 255 255 / var(--tw-text-opacity));
 }
+.opacity-20 {
+  opacity: 0.2;
+}
 .shadow-\[0_4px_16px_0px_rgba\(22\2c 22\2c 22\2c 0\.1\)\] {
   --tw-shadow: 0 4px 16px 0px rgba(22,22,22,0.1);
   --tw-shadow-colored: 0 4px 16px 0px var(--tw-shadow-color);
@@ -755,6 +777,9 @@ video {
 .ring-\[\#7C3AED\] {
   --tw-ring-opacity: 1;
   --tw-ring-color: rgb(124 58 237 / var(--tw-ring-opacity));
+}
+.filter {
+  filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
 }
 .hover\:scale-95:hover {
   --tw-scale-x: .95;

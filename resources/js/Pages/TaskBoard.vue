@@ -47,7 +47,7 @@
 
               <button 
                 arial-label="Adicionar tarefa"
-                class="bg-[#7C3AED] rounded hover:scale-95">
+                class="bg-[#7C3AED] rounded hover:scale-95" @click="openModal = true">
                   <img src="images/plus.svg" alt="Plus icon" />
               </button>
             </div>
@@ -72,20 +72,68 @@
         </div>
       </div>
     </main>
+
+    <div class="fixed top-0 bottom-0 left-0 right-0 bg-[#00000033] flex justify-center items-center" v-show="openModal">
+      <div class="bg-white p-4 rounded w-full max-w-[500px]">
+        <div class="w-full flex justify-between">
+          <h2 class="font-bold">Adicionar nova Tarefa</h2>
+
+          <button arial-label="Close modal" @click="openModal = false">
+            <img src="images/x.svg" alt="close icon" />
+          </button>
+        </div>
+
+        <form action="#" method="POST">
+          <label 
+            for="input-title"
+            class="block my-2 text-sm font-semibold text-[#1E293B]">Tarefa</label>
+
+          <InputForm 
+            type="text"
+            name="title" 
+            placeholder="Digite o titulo da terfa"
+            v-model="formNewTask.title" />
+
+          <label 
+            for="input-title"
+            class="block my-2 text-sm font-semibold text-[#1E293B]">Descrição</label>
+
+          <textarea 
+            name="description" 
+            class="w-full h-[150px] border border-[#E2E8F0] rounded text-sm p-3 outline-none hover:border-[#7C3AED] focus:border-[#7C3AED]"
+            v-model="formNewTask.description"></textarea>
+
+          <div class="w-full flex justify-end">
+            <button 
+              aria-label="Botão para filtrar tarefas"
+              class="flex justify-center align-items text-sm font-normal gap-2 text-white bg-[#7C3AED] p-3 w-[135px] rounded hover:scale-95">
+                Adicionar
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
   </Layout>
 </template>
 
 <script setup>
 
-import { computed } from "vue"
+import { computed, ref } from "vue"
 import { useForm } from "@inertiajs/inertia-vue3"
 
 import Layout from "../Template/Layout.vue"
 import Task from "../Components/Task.vue"
-
+import InputForm from "../Components/InputForm.vue"
 
 const props = defineProps( ['tasks'] )
 const tasks = props.tasks
+
+const openModal = ref(false)
+
+const formNewTask = useForm({
+  title: '',
+  description: '',
+})
 
 const taskToDo  = computed( () => tasks.filter( task => task.state == 1 ) )
 const taskDoing = computed( () => tasks.filter( task => task.state == 2 ) )

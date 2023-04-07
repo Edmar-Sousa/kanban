@@ -12,16 +12,13 @@
                         <label 
                             for="input-email"
                             class="block mb-4 text-sm font-semibold text-[#1E293B]">E-mail</label>
-                        <input 
+                        
+                        <InputForm 
                             type="email"
                             name="email"
-                            id="input-email"
-                            class="w-full h-10 border border-[#E2E8F0] rounded text-sm px-3 outline-none hover:border-[#7C3AED] focus:border-[#7C3AED]"
-                            :class="{ 'border-red-400': errors.email }"
-                            placeholder="Digite seu e-mail"
-                            v-model="form.email" />
-                        
-                        <p v-show="errors.email" class="text-xs text-red-400 mt-2">{{ errors.email }}</p>
+                            placeholder="Digite seu email"
+                            v-model="form.email"
+                            :error="errors.email" />
                     </div>
 
                     <div class="mt-4">
@@ -32,16 +29,13 @@
 
                             <a href="#" class="text-sm font-bold text-[#7C3AED]">Esqueceu a senha?</a>
                         </div>
-                        <input 
+
+                        <InputForm 
                             type="password"
                             name="password"
-                            id="input-password"
-                            class="w-full h-10 border border-[#E2E8F0] rounded text-sm px-3 outline-none hover:border-[#7C3AED] focus:border-[#7C3AED]"
-                            :class="{ 'border-red-400': errors.password }"
                             placeholder="Digite sua senha"
-                            v-model="form.password" />
-
-                        <p v-show="errors.password" class="text-xs text-red-400 mt-2">{{ errors.password }}</p>
+                            v-model="form.password"
+                            :error="errors.password" />
                     </div>
 
                     <button
@@ -71,6 +65,8 @@
 
 import { ref } from 'vue'
 import { useForm, Link } from '@inertiajs/inertia-vue3'
+
+import InputForm from "../Components/InputForm.vue"
 
 
 const form = useForm({
