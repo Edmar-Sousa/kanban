@@ -14,7 +14,7 @@
 
 <script setup>
 
-const props = defineProps( ['modelValue', 'error', 'type', 'name', 'placeholder'] )
-const emit = defineEmits( ['update:modelValue'] )
+const props = defineProps( ["modelValue", "error", "type", "name", "placeholder"] )
+const emit = defineEmits( ["update:modelValue"] )
 
 </script>

@@ -63,24 +63,24 @@
 
 <script setup>
 
-import { ref } from 'vue'
-import { useForm, Link } from '@inertiajs/inertia-vue3'
+import { ref } from "vue"
+import { useForm, Link } from "@inertiajs/inertia-vue3"
 
 import InputForm from "../Components/InputForm.vue"
 
 
 const form = useForm({
-    email: '',
-    password: ''
+    email: "",
+    password: ""
 })
 
 const errors = ref({
-    email: '',
-    password: ''
+    email: "",
+    password: ""
 })
 
 function login() {
-    form.post(route('login'), {
+    form.post(route("login"), {
         onError: (message) => errors.value = message
     })
 }

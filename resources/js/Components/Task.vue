@@ -16,7 +16,7 @@
 <script setup>
 
 
-const props = defineProps( ['task'] )
-const emit = defineEmits( ['dragStart'] )
+const props = defineProps( ["task"] )
+const emit = defineEmits( ["dragStart"] )
 
 </script>

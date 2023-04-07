@@ -125,14 +125,14 @@ import Layout from "../Template/Layout.vue"
 import Task from "../Components/Task.vue"
 import InputForm from "../Components/InputForm.vue"
 
-const props = defineProps( ['tasks'] )
+const props = defineProps( ["tasks"] )
 const tasks = props.tasks
 
 const openModal = ref(false)
 
 const formNewTask = useForm({
-  title: '',
-  description: '',
+  title: "",
+  description: "",
 })
 
 const taskToDo  = computed( () => tasks.filter( task => task.state == 1 ) )
@@ -144,7 +144,7 @@ function updateTaskState(id, state) {
   return new Promise( (resolve, reject) => {
     const form = useForm( { id, state } )
 
-    form.put( route('task'), {
+    form.put( route("task"), {
       onSuccess: resolve,
       onError: reject
     } )
@@ -155,11 +155,11 @@ function updateTaskState(id, state) {
 function dragStart( event, item ) {
   event.dataTransfer.dropEffect = "move"
   event.dataTransfer.effectAllowed = "move"
-  event.dataTransfer.setData('id', item.id)
+  event.dataTransfer.setData("id", item.id)
 }
 
 function drop( event, state ) {
-  const taskId = event.dataTransfer.getData('id')
+  const taskId = event.dataTransfer.getData("id")
   const task = tasks.find( task => task.id == taskId )
 
   updateTaskState(task.id, state)

@@ -12,49 +12,39 @@
                         <label 
                             for="input-user-name"
                             class="block mb-4 text-sm font-semibold text-[#1E293B]">Nome</label>
-                        <input 
+
+                        <InputForm
                             type="text"
                             name="user-name"
-                            id="input-user-name"
-                            class="w-full h-10 border border-[#E2E8F0] rounded text-sm px-3 outline-none hover:border-[#7C3AED] focus:border-[#7C3AED]"
-                            :class="{ 'border-red-400': errors.username }"
                             placeholder="Digite seu nome"
-                            v-model="form.username" />
-                        
-                        <p v-show="errors.username" class="text-xs text-red-400 mt-2">{{ errors.username }}</p>
+                            v-model="form.username"
+                            :error="errors.username" />
                     </div>
 
                     <div class="mt-4">
                         <label 
                             for="input-email"
                             class="block mb-4 text-sm font-semibold text-[#1E293B]">E-mail</label>
-                        <input 
+
+                        <InputForm 
                             type="email"
                             name="email"
-                            id="input-email"
-                            class="w-full h-10 border border-[#E2E8F0] rounded text-sm px-3 outline-none hover:border-[#7C3AED] focus:border-[#7C3AED]"
-                            :class="{ 'border-red-400': errors.email }"
                             placeholder="Digite seu e-mail"
-                            v-model="form.email" />
-
-                        <p v-show="errors.email" class="text-xs text-red-400 mt-2">{{ errors.email }}</p>
+                            v-model="form.email"
+                            :error="errors.email" />
                     </div>
 
                     <div class="mt-4">
                         <label 
                             for="input-password"
                             class="block mb-4 text-sm font-semibold text-[#1E293B]">Senha</label>
-                        
-                        <input 
+
+                        <InputForm 
                             type="password"
                             name="password"
-                            id="input-password"
-                            class="w-full h-10 border border-[#E2E8F0] rounded text-sm px-3 outline-none hover:border-[#7C3AED] focus:border-[#7C3AED]"
-                            :class="{ 'border-red-400': errors.password }"
                             placeholder="Digite sua senha"
-                            v-model="form.password" />
-
-                        <p v-show="errors.password" class="text-xs text-red-400 mt-2">{{ errors.password }}</p>
+                            v-model="form.password"
+                            :error="errors.password" />
                     </div>
 
                     <button
@@ -82,24 +72,26 @@
 
 <script setup>
 
-import { ref } from 'vue'
-import { useForm, Link } from '@inertiajs/inertia-vue3'
+import { ref } from "vue"
+import { useForm, Link } from "@inertiajs/inertia-vue3"
+
+import InputForm from "../Components/InputForm.vue"
 
 const form = useForm({
-    username: '',
-    email: '',
-    password: ''
+    username: "",
+    email: "",
+    password: ""
 })
 
 const errors = ref({
-    username: '',
-    email: '',
-    password: ''
+    username: "",
+    email: "",
+    password: ""
 })
 
 
 function register() {
-    form.post(route('register'), {
+    form.post(route("register"), {
         onError: (messages) => errors.value = messages
     })
 }
