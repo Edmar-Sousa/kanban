@@ -9,12 +9,12 @@ class Task extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['title', 'description', 'state'];
+    protected $fillable = ['title', 'description', 'user_id', 'state'];
 
 
-    public function get_all_tasks()
+    public function get_all_tasks_of_user( int $id )
     {
-        return $this->all();
+        return $this->where('user_id', $id)->get();
     }
 
 
@@ -22,5 +22,16 @@ class Task extends Model
     {
         return $this->where( 'id', $task['id'] )
                     ->update( ['state' => $task['state'] ]);
+    }
+
+
+    public function store( array $task, int $id )
+    {
+        return $this->create([
+            'user_id' => $id,
+            'title' => $task['title'],
+            'description' => $task['description'],
+            'state' => 1,
+        ]);
     }
 }

@@ -11,6 +11,7 @@ use App\Http\Controllers\TaskController;
 Route::middleware('auth')->group(function () {
     Route::get('/', [TaskController::class, 'index'])->name('homepage');
     Route::put('/task', [TaskController::class, 'update'])->name('task');
+    Route::post('/task', [TaskController::class, 'store'])->name('task');
 });
 
 

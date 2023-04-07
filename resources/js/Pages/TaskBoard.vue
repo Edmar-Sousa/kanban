@@ -83,7 +83,7 @@
           </button>
         </div>
 
-        <form action="#" method="POST">
+        <form action="#" method="POST" @submit.prevent>
           <label 
             for="input-title"
             class="block my-2 text-sm font-semibold text-[#1E293B]">Tarefa</label>
@@ -92,7 +92,8 @@
             type="text"
             name="title" 
             placeholder="Digite o titulo da terfa"
-            v-model="formNewTask.title" />
+            v-model="formNewTask.title"
+            :error="formNewTaskErrors.title" />
 
           <label 
             for="input-title"
@@ -101,12 +102,16 @@
           <textarea 
             name="description" 
             class="w-full h-[150px] border border-[#E2E8F0] rounded text-sm p-3 outline-none hover:border-[#7C3AED] focus:border-[#7C3AED]"
+            :class="{ 'border-red-400': formNewTaskErrors.description }"
             v-model="formNewTask.description"></textarea>
+
+          <p v-show="formNewTaskErrors.description" class="text-xs text-red-400 mt-2">{{ formNewTaskErrors.description }}</p>
 
           <div class="w-full flex justify-end">
             <button 
               aria-label="Botão para filtrar tarefas"
-              class="flex justify-center align-items text-sm font-normal gap-2 text-white bg-[#7C3AED] p-3 w-[135px] rounded hover:scale-95">
+              class="flex justify-center align-items text-sm font-normal gap-2 text-white bg-[#7C3AED] p-3 w-[135px] rounded hover:scale-95"
+              @click="addNewTask()">
                 Adicionar
             </button>
           </div>
@@ -126,8 +131,6 @@ import Task from "../Components/Task.vue"
 import InputForm from "../Components/InputForm.vue"
 
 const props = defineProps( ["tasks"] )
-const tasks = props.tasks
-
 const openModal = ref(false)
 
 const formNewTask = useForm({
@@ -135,9 +138,14 @@ const formNewTask = useForm({
   description: "",
 })
 
-const taskToDo  = computed( () => tasks.filter( task => task.state == 1 ) )
-const taskDoing = computed( () => tasks.filter( task => task.state == 2 ) )
-const taskDone  = computed( () => tasks.filter( task => task.state == 3 ) )
+const formNewTaskErrors = ref({
+  title: "",
+  description: "",
+})
+
+const taskToDo  = computed( () => props.tasks.filter( task => task.state == 1 ) )
+const taskDoing = computed( () => props.tasks.filter( task => task.state == 2 ) )
+const taskDone  = computed( () => props.tasks.filter( task => task.state == 3 ) )
 
 
 function updateTaskState(id, state) {
@@ -160,11 +168,18 @@ function dragStart( event, item ) {
 
 function drop( event, state ) {
   const taskId = event.dataTransfer.getData("id")
-  const task = tasks.find( task => task.id == taskId )
+  const task = props.tasks.find( task => task.id == taskId )
 
   updateTaskState(task.id, state)
     .then( () => task.state = state )
     .catch( (err) => console.log(err) )
+}
+
+function addNewTask() {
+  formNewTask.post(route('task'), {
+    onSuccess: () => console.log('ok'),
+    onError: (errors) => formNewTaskErrors.value = errors
+  })
 }
 
 </script>
