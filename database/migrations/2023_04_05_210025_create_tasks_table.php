@@ -13,8 +13,9 @@ class CreateTasksTable extends Migration
 
             $table->string('title', 100);
             $table->string('description');
-
             $table->tinyInteger('state');  // 1 - A Fazer  2 - Fazendo  3 - Concluido
+
+            $table->foreignId('taskboard_id')->references('id')->on('task_boards');
 
             $table->timestamps();
         });

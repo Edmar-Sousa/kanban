@@ -45,13 +45,16 @@
 
         <div class="w-full grid grid-cols-3">
           
-          <div class="w-full my-6 p-6 rounded-lg shadow-[0_4px_16px_0px_rgba(22,22,22,0.1)]">
-            <h3 class="text-sm font-bold">Front-end</h3>
-            <p class="my-2.5 text-sm font-medium text-[#756966]">Board para o desenvolvimento do front-end do kanban</p>
+          <div 
+            class="w-full my-6 p-6 rounded-lg shadow-[0_4px_16px_0px_rgba(22,22,22,0.1)]" 
+            v-for="taskboard in taskboards"
+            :key="taskboard.id">
+              <h3 class="text-sm font-bold">{{ taskboard.title }}</h3>
+              <p class="my-2.5 text-sm font-medium text-[#756966]">{{ taskboard.description }}</p>
 
-            <div class="w-full flex justify-end">
-              <Link href="#" class="text-sm py-1 px-2 font-medium rounded bg-[#E2D6FF] text-[#7C3AED]">Visualizar</Link>
-            </div>
+              <div class="w-full flex justify-end">
+                <Link href="#" class="text-sm py-1 px-2 font-medium rounded bg-[#E2D6FF] text-[#7C3AED]">Visualizar</Link>
+              </div>
           </div>
 
         </div>
@@ -76,7 +79,9 @@
           <InputForm 
             type="text"
             name="title" 
-            placeholder="Digite o titulo" />
+            placeholder="Digite o titulo"
+            v-model="form.title"
+            :error="errors.title" />
 
           <label 
             for="input-title"
@@ -84,16 +89,18 @@
 
           <textarea 
             name="description" 
-            class="w-full h-[150px] border border-[#E2E8F0] rounded text-sm p-3 outline-none hover:border-[#7C3AED] focus:border-[#7C3AED]"></textarea>
+            class="w-full h-[150px] border border-[#E2E8F0] rounded text-sm p-3 outline-none hover:border-[#7C3AED] focus:border-[#7C3AED]"
+            :class="{ 'border-red-400': errors.description }"
+            v-model="form.description"
+            :error="errors.description"></textarea> 
 
-          <!-- :class="{ 'border-red-400': formNewTaskErrors.description }" 
-
-          <p v-show="formNewTaskErrors.description" class="text-xs text-red-400 mt-2">{{ formNewTaskErrors.description }}</p> -->
+          <p v-show="errors.description" class="text-xs text-red-400 mt-2">{{ errors.description }}</p> 
 
           <div class="w-full flex justify-end">
             <button 
               aria-label="Botão para filtrar tarefas"
-              class="flex justify-center align-items text-sm font-normal gap-2 text-white bg-[#7C3AED] p-3 w-[135px] rounded hover:scale-95">
+              class="flex justify-center align-items text-sm font-normal gap-2 text-white bg-[#7C3AED] p-3 w-[135px] rounded hover:scale-95"
+              @click="createTaskBoard()">
                 Criar
             </button>
           </div>
@@ -106,12 +113,31 @@
 
 <script setup>
 
-import { Link } from "@inertiajs/inertia-vue3"
+import { Link, useForm } from "@inertiajs/inertia-vue3"
 import { ref } from "vue"
 
 import Layout from "../Template/Layout.vue"
 import InputForm from "../Components/InputForm.vue";
 
+const props = defineProps( ['taskboards'] )
+
 const openModal = ref(false)
+
+const form = useForm({
+  title: "",
+  description: "",
+})
+
+const errors = ref({
+  title: "",
+  description: "",
+})
+
+function createTaskBoard() {
+  form.post(route('taskboard'), {
+    onSuccess: () => console.log('ok'),
+    onError: (error) => errors.value = error
+  })
+}
 
 </script>

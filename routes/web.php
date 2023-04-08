@@ -14,6 +14,7 @@ Route::middleware('auth')->group(function () {
     // Route::post('/task', [TaskController::class, 'store'])->name('task');
 
     Route::get('/task-board', [TaskBoardController::class, 'index'])->name('taskboard');
+    Route::post('/task-board', [TaskBoardController::class, 'store'])->name('taskboard');
 });
 
 

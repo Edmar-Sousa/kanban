@@ -28,7 +28,7 @@ class AuthController extends Controller
         if ( Hash::check($user_credentials['password'], $user->password) )
         {
             Auth::login( $user );
-            return redirect()->route('homepage');
+            return redirect()->route('taskboard');
         }
     }
 
