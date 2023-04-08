@@ -6,12 +6,14 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\TaskController;
-
+use App\Http\Controllers\TaskBoardController;
 
 Route::middleware('auth')->group(function () {
-    Route::get('/', [TaskController::class, 'index'])->name('homepage');
-    Route::put('/task', [TaskController::class, 'update'])->name('task');
-    Route::post('/task', [TaskController::class, 'store'])->name('task');
+    // Route::get('/task', [TaskController::class, 'index'])->name('task');
+    // Route::put('/task', [TaskController::class, 'update'])->name('task');
+    // Route::post('/task', [TaskController::class, 'store'])->name('task');
+
+    Route::get('/task-board', [TaskBoardController::class, 'index'])->name('taskboard');
 });
 
 
