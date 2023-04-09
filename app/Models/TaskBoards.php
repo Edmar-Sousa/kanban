@@ -12,6 +12,20 @@ class TaskBoards extends Model
     protected $fillable = ['title', 'description', 'user_id'];
 
 
+    public function tasks()
+    {
+        return $this->hasMany(Task::class, 'id', 'taskboard_id');
+    }
+
+
+    public function get_task_board_with_tasks( int $id )
+    {
+        return $this->where('id', $id)
+                    ->with('tasks')
+                    ->first();
+    }
+
+
     public function get_task_board_user(int $user_id)
     {
         return $this->where('user_id', $user_id)

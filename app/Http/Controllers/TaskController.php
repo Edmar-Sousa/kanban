@@ -7,30 +7,33 @@ use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 use App\Models\Task;
+use App\Models\TaskBoards;
 use App\Http\Requests\StoreTaskRequest;
 
 
 class TaskController extends Controller
 {
     protected Task $task_model;
+    protected TaskBoards $task_board_model;
 
-    public function __construct(Task $task)
+    public function __construct( Task $task, TaskBoards $task_board )
     {
         $this->task_model = $task;
+        $this->task_board_model = $task_board;
     }
 
 
-    public function index()
+    public function index( int $id )
     {
-        return Inertia::render('TaskBoard', [
-            'tasks' => $this->task_model->get_all_tasks_of_user( Auth::user()->id ),
+        return Inertia::render('TaskBoardTasks', [
+            'taskboard' => $this->task_board_model->get_task_board_with_tasks( $id ),
         ]);
     }
 
 
-    public function store(StoreTaskRequest $request)
+    public function store(StoreTaskRequest $request, int $task_board_id)
     {
-        $this->task_model->store( $request->validated(), Auth::user()->id );
+        $this->task_model->store( $request->validated(), $task_board_id );
     }
 
     public function update(Request $request)

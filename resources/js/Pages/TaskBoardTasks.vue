@@ -4,14 +4,15 @@
       <header class="flex">
         <div class="flex gap-4 items-center flex-1">
           <h1 class="text-3xl font-bold text-[#403937]">Meu Kanban</h1>
+
           <button arial-label="Botão para editar nome do board">
-            <img src="images/pen.svg" alt="icone de um lapis" />
+            <img :src="require('~/pen.svg').default" alt="icone de um lapis" />
           </button>
         </div>
         
         <div>
           <img 
-            src="images/profile-picture.png" 
+            :src="require('~/profile-picture.png').default" 
             alt="imagem de perfil"
             class="w-16 h-16" />
         </div>
@@ -21,14 +22,14 @@
         <button 
           aria-label="Botão para filtrar tarefas"
           class="flex justify-center align-items text-sm font-normal gap-2 text-white bg-[#7C3AED] p-3 w-[135px] rounded hover:scale-95">
-            <img src="images/filter.svg" alt="" />
+            <img :src="require('~/filter.svg').default" alt="" />
             Filtrar
         </button>
         
         <button 
           class="flex items-center flex-1 gap-4 rounded-2xl px-6 focus:outline-none focus:ring ring-[#7C3AED] shadow-[0_4px_16px_0px_rgba(22,22,22,0.1)] text-[#7C7C8A] text-base font-normal">
             <img 
-              src="images/search.svg" 
+              :src="require('~/search.svg').default" 
               alt="Icone de lupa" 
               class="w-5" />
             
@@ -48,7 +49,7 @@
               <button 
                 arial-label="Adicionar tarefa"
                 class="bg-[#7C3AED] rounded hover:scale-95" @click="openModal = true">
-                  <img src="images/plus.svg" alt="Plus icon" />
+                  <img :src="require('~/plus.svg').default" alt="Plus icon" />
               </button>
             </div>
 
@@ -71,7 +72,10 @@
               <Task v-for="task in taskDone" :key="task.id" :task="task" @dragStart="dragStart" />
         </div>
       </div>
+
+      {{ taskboard }}
     </main>
+
 
     <div class="fixed top-0 bottom-0 left-0 right-0 bg-[#00000033] flex justify-center items-center" v-show="openModal">
       <div class="bg-white p-4 rounded w-full max-w-[500px]">
@@ -79,7 +83,7 @@
           <h2 class="font-bold">Adicionar nova Tarefa</h2>
 
           <button arial-label="Close modal" @click="openModal = false">
-            <img src="images/x.svg" alt="close icon" />
+            <img :src="require('~/x.svg')" alt="close icon" />
           </button>
         </div>
 
@@ -130,7 +134,7 @@ import Layout from "../Template/Layout.vue"
 import Task from "../Components/Task.vue"
 import InputForm from "../Components/InputForm.vue"
 
-const props = defineProps( ["tasks"] )
+const props = defineProps( ["taskboard"] )
 const openModal = ref(false)
 
 const formNewTask = useForm({
@@ -143,9 +147,9 @@ const formNewTaskErrors = ref({
   description: "",
 })
 
-const taskToDo  = computed( () => props.tasks.filter( task => task.state == 1 ) )
-const taskDoing = computed( () => props.tasks.filter( task => task.state == 2 ) )
-const taskDone  = computed( () => props.tasks.filter( task => task.state == 3 ) )
+const taskToDo  = computed( () => props.taskboard?.tasks.filter( task => task.state == 1 ) )
+const taskDoing = computed( () => props.taskboard?.tasks.filter( task => task.state == 2 ) )
+const taskDone  = computed( () => props.taskboard?.tasks.filter( task => task.state == 3 ) )
 
 
 function updateTaskState(id, state) {
@@ -168,7 +172,7 @@ function dragStart( event, item ) {
 
 function drop( event, state ) {
   const taskId = event.dataTransfer.getData("id")
-  const task = props.tasks.find( task => task.id == taskId )
+  const task = props.taskboard?.tasks.find( task => task.id == taskId )
 
   updateTaskState(task.id, state)
     .then( () => task.state = state )
@@ -176,7 +180,7 @@ function drop( event, state ) {
 }
 
 function addNewTask() {
-  formNewTask.post(route('task'), {
+  formNewTask.post(route('task', { id: props.taskboard?.id }), {
     onSuccess: () => console.log('ok'),
     onError: (errors) => formNewTaskErrors.value = errors
   })

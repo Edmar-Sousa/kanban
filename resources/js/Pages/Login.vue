@@ -1,8 +1,8 @@
 <template>
     <div class="w-screen h-screen overflow-y-auto lg:flex lg:items-center">
         <div class="w-full h-full p-8 max-w-md m-auto">
-            <img src="images/logo-large.svg" alt="Logo vertigo" />
-            
+            <img :src="require('~/logo-large.svg').default" alt="Logo vertigo" />
+
             <div>
                 <h1 class="text-4xl font-bold mt-20 mb-4 text-[#1E293B]">Acesse a plataforma</h1>
                 <p class="text-base font-normal mb-10 text-[#475569]">Faça login ou registre-se para começar a construir <br /> seus projetos ainda hoje.</p>
@@ -55,7 +55,7 @@
         </div>
 
         <div class="hidden lg:block h-full">
-            <img src="images/background-login.svg" alt="" class="w-full" />
+            <img :src="require('~/background-login.svg').default" alt="" class="w-full" />
         </div>
     </div>
 </template>

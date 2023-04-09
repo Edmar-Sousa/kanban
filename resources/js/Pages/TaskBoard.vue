@@ -53,7 +53,7 @@
               <p class="my-2.5 text-sm font-medium text-[#756966]">{{ taskboard.description }}</p>
 
               <div class="w-full flex justify-end">
-                <Link href="#" class="text-sm py-1 px-2 font-medium rounded bg-[#E2D6FF] text-[#7C3AED]">Visualizar</Link>
+                <Link :href="route('task', taskboard.id)" class="text-sm py-1 px-2 font-medium rounded bg-[#E2D6FF] text-[#7C3AED]">Visualizar</Link>
               </div>
           </div>
 
