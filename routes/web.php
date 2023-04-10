@@ -9,14 +9,13 @@ use App\Http\Controllers\TaskController;
 use App\Http\Controllers\TaskBoardController;
 
 Route::middleware('auth')->group(function () {
-    // Route::put('/task', [TaskController::class, 'update'])->name('task');
     
     Route::get('/task-board', [TaskBoardController::class, 'index'])->name('taskboard');
     Route::post('/task-board', [TaskBoardController::class, 'store'])->name('taskboard');
     
     Route::get('/task-board/task/{id}', [TaskController::class, 'index'])->name('task');
-    Route::post('/task-board/task/{id}', [TaskController::class, 'store'])->name('task');
-
+    Route::post('/task-board/task', [TaskController::class, 'store'])->name('task');
+    Route::put('/task-board/task', [TaskController::class, 'update'])->name('task');
 });
 
 

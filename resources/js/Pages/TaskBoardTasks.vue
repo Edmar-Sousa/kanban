@@ -72,8 +72,6 @@
               <Task v-for="task in taskDone" :key="task.id" :task="task" @dragStart="dragStart" />
         </div>
       </div>
-
-      {{ taskboard }}
     </main>
 
 
@@ -138,6 +136,7 @@ const props = defineProps( ["taskboard"] )
 const openModal = ref(false)
 
 const formNewTask = useForm({
+  id: props.taskboard?.id,
   title: "",
   description: "",
 })
@@ -152,18 +151,6 @@ const taskDoing = computed( () => props.taskboard?.tasks.filter( task => task.st
 const taskDone  = computed( () => props.taskboard?.tasks.filter( task => task.state == 3 ) )
 
 
-function updateTaskState(id, state) {
-  return new Promise( (resolve, reject) => {
-    const form = useForm( { id, state } )
-
-    form.put( route("task"), {
-      onSuccess: resolve,
-      onError: reject
-    } )
-  } )
-}
-
-
 function dragStart( event, item ) {
   event.dataTransfer.dropEffect = "move"
   event.dataTransfer.effectAllowed = "move"
@@ -174,13 +161,17 @@ function drop( event, state ) {
   const taskId = event.dataTransfer.getData("id")
   const task = props.taskboard?.tasks.find( task => task.id == taskId )
 
-  updateTaskState(task.id, state)
-    .then( () => task.state = state )
-    .catch( (err) => console.log(err) )
+  const form = useForm( { id: task.id, state } )
+
+  form.put( route("task", { id: task.id, }), {
+    onSuccess: () => task.state = state,
+    onError: (err) => console.log(err)
+  })
+
 }
 
 function addNewTask() {
-  formNewTask.post(route('task', { id: props.taskboard?.id }), {
+  formNewTask.post(route("task"), {
     onSuccess: () => console.log('ok'),
     onError: (errors) => formNewTaskErrors.value = errors
   })

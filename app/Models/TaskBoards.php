@@ -14,7 +14,7 @@ class TaskBoards extends Model
 
     public function tasks()
     {
-        return $this->hasMany(Task::class, 'id', 'taskboard_id');
+        return $this->hasMany(Task::class, 'taskboard_id', 'id');
     }
 
 

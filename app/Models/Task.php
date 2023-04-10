@@ -19,10 +19,10 @@ class Task extends Model
     }
 
 
-    public function store( array $task, int $task_board_id )
+    public function store( array $task )
     {
         return $this->create([
-            'taskboard_id' => $task_board_id,
+            'taskboard_id' => $task['id'],
             'title' => $task['title'],
             'description' => $task['description'],
             'state' => 1,

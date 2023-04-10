@@ -15,6 +15,7 @@ class StoreTaskRequest extends FormRequest
     public function rules()
     {
         return [
+            'id'     => ['exists:task_boards,id'],
             'title'  => ['required', 'min:3'],
             'description' => ['required'],
         ];

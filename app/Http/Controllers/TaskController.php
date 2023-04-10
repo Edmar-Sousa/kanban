@@ -31,9 +31,9 @@ class TaskController extends Controller
     }
 
 
-    public function store(StoreTaskRequest $request, int $task_board_id)
+    public function store(StoreTaskRequest $request)
     {
-        $this->task_model->store( $request->validated(), $task_board_id );
+        $this->task_model->store( $request->validated() );
     }
 
     public function update(Request $request)
