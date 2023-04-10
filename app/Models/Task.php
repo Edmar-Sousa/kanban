@@ -28,4 +28,9 @@ class Task extends Model
             'state' => 1,
         ]);
     }
+
+    public function delete_task( int $id )
+    {
+        return $this->where('id', $id)->delete();
+    }
 }

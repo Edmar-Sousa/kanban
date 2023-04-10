@@ -40,4 +40,9 @@ class TaskController extends Controller
     {
         $this->task_model->update_state( $request->all() );
     }
+
+    public function delete(Request $request)
+    {
+        $this->task_model->delete_task( $request->input('id') );
+    }
 }

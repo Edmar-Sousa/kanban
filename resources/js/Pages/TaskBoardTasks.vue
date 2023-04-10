@@ -1,14 +1,8 @@
 <template>
   <Layout>
     <main class="flex-1 bg-white rounded-tl-2xl px-8 py-12 overflow-y-auto">
-      <header class="flex">
-        <div class="flex gap-4 items-center flex-1">
-          <h1 class="text-3xl font-bold text-[#403937]">Meu Kanban</h1>
-
-          <button arial-label="Botão para editar nome do board">
-            <img :src="require('~/pen.svg').default" alt="icone de um lapis" />
-          </button>
-        </div>
+      <header class="w-full flex justify-between items-center">
+        <h1 class="text-3xl font-bold text-[#403937]">{{ taskboard.title }}</h1>
         
         <div>
           <img 
@@ -53,7 +47,12 @@
               </button>
             </div>
 
-            <Task v-for="task in taskToDo" :key="task.id" :task="task" @dragStart="dragStart" />
+            <Task 
+              v-for="task in taskToDo" 
+              :key="task.id" 
+              :task="task" 
+              @dragStart="dragStart"
+              @onDelete="DeleteTask($event)" />
         </div>
 
         <div class="w-[368px]"
@@ -61,7 +60,12 @@
           @dragover.prevent
           @dragenter.prevent>
             <h2 class="font-bold text-xl text-[#403937]">Fazendo</h2>
-            <Task v-for="task in taskDoing" :key="task.id" :task="task" @dragStart="dragStart" />
+            <Task 
+              v-for="task in taskDoing" 
+              :key="task.id" 
+              :task="task" 
+              @dragStart="dragStart"
+              @onDelete="DeleteTask($event)" />
           </div>
           
           <div class="w-[368px]"
@@ -69,7 +73,12 @@
             @dragover.prevent
             @dragenter.prevent>
               <h2 class="font-bold text-xl text-[#403937]">Feito</h2>
-              <Task v-for="task in taskDone" :key="task.id" :task="task" @dragStart="dragStart" />
+              <Task 
+                v-for="task in taskDone" 
+                :key="task.id" 
+                :task="task" 
+                @dragStart="dragStart"
+                @onDelete="DeleteTask($event)" />
         </div>
       </div>
     </main>
@@ -80,8 +89,8 @@
         <div class="w-full flex justify-between">
           <h2 class="font-bold">Adicionar nova Tarefa</h2>
 
-          <button arial-label="Close modal" @click="openModal = false">
-            <img :src="require('~/x.svg')" alt="close icon" />
+          <button arial-label="Close modal" @click="closeModal()">
+            <img :src="require('~/x.svg').default" alt="close icon" />
           </button>
         </div>
 
@@ -94,8 +103,8 @@
             type="text"
             name="title" 
             placeholder="Digite o titulo da terfa"
-            v-model="formNewTask.title"
-            :error="formNewTaskErrors.title" />
+            v-model="formInputTasks.title"
+            :error="formInputTasksErrors.title" />
 
           <label 
             for="input-title"
@@ -104,10 +113,10 @@
           <textarea 
             name="description" 
             class="w-full h-[150px] border border-[#E2E8F0] rounded text-sm p-3 outline-none hover:border-[#7C3AED] focus:border-[#7C3AED]"
-            :class="{ 'border-red-400': formNewTaskErrors.description }"
-            v-model="formNewTask.description"></textarea>
+            :class="{ 'border-red-400': formInputTasksErrors.description }"
+            v-model="formInputTasks.description"></textarea>
 
-          <p v-show="formNewTaskErrors.description" class="text-xs text-red-400 mt-2">{{ formNewTaskErrors.description }}</p>
+          <p v-show="formInputTasksErrors.description" class="text-xs text-red-400 mt-2">{{ formInputTasksErrors.description }}</p>
 
           <div class="w-full flex justify-end">
             <button 
@@ -135,13 +144,13 @@ import InputForm from "../Components/InputForm.vue"
 const props = defineProps( ["taskboard"] )
 const openModal = ref(false)
 
-const formNewTask = useForm({
+const formInputTasks = ref({
   id: props.taskboard?.id,
   title: "",
   description: "",
 })
 
-const formNewTaskErrors = ref({
+const formInputTasksErrors = ref({
   title: "",
   description: "",
 })
@@ -150,6 +159,11 @@ const taskToDo  = computed( () => props.taskboard?.tasks.filter( task => task.st
 const taskDoing = computed( () => props.taskboard?.tasks.filter( task => task.state == 2 ) )
 const taskDone  = computed( () => props.taskboard?.tasks.filter( task => task.state == 3 ) )
 
+
+function closeModal() {
+  openModal.value = false
+  formInputTasks.value = { title: "", description: "" }
+}
 
 function dragStart( event, item ) {
   event.dataTransfer.dropEffect = "move"
@@ -163,7 +177,7 @@ function drop( event, state ) {
 
   const form = useForm( { id: task.id, state } )
 
-  form.put( route("task", { id: task.id, }), {
+  form.put(route("task", { id: task.id, }), {
     onSuccess: () => task.state = state,
     onError: (err) => console.log(err)
   })
@@ -171,10 +185,18 @@ function drop( event, state ) {
 }
 
 function addNewTask() {
-  formNewTask.post(route("task"), {
-    onSuccess: () => console.log('ok'),
-    onError: (errors) => formNewTaskErrors.value = errors
+  const form = useForm( { ...formInputTasks.value } )
+
+  form.post(route("task"), {
+    onSuccess: () => formInputTasks.value = { title: "", description: "" },
+    onError: (errors) => formInputTasksErrors.value = errors
   })
+}
+
+function DeleteTask(task) {
+  const form = useForm( { id: task.id } )
+
+  form.delete(route("task"))
 }
 
 </script>

@@ -16,6 +16,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/task-board/task/{id}', [TaskController::class, 'index'])->name('task');
     Route::post('/task-board/task', [TaskController::class, 'store'])->name('task');
     Route::put('/task-board/task', [TaskController::class, 'update'])->name('task');
+    Route::delete('/task-board/task', [TaskController::class, 'delete'])->name('task');
 });
 
 
