@@ -12,25 +12,6 @@
         </div>
       </header>
       
-      <div class="w-full mt-8 flex gap-4">
-        <button 
-          aria-label="Botão para filtrar tarefas"
-          class="flex justify-center align-items text-sm font-normal gap-2 text-white bg-[#7C3AED] p-3 w-[135px] rounded hover:scale-95">
-            <img :src="require('~/filter.svg').default" alt="" />
-            Filtrar
-        </button>
-        
-        <button 
-          class="flex items-center flex-1 gap-4 rounded-2xl px-6 focus:outline-none focus:ring ring-[#7C3AED] shadow-[0_4px_16px_0px_rgba(22,22,22,0.1)] text-[#7C7C8A] text-base font-normal">
-            <img 
-              :src="require('~/search.svg').default" 
-              alt="Icone de lupa" 
-              class="w-5" />
-            
-            Busque por cards, assuntos ou responsáveis
-        </button>
-      </div>
-      
       <div class="w-full min-h-[821px] mt-8">
         <div class="w-full flex justify-between items-center">
           <h2 class="font-bold text-xl text-[#403937]">Seus boards</h2>
