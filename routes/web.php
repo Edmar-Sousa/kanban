@@ -7,6 +7,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\TaskBoardController;
+use App\Http\Controllers\ConfigController;
 
 Route::middleware('auth')->group(function () {
     
@@ -18,6 +19,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/task-board/task', [TaskController::class, 'store'])->name('task');
     Route::put('/task-board/task', [TaskController::class, 'update'])->name('task');
     Route::delete('/task-board/task', [TaskController::class, 'delete'])->name('task');
+
+    Route::get('/config', [ConfigController::class, 'index'])->name('config');
 });
 
 

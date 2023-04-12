@@ -21,7 +21,7 @@
         
         <li class="flex gap-4 items-center">
           <img :src="require('~/config.svg').default" alt="Icone de configuração" />
-          <Link href="#" class="font-medium text-4 text-[#CAB3FF]">Ajustes</Link>
+          <Link :href="route('config')" class="font-medium text-4 text-[#CAB3FF]">Ajustes</Link>
         </li>
 
         <li class="flex gap-4 items-center">
