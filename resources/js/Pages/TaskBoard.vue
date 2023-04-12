@@ -27,13 +27,22 @@
         <div class="w-full grid grid-cols-3">
           
           <div 
-            class="w-full my-6 p-6 rounded-lg shadow-[0_4px_16px_0px_rgba(22,22,22,0.1)]" 
-            v-for="taskboard in taskboards"
-            :key="taskboard.id">
+            class="group/item w-full my-6 p-6 rounded-lg shadow-[0_4px_16px_0px_rgba(22,22,22,0.1)]" 
+            v-for="taskboard in taskboards" :key="taskboard.id">
               <h3 class="text-sm font-bold">{{ taskboard.title }}</h3>
               <p class="my-2.5 text-sm font-medium text-[#756966]">{{ taskboard.description }}</p>
 
-              <div class="w-full flex justify-end">
+              <div class="w-full flex justify-end gap-2">
+                <button 
+                  arial-label="Deletar taskboard" 
+                  class="hidden group-hover/item:block"
+                  @click="deleteTaskBoards( taskboard.id )">
+                    <img 
+                      :src="require('~/trash.svg').default" 
+                      alt="Icone de uma lixeira" 
+                      class="w-[20px] h-[20px]" />
+                </button>
+
                 <Link :href="`${route('task')}/${taskboard.id}`" class="text-sm py-1 px-2 font-medium rounded bg-[#E2D6FF] text-[#7C3AED]">Visualizar</Link>
               </div>
           </div>
@@ -116,9 +125,18 @@ const errors = ref({
 
 function createTaskBoard() {
   form.post(route('taskboard'), {
-    onSuccess: () => console.log('ok'),
+    onSuccess: () => { 
+      form.title = "" 
+      form.description = ""
+    },
     onError: (error) => errors.value = error
   })
+}
+
+
+function deleteTaskBoards( id ) {
+  const deleteForm = useForm({ id })
+  deleteForm.delete(route('taskboard'))
 }
 
 </script>

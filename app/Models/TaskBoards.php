@@ -41,4 +41,10 @@ class TaskBoards extends Model
             'description' => $task_board_data['description'], 
         ]);
     }
+
+    public function delete_taskboard( int $id )
+    {
+        return $this->where('id', $id)
+                    ->delete();
+    }
 }

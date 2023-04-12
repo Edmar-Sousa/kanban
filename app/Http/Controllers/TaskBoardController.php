@@ -31,4 +31,11 @@ class TaskBoardController extends Controller
     public function store(TaskBoardStoreRequest $request) {
         $this->task_board_model->create_taskboard( $request->validated(), Auth::user()->id );
     }
+
+
+    public function delete( Request $request ) {
+        $request->validate([ 'id' => 'required|exists:task_boards,id' ]);
+
+        $this->task_board_model->delete_taskboard( $request->input('id') );
+    }
 }
