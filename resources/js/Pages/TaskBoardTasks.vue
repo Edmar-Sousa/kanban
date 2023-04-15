@@ -6,7 +6,7 @@
         
         <div>
           <img 
-            :src="require(`~/storage/${ image }`)" 
+            :src="require(`~/storage/${ image }`).default" 
             alt="imagem de perfil"
             class="w-16 h-16" />
         </div>
