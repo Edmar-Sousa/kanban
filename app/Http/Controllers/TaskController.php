@@ -26,7 +26,7 @@ class TaskController extends Controller
     public function index( int $id )
     {
         return Inertia::render('TaskBoardTasks', [
-            'title' => 'Tarefas',
+            'image' => Auth::user()->image,
             'taskboard' => $this->task_board_model->get_task_board_with_tasks( $id ),
         ]);
     }

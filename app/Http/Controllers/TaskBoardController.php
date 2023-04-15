@@ -23,7 +23,7 @@ class TaskBoardController extends Controller
     public function index()
     {
         return Inertia::render('TaskBoard', [
-            'title' => 'Boards',
+            'image' => Auth::user()->image,
             'taskboards' => $this->task_board_model->get_task_board_user( Auth::user()->id ),
         ]);
     }

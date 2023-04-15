@@ -6,7 +6,7 @@
         
         <div>
           <img 
-            src="/storage/profile-picture.png" 
+            :src="require(`~/storage/${ image }`)" 
             alt="imagem de perfil"
             class="w-16 h-16" />
         </div>
@@ -122,7 +122,7 @@ import Layout from "../Template/Layout.vue"
 import Task from "../Components/Task.vue"
 import InputForm from "../Components/InputForm.vue"
 
-const props = defineProps( ["taskboard"] )
+const props = defineProps( ["taskboard", "image"] )
 const openModal = ref(false)
 
 const formInputTasks = ref({

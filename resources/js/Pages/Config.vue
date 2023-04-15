@@ -8,7 +8,7 @@
                 <fieldset class="flex gap-6 items-start">
                     <div>
                         <img 
-                            :src="`/storage/${ user.image }`" 
+                            :src="require(`~/storage/${ user.image }`).default" 
                             alt="imagem de perfil"
                             class="w-[200px] h-[200px] m-auto mb-4 rounded-full"
                             id="image-preview" />

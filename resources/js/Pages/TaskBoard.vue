@@ -6,7 +6,7 @@
         
         <div>
           <img 
-            src="/storage/profile-picture.png" 
+            :src="require(`~/storage/${ image }`).default" 
             alt="imagem de perfil"
             class="w-16 h-16" />
         </div>
@@ -109,7 +109,7 @@ import { ref } from "vue"
 import Layout from "../Template/Layout.vue"
 import InputForm from "../Components/InputForm.vue";
 
-const props = defineProps( ['taskboards'] )
+const props = defineProps( ["taskboards", "image"] )
 
 const openModal = ref(false)
 
@@ -124,7 +124,7 @@ const errors = ref({
 })
 
 function createTaskBoard() {
-  form.post(route('taskboard'), {
+  form.post(route("taskboard"), {
     onSuccess: () => { 
       form.title = "" 
       form.description = ""
@@ -136,7 +136,7 @@ function createTaskBoard() {
 
 function deleteTaskBoards( id ) {
   const deleteForm = useForm({ id })
-  deleteForm.delete(route('taskboard'))
+  deleteForm.delete(route("taskboard"))
 }
 
 </script>
