@@ -23,7 +23,7 @@ mix.js("resources/js/app.js", "public/js")
         resolve: {
             alias: {
                 "@": path.resolve(__dirname, "resources/js"),
-                "~": path.resolve(__dirname, "public/images"),
+                "~": path.resolve(__dirname, "public"),
             },
         },
     })

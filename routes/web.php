@@ -21,6 +21,8 @@ Route::middleware('auth')->group(function () {
     Route::delete('/task-board/task', [TaskController::class, 'delete'])->name('task');
 
     Route::get('/config', [ConfigController::class, 'index'])->name('config');
+
+    Route::post('/user', [UserController::class, 'update'])->name('user');
 });
 
 

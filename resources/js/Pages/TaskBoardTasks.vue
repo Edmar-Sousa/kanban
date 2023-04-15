@@ -6,7 +6,7 @@
         
         <div>
           <img 
-            :src="require('~/profile-picture.png').default" 
+            src="/storage/profile-picture.png" 
             alt="imagem de perfil"
             class="w-16 h-16" />
         </div>

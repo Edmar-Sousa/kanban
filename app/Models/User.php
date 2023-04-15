@@ -18,6 +18,7 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
+        'image',
         'password',
     ];
 
@@ -47,8 +48,19 @@ class User extends Authenticatable
         ]);
     }
 
+
     public function find_by_email(string $email)
     {
         return $this->where('email', $email)->first();
+    }
+
+
+    public function update_user(int $id, array $data, string $image_path)
+    {
+        return $this->where('id', $id)
+                    ->update([
+                        'name'     =>  $data['username'],
+                        'image'    =>  $image_path,
+                    ]);
     }
 }
