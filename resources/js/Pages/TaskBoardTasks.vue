@@ -24,7 +24,7 @@
               <button 
                 arial-label="Adicionar tarefa"
                 class="bg-[#7C3AED] rounded hover:scale-95" @click="openModal = true">
-                  <img :src="require('~/plus.svg').default" alt="Plus icon" />
+                  <img :src="require('~/images/plus.svg').default" alt="Plus icon" />
               </button>
             </div>
 
@@ -71,7 +71,7 @@
           <h2 class="font-bold">Adicionar nova Tarefa</h2>
 
           <button arial-label="Close modal" @click="closeModal()">
-            <img :src="require('~/x.svg').default" alt="close icon" />
+            <img :src="require('~/images/x.svg').default" alt="close icon" />
           </button>
         </div>
 

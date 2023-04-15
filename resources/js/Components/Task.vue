@@ -11,7 +11,7 @@
                     class="hidden group-hover/item:block"
                     @click="$emit('onDelete', task)">
                         <img 
-                            :src="require('~/trash.svg').default" 
+                            :src="require('~/images/trash.svg').default" 
                             alt="Icone de uma lixeira" 
                             class="w-[20px] h-[20px]" />
                 </button>

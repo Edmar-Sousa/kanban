@@ -19,7 +19,7 @@
           <button 
             arial-label="Criar um novo board"
             class="bg-[#7C3AED] rounded hover:scale-95" @click="openModal = true">
-              <img :src="require('~/plus.svg').default" alt="Plus icon" />
+              <img :src="require('~/images/plus.svg').default" alt="Plus icon" />
           </button>
 
         </div>
@@ -38,7 +38,7 @@
                   class="hidden group-hover/item:block"
                   @click="deleteTaskBoards( taskboard.id )">
                     <img 
-                      :src="require('~/trash.svg').default" 
+                      :src="require('~/images/trash.svg').default" 
                       alt="Icone de uma lixeira" 
                       class="w-[20px] h-[20px]" />
                 </button>
@@ -57,7 +57,7 @@
           <h2 class="font-bold">Adicionar nova Board</h2>
 
           <button arial-label="Close modal" @click="openModal = false">
-            <img :src="require('~/x.svg').default" alt="close icon" />
+            <img :src="require('~/images/x.svg').default" alt="close icon" />
           </button>
         </div>
 

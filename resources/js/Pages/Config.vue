@@ -16,7 +16,7 @@
                         <label for="image-profile">
                             <div
                                 class="w-full h-10 flex gap-2 items-center justify-center text-sm py-1 px-2 font-medium rounded bg-[#E2D6FF] text-[#7C3AED]">
-                                    <img :src="require('~/file-up.svg').default" class="w-5 h-5" />
+                                    <img :src="require('~/images/file-up.svg').default" class="w-5 h-5" />
                                     Alterar foto
                             </div>
                         </label>
