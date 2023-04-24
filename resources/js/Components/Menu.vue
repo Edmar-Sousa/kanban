@@ -1,7 +1,6 @@
 <template>
   <aside aria-label="Navegação principal" class="w-full h-full max-w-[175px] pl-9 py-8 relative">    
     <img :src="require('~/images/logo.svg').default" alt="Logo do site" />
-    
     <nav class="mt-14">
       <ul class="flex flex-col gap-9">
         <li 

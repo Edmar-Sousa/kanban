@@ -5,6 +5,8 @@ import { InertiaProgress } from "@inertiajs/progress";
 import { ZiggyVue } from "ziggy";
 import { Ziggy } from "./ziggy";
 
+import loadImage from "./mixins/loadImage"
+
 InertiaProgress.init();
 
 createInertiaApp({
@@ -17,7 +19,7 @@ createInertiaApp({
             .use(ZiggyVue, Ziggy)
             .component("Link", Link)
             .component("Head", Head)
-            .mixin({ methods: { route } })
+            .mixin({ methods: { route, loadImage } })
             .mount(el);
     },
 });
