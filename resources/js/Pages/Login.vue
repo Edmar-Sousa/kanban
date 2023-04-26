@@ -18,7 +18,7 @@
                             name="email"
                             placeholder="Digite seu email"
                             v-model="form.email"
-                            :error="errors.email" />
+                            :error="errors.email || v$.email.$errors[0]?.$message" />
                     </div>
 
                     <div class="mt-4">
@@ -65,9 +65,16 @@
 
 import { ref } from "vue"
 import { useForm, Link } from "@inertiajs/inertia-vue3"
+import { useVuelidate } from "@vuelidate/core"
+import { required, helpers } from "@vuelidate/validators"
 
 import InputForm from "../Components/InputForm.vue"
 
+const rules = {
+    email: {
+        required: helpers.withMessage( 'Este campo é obrigatorio', required )
+    }
+}
 
 const form = useForm({
     email: "",
@@ -79,10 +86,15 @@ const errors = ref({
     password: ""
 })
 
+const v$ = useVuelidate( rules, form )
+
 function login() {
-    form.post(route("login"), {
-        onError: (message) => errors.value = message
-    })
+    v$.value.$validate()
+
+    if ( !v$.value.$error )
+        form.post( route("login"), {
+            onError: message => errors.value = message
+        } )
 }
 
 </script>

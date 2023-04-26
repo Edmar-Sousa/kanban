@@ -2,8 +2,6 @@ import { createApp, h } from "vue";
 import { createInertiaApp, Link, Head } from "@inertiajs/inertia-vue3";
 import { InertiaProgress } from "@inertiajs/progress";
 
-import vuelidate from "vuelidate"
-
 import { ZiggyVue } from "ziggy";
 import { Ziggy } from "./ziggy";
 
@@ -19,7 +17,6 @@ createInertiaApp({
         createApp({ render: () => h(App, props) })
             .use(plugin)
             .use(ZiggyVue, Ziggy)
-            .use(vuelidate)
             .component("Link", Link)
             .component("Head", Head)
             .mixin({ methods: { route, loadImage } })
