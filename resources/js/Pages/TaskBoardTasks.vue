@@ -6,9 +6,9 @@
         
         <div>
           <img 
-            :src="require(`~/storage/${ image }`).default" 
+            :src=" loadImage( image )" 
             alt="imagem de perfil"
-            class="w-16 h-16" />
+            class="w-16 h-16 rounded-full" />
         </div>
       </header>
       
