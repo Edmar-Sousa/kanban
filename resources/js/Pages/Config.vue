@@ -1,4 +1,7 @@
 <template>
+    <Head>
+        <title>Configurações</title>
+    </Head>
 
     <Layout>
         <main class="flex-1 bg-white rounded-tl-2xl px-8 py-12 overflow-y-auto">

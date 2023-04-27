@@ -1,4 +1,8 @@
 <template>
+    <Head>
+        <title>Register</title>
+    </Head>
+
     <div class="w-screen h-screen overflow-y-auto lg:flex lg:items-center">
         <div class="w-full h-full p-8 max-w-md m-auto">
             <img :src="require('~/images/logo-large.svg').default" alt="Logo vertigo" />

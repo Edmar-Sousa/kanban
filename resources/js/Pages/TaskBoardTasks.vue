@@ -1,4 +1,8 @@
 <template>
+  <Head>
+    <title>Taskboard</title>
+  </Head>
+
   <Layout>
     <main class="flex-1 bg-white rounded-tl-2xl px-8 py-12 overflow-y-auto">
       <header class="w-full flex justify-between items-center">
