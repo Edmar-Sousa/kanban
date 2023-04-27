@@ -18,7 +18,7 @@
                             name="user-name"
                             placeholder="Digite seu nome"
                             v-model="form.username"
-                            :error="errors.username" />
+                            :error="errors.username || v$.username.$errors[0]?.$message" />
                     </div>
 
                     <div class="mt-4">
@@ -31,7 +31,7 @@
                             name="email"
                             placeholder="Digite seu e-mail"
                             v-model="form.email"
-                            :error="errors.email" />
+                            :error="errors.email || v$.email.$errors[0]?.$message" />
                     </div>
 
                     <div class="mt-4">
@@ -44,7 +44,7 @@
                             name="password"
                             placeholder="Digite sua senha"
                             v-model="form.password"
-                            :error="errors.password" />
+                            :error="errors.password || v$.password.$errors[0]?.$message" />
                     </div>
 
                     <button
@@ -74,14 +74,35 @@
 
 import { ref } from "vue"
 import { useForm, Link } from "@inertiajs/inertia-vue3"
+import { useVuelidate } from "@vuelidate/core"
+import { required, email, minLength, maxLength, helpers } from "@vuelidate/validators"
 
 import InputForm from "../Components/InputForm.vue"
+
+const rules = {
+    username: {
+        required: helpers.withMessage( 'Este campo é obrigatorio.', required ),
+        minLength: helpers.withMessage( 'O campo deve ter no minimo 3 caracteres.', minLength( 3 ) ),
+        maxLength: helpers.withMessage( 'O campo deve ter no maximo 40 caracters.', maxLength( 40 ) ),
+    },
+    email: {
+        required: helpers.withMessage( 'Este campo é obrigatorio', required ),
+        email: helpers.withMessage( 'O campo deve ter um email valido.', email ),
+    },
+    password: {
+        required: helpers.withMessage( 'Este campo é obrigatorio.', required ),
+        minLength: helpers.withMessage( 'O campo deve ter no minimo 3 caracteres.', minLength( 6 ) ),
+        maxLength: helpers.withMessage( 'O campo deve ter no maximo 40 caracters.', maxLength( 40 ) ),
+    }
+}
 
 const form = useForm({
     username: "",
     email: "",
     password: ""
 })
+
+const v$ = useVuelidate( rules, form )
 
 const errors = ref({
     username: "",
@@ -91,9 +112,12 @@ const errors = ref({
 
 
 function register() {
-    form.post(route("register"), {
-        onError: (messages) => errors.value = messages
-    })
+    v$.value.$validate()
+
+    if ( !v$.value.$error )
+        form.post(route("register"), {
+            onError: (messages) => errors.value = messages
+        })
 }
 
 
