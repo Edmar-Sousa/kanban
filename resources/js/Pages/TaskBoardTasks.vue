@@ -36,8 +36,8 @@
               v-for="task in taskToDo" 
               :key="task.id" 
               :task="task" 
-              @dragStart="dragStart"
-              @onDelete="DeleteTask($event)" />
+              @dragStart="$event => dragStart($event, task)"
+              @onDelete="$event => DeleteTask(task)" />
         </div>
 
         <div class="w-[368px]"
@@ -49,8 +49,8 @@
               v-for="task in taskDoing" 
               :key="task.id" 
               :task="task" 
-              @dragStart="dragStart"
-              @onDelete="DeleteTask($event)" />
+              @dragStart="$event => dragStart($event, task)"
+              @onDelete="$event => DeleteTask(task)" />
           </div>
           
           <div class="w-[368px]"
@@ -62,8 +62,8 @@
                 v-for="task in taskDone" 
                 :key="task.id" 
                 :task="task" 
-                @dragStart="dragStart"
-                @onDelete="DeleteTask($event)" />
+                @dragStart="$event => dragStart($event, task)"
+                @onDelete="$event => DeleteTask(task)" />
         </div>
       </div>
     </main>
