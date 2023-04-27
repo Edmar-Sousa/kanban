@@ -35,7 +35,7 @@
                             name="password"
                             placeholder="Digite sua senha"
                             v-model="form.password"
-                            :error="errors.password" />
+                            :error="errors.password || v$.password.$errors[0]?.$message" />
                     </div>
 
                     <button
@@ -66,13 +66,18 @@
 import { ref } from "vue"
 import { useForm, Link } from "@inertiajs/inertia-vue3"
 import { useVuelidate } from "@vuelidate/core"
-import { required, helpers } from "@vuelidate/validators"
+import { required, email, minLength, helpers } from "@vuelidate/validators"
 
 import InputForm from "../Components/InputForm.vue"
 
 const rules = {
     email: {
-        required: helpers.withMessage( 'Este campo é obrigatorio', required )
+        required: helpers.withMessage( 'Este campo é obrigatorio.', required ),
+        email: helpers.withMessage( 'Este campo deve ter um email valido.', email ),
+    },
+    password: {
+        required: helpers.withMessage( 'Este campo é obrigatorio.', required ),
+        minLength: helpers.withMessage( 'Este campo de ter no minimo 6 caracteres.', minLength(6) ),
     }
 }
 
