@@ -7,14 +7,16 @@
         :class="{ 'border-red-400': error }"
         :placeholder="placeholder"
         :value="modelValue"
-        @input="$emit('update:modelValue', $event.target.value)" />
+        :disabled="disabled"
+        @input="$event => $emit('update:modelValue', $event.target.value)"
+        @change="$event => $emit('change', $event)" />
     
     <p v-show="error" class="text-xs text-red-400 mt-2">{{ error }}</p>
 </template>
 
 <script setup>
 
-const props = defineProps( ["modelValue", "error", "type", "name", "placeholder"] )
-const emit = defineEmits( ["update:modelValue"] )
+const props = defineProps( ["modelValue", "error", "type", "name", "placeholder", "disabled"] )
+const emit = defineEmits( ["update:modelValue", "change"] )
 
 </script>
