@@ -16,6 +16,8 @@ class CreateAddressesTable extends Migration
         Schema::create('addresses', function (Blueprint $table) {
             $table->id();
 
+            $table->foreignId('user_id')->references('id')->on('users')->delete('cascade');
+
             $table->string('street');
             $table->integer('numero');
             $table->string('complement');

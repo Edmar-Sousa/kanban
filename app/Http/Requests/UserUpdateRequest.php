@@ -15,8 +15,15 @@ class UserUpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'username' => ['min:3', 'max:40'],
-            'image'    => ['image', 'mimes:png,jpg']
+            'username'   => ['min:3', 'max:40'],
+            'image'      => ['nullable', 'image', 'mimes:png,jpg'],
+            'street'     => ['min:3'],
+            'zip_code'   => ['string'],
+            'number'     => ['integer'],
+            'complement' => ['min:3'],
+            'uf'         => ['max:2'],
+            'city'       => ['min:3'],
+            'neighborhood' => ['min:3'],
         ];
     }
 
