@@ -41,7 +41,8 @@
                             type="text"
                             name="username"
                             placeholder="Altere seu node de usuario"
-                            v-model="form.username" />
+                            v-model="form.username"
+                            :error="errors.username || v$.username.$errors[0]?.$message" />
                     </div>
                 </fieldset>
 
@@ -59,7 +60,8 @@
                                 type="text"
                                 name="street"
                                 placeholder="Rua"
-                                v-model="form.street" />
+                                v-model="form.street" 
+                                :error="errors.street || v$.street.$errors[0]?.$message" />
                         </div>
     
                         <div class="flex-1">
@@ -72,7 +74,8 @@
                                 name="zip-code"
                                 placeholder="00000-000"
                                 v-model="form.zip_code"
-                                @change="handleChangeZipcode" />
+                                @change="handleChangeZipcode"
+                                :error="errors.zip_code || v$.zip_code.$errors[0]?.$message" />
                         </div>
     
                         <div class="flex-1">
@@ -84,7 +87,8 @@
                                 type="number"
                                 name="number"
                                 placeholder="Numero"
-                                v-model="form.number" />
+                                v-model="form.number"
+                                :error="errors.number || v$.number.$errors[0]?.$message" />
                         </div>
                     </div>
     
@@ -98,7 +102,8 @@
                                 type="text"
                                 name="complement"
                                 placeholder="Complemento"
-                                v-model="form.complement" />
+                                v-model="form.complement"
+                                :error="errors.complement || v$.complement.$errors[0]?.$message" />
                         </div>
     
                         <div class="flex-2">
@@ -111,7 +116,8 @@
                                 name="uf"
                                 placeholder="UF"
                                 :disabled="true"
-                                v-model="form.uf" />
+                                v-model="form.uf"
+                                :error="errors.uf || v$.uf.$errors[0]?.$message" />
                         </div>
     
                         <div class="flex-2">
@@ -123,7 +129,8 @@
                                 type="text"
                                 name="city"
                                 placeholder="Cidade"
-                                v-model="form.city" />
+                                v-model="form.city"
+                                :error="errors.city || v$.city.$errors[0]?.$message" />
                         </div>
                     </div>
 
@@ -136,7 +143,8 @@
                             type="text"
                             name="neighborhood"
                             placeholder="Bairro"
-                            v-model="form.neighborhood" />
+                            v-model="form.neighborhood"
+                            :error="errors.neighborhood || v$.neighborhood.$errors[0]?.$message" />
                     </div>
     
                 </fieldset>
@@ -157,47 +165,78 @@
 
 <script setup>
 
-import { ref, watch } from "vue"
+import { ref } from "vue"
 import { useForm } from "@inertiajs/inertia-vue3"
+
+import { useVuelidate } from "@vuelidate/core"
+import { minLength, maxLength, integer, helpers } from "@vuelidate/validators"
 
 import Layout from "../Template/Layout.vue"
 import InputForm from "../Components/InputForm.vue"
 
-const props = defineProps(["user"])
+const props = defineProps(["user", "address"])
 const inputfile = ref()
+
+
+const rules = {
+    username: {
+        minLength: helpers.withMessage( "Este campo deve ter no minimo 3 caracteres", minLength( 3 ) ),
+        maxLength: helpers.withMessage( "Este campo deve ter no maximo 40 caracteres", maxLength( 40 ) ),
+    },
+    street: {
+        minLength: helpers.withMessage( "Este campo deve ter no minimo 3 caracteres", minLength( 3 ) ),
+    },
+    zip_code: {
+        integer: helpers.withMessage( "Este campo deve conter apenas numeros", integer )
+    },
+    number: {
+        integer: helpers.withMessage( "Este campo deve conter apenas numeros", integer ),
+    },
+    complement: {
+        minLength: helpers.withMessage( "Este campo deve ter no minimo 3 caracteres", minLength( 3 ) ),
+    },
+    uf: {
+        minLength: helpers.withMessage( "Este campo deve ter no minimo 3 caracteres", minLength( 2 ) ),
+    },
+    city: {
+        minLength: helpers.withMessage( "Este campo deve ter no minimo 3 caracteres", minLength( 3 ) ),
+    },
+    neighborhood: {
+        minLength: helpers.withMessage( "Este campo deve ter no minimo 3 caracteres", minLength( 3 ) ),
+    }
+}
 
 const form = useForm({
     username: props.user?.name,
     image: null,
 
-    street: "",
-    zip_code: "",
-    number: 0,
-    complement: "",
-    uf: "",
-    city: "",
-    neighborhood: "",
+    street: props.address?.street,
+    zip_code: props.address?.zip_code,
+    number: props.address?.numero,
+    complement: props.address?.complement,
+    uf: props.address?.uf,
+    city: props.address?.city,
+    neighborhood: props.address?.neighborhood,
 })
 
+const errors = ref({})
+
+const v$ = useVuelidate( rules, form )
 
 async function handleChangeZipcode( $event ) {
-    try {
-        const data = await ( await fetch(`https://viacep.com.br/ws/${ $event.target.value }/json`, { 
-            headers: {
-                Accept: "application/json",
-                "Content-Type": "application/json",
-                "Access-Control-Allow-Origin": "*"
-            },
-            method: "GET",
-        }) ).json()
-    
-        form.uf = data.uf
-        form.city = data.localidade
-    }
-    catch {
-        console.log('ok')
-    }
+    const data = await ( await fetch(`https://viacep.com.br/ws/${ $event.target.value }/json`, { 
+        headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*"
+        },
+        method: "GET",
+    }) ).json()
+
+    form.uf = data.uf
+    form.city = data.localidade
 }
+
 
 function changeImage( event ) {
     const [ file ] = event.target.files
@@ -214,10 +253,13 @@ function submit() {
     if ( image )
         form.image = image
     
-    form.post(route("user"), {
-        onSuccess: () => console.log("ok"),
-        onError: (err) => console.log(err)
-    })
+    v$.value.$validate()
+
+    if ( !v$.value.$error )
+        form.post(route("user"), {
+            onSuccess: () => console.log("ok"),
+            onError: err => errors.value = err
+        })
 }
 
 </script>

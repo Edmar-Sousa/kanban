@@ -37,4 +37,11 @@ class Address extends Model
             ]
         );
     }
+
+
+    public function address_from_user( int $user_id )
+    {
+        return $this->where('user_id', $user_id)
+                    ->first();
+    }
 }
