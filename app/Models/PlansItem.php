@@ -8,4 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class PlansItem extends Model
 {
     use HasFactory;
+
+    protected $fillable = [ 'title', 'plan_id' ];
 }
