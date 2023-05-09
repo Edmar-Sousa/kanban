@@ -27,6 +27,12 @@
             <Link :href="route('config')" class="font-medium text-4">Ajustes</Link>
         </li>
 
+        <li 
+          class="flex gap-4 items-center text-[#CAB3FF] hover:text-[#FFFFFF]">
+            <DollarIcon />
+            <Link :href="route('plans')" class="font-medium text-4">Planos</Link>
+        </li>
+
         <li class="flex gap-4 items-center text-[#CAB3FF] hover:text-[#FFFFFF]">
           <LogOutIcon />
           <Link :href="route('logout')" class="font-medium text-4">Sair</Link>
@@ -45,5 +51,6 @@ import PeopleIcon from "../Icon/People.vue"
 import DocumentIcon from "../Icon/Document.vue"
 import ConfigIcon from "../Icon/Config.vue"
 import LogOutIcon from "../Icon/LogOut.vue"
+import DollarIcon from "../Icon/Dollar.vue"
 
 </script>

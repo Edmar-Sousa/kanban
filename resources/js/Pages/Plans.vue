@@ -6,6 +6,12 @@
 
     <main class="w-full p-5">
         
+        <div class="h-8 mb-14">
+            <a :href="route('taskboard')" class="flex items-center text-[#7C3AED]">
+                <ArrowIcon /> Voltar para pagina principal
+            </a>
+        </div>
+
         <div class="mx-auto max-w-[980px] flex flex-wrap items-center flex-col gap-6  md:flex-row md:items-stretch md:justify-between">
             <article 
                 class="w-full max-w-[300px] p-4 border border-[#E2E8F0] rounded-lg" 
@@ -39,6 +45,8 @@
 </template>
 
 <script setup>
+
+import ArrowIcon from "../Icon/Arrow.vue"
 
 const props = defineProps(['title'])
 
