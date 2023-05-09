@@ -8,6 +8,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\TaskBoardController;
 use App\Http\Controllers\ConfigController;
+use App\Http\Controllers\PlansController;
 
 Route::middleware('auth')->group(function () {
     
@@ -25,6 +26,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/user', [UserController::class, 'update'])->name('user');
 });
 
+Route::get('/plans', [PlansController::class, 'index'])->name('plans');
 
 Route::get('/login', [UserController::class, 'login'])->name('login');
 Route::post('/login', [AuthController::class, 'auth'])->name('login');
