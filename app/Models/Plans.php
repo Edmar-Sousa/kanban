@@ -10,4 +10,17 @@ class Plans extends Model
     use HasFactory;
 
     protected $fillable = [ 'title', 'small_description', 'price' ];
+
+
+    public function plans_items()
+    {
+        return $this->hasMany( PlansItem::class, 'plan_id' );
+    }
+
+
+    public function get_plans()
+    {
+        return $this->with( 'plans_items' )->get();
+    }
+
 }

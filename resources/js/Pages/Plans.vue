@@ -32,7 +32,7 @@
                     <hr class="my-4" />
     
                     <ul>
-                        <li class="flex items-center gap-2 mb-4" v-for="item in plan.items">
+                        <li class="flex items-center gap-2 mb-4" v-for="item in plan.plans_items">
                             <img :src="require('~/images/check.svg').default" alt="Icone de check" />
                             <p class="text-sm font-normal text-[#475569]">{{ item.title }}</p>
                         </li>
@@ -48,42 +48,6 @@
 
 import ArrowIcon from "../Icon/Arrow.vue"
 
-const props = defineProps(['title'])
-
-const plans = [
-    {
-        title: "Gratis",
-        small_description: "Para você começar",
-        price: 0.0,
-        items: [
-            { title: "Equipes com 3 usuarios" },
-            { title: "Até 3 boards de tarefas" },
-            { title: "Geração de um relatório" },
-        ]
-    },
-
-    {
-        title: "PRO",
-        small_description: "Para você decolar",
-        price: 4.99,
-        items: [
-            { title: "Equipes com 5 usuarios" },
-            { title: "Até 5 boards de tarefas" },
-            { title: "Geração de 3 relatórios" },
-        ]
-    },
-
-    {
-        title: "PREMIUM",
-        small_description: "Para empresas",
-        price: 9.99,
-        items: [
-            { title: "Equipes com usuarios ilimitados" },
-            { title: "Boards de tarefas ilimitados" },
-            { title: "Geração de relatórios ilimitados" },
-        ]
-    },
-]
-
+const props = defineProps( [ 'title', 'plans' ] )
 
 </script>
