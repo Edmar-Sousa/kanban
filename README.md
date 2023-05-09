@@ -7,6 +7,10 @@
 # Kanban
 <p>Projeto Feito no boracodar, o projeto consiste em um app de tarefas como o Trello, nele é possível adicionar tarefas, marcar como concluída e excluir. Além da possibilidade de criar vários tasks boards .</p>
 
+
+## Design
+![gif com o design do projeto](https://github.com/Edmar-Sousa/kanban/blob/master/readme.gif)
+
 ## tecnologias
  - PHP
  - Laravel
