@@ -65,6 +65,12 @@
           </button>
         </div>
 
+        <div 
+          class="w-full p-4 mt-3 border" 
+          :class="{ 'border-green-700': page.props?.flash.status }">
+            <p>{{ $page.props?.flash.message }}</p>
+        </div>
+
         <form action="#" method="POST" @submit.prevent>
           <label 
             for="input-title"
@@ -108,7 +114,7 @@
 <script setup>
 
 import { Link, useForm } from "@inertiajs/inertia-vue3"
-import { ref } from "vue"
+import { ref, computed } from "vue"
 
 import Layout from "../Template/Layout.vue"
 import InputForm from "../Components/InputForm.vue";

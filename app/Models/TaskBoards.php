@@ -26,6 +26,13 @@ class TaskBoards extends Model
     }
 
 
+    public function count_boards_user( int $id )
+    {
+        return $this->where( 'user_id', $id )
+            ->count();
+    }
+
+
     public function get_task_board_user(int $user_id)
     {
         return $this->where('user_id', $user_id)

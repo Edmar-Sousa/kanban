@@ -12,6 +12,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             TaskSeeder::class,
             PlansSeeder::class,
+            PlanRulesSeeder::class,
         ]);
     }
 }

@@ -23,6 +23,12 @@ class Plans extends Model
         return $this->with( 'plans_items' )->get();
     }
 
+    
+    public function plans_rule()
+    {
+        return $this->hasOne( PlanRules::class, 'plan_id', 'id' );
+    }
+
 
     public function get_plan_with_id( int $id )
     {

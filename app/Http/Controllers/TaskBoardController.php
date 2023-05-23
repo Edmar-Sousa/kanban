@@ -34,9 +34,24 @@ class TaskBoardController extends Controller
 
     public function store(TaskBoardStoreRequest $request)
     {
-        $plan_user = $this->plans_model->get_plan_with_id( Auth::user()->id );
-
-        $this->task_board_model->create_taskboard( $request->validated(), Auth::user()->id );
+        $plan_user = $this->plans_model->get_plan_with_id( Auth::user()->id )
+            ->with( ['plans_rule'] )
+            ->first();
+        
+        if ( $this->task_board_model->count_boards_user( Auth::user()->id ) < $plan_user->plans_rule->limit_boards )
+        {
+            $this->task_board_model->create_taskboard( $request->validated(), Auth::user()->id );
+            
+            return redirect()->route( 'taskboard' )->with( [
+                    'message' => 'Plano criado com sucesso!',
+                    'status' => 2
+                ] );
+        }
+        
+        return redirect()->route( 'taskboard' )->with( [
+                'message' => 'Erro ao criar o board de tarefas! Tente atulizar seu plano.',
+                'status' => 1
+            ] );
     }
 
 
