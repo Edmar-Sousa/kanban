@@ -23,4 +23,9 @@ class Plans extends Model
         return $this->with( 'plans_items' )->get();
     }
 
+
+    public function get_plan_with_id( int $id )
+    {
+        return $this->where( 'id', $id )->first();
+    }
 }

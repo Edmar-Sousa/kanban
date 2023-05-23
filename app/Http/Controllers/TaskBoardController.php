@@ -8,15 +8,18 @@ use Inertia\Inertia;
 
 use App\Http\Requests\TaskBoardStoreRequest;
 use App\Models\TaskBoards;
+use App\Models\Plans;
 
 
 class TaskBoardController extends Controller
 {
     protected TaskBoards $task_board_model;
+    protected Plans $plans_model;
 
-    public function __construct(TaskBoards $task_board)
+    public function __construct( TaskBoards $task_board, Plans $plans )
     {
         $this->task_board_model = $task_board;
+        $this->plans_model = $plans;
     }
 
 
@@ -29,7 +32,10 @@ class TaskBoardController extends Controller
     }
 
 
-    public function store(TaskBoardStoreRequest $request) {
+    public function store(TaskBoardStoreRequest $request)
+    {
+        $plan_user = $this->plans_model->get_plan_with_id( Auth::user()->id );
+
         $this->task_board_model->create_taskboard( $request->validated(), Auth::user()->id );
     }
 

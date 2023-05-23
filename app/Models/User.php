@@ -39,6 +39,10 @@ class User extends Authenticatable
         return $this->email;
     }
     
+    public function withPlan()
+    {
+        return $this->belongsTo( Plans::class, 'plan_id', 'id' );
+    }
 
     public function store(array $userdata)
     {

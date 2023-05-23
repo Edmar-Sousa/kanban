@@ -23,9 +23,9 @@ class AuthController extends Controller
     {
         $user_credentials = $request->validated();
 
-        $user = $this->user_model->find_by_email($user_credentials['email']);
+        $user = $this->user_model->find_by_email( $user_credentials['email'] );
 
-        if ( Hash::check($user_credentials['password'], $user->password) )
+        if ( Hash::check( $user_credentials['password'], $user->password ) )
         {
             Auth::login( $user );
             return redirect()->route('taskboard');
