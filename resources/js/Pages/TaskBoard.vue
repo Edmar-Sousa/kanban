@@ -66,8 +66,12 @@
         </div>
 
         <div 
-          class="w-full p-4 mt-3 border" 
-          :class="{ 'border-green-700': page.props?.flash.status }">
+          v-if="$page.props?.flash.status"
+          class="w-full p-4 mt-3 text-lg font-bold border rounded" 
+          :class="{ 
+            'border-green-700': $page.props?.flash.status == 2, 'text-green-700': $page.props?.flash.status == 2, 'bg-green-400': $page.props?.flash.status == 2,
+            'border-red-700': $page.props?.flash.status == 1, 'text-red-700': $page.props?.flash.status == 1, 'bg-red-400': $page.props?.flash.status == 1,
+          }">
             <p>{{ $page.props?.flash.message }}</p>
         </div>
 
@@ -114,7 +118,7 @@
 <script setup>
 
 import { Link, useForm } from "@inertiajs/inertia-vue3"
-import { ref, computed } from "vue"
+import { ref } from "vue"
 
 import Layout from "../Template/Layout.vue"
 import InputForm from "../Components/InputForm.vue";
