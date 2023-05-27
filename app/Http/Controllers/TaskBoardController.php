@@ -34,7 +34,7 @@ class TaskBoardController extends Controller
 
     public function store(TaskBoardStoreRequest $request)
     {
-        $plan_user = $this->plans_model->get_plan_with_id( Auth::user()->id )
+        $plan_user = $this->plans_model->get_plan_with_id( Auth::user()->plan_id )
             ->with( ['plans_rule'] )
             ->first();
         
