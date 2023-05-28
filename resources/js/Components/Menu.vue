@@ -10,9 +10,11 @@
             <Link :href="route('taskboard')" class="font-bold text-4">Boards</Link>
         </li>
         
-        <li class="flex gap-4 items-center text-[#CAB3FF] hover:text-[#FFFFFF]">
-          <PeopleIcon />
-          <a href="#" class="font-medium text-4">Equipes</a>
+        <li 
+          class="flex gap-4 items-center text-[#CAB3FF] hover:text-[#FFFFFF]"
+          :class="{ 'text-[#FFFFFF]': $page.url.startsWith('/team') }">
+            <PeopleIcon />
+            <Link :href="route('team')" class="font-medium text-4">Equipes</Link>
         </li>
         
         <li class="flex gap-4 items-center text-[#CAB3FF] hover:text-[#FFFFFF]">

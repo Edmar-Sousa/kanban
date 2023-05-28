@@ -9,6 +9,7 @@ use App\Http\Controllers\TaskController;
 use App\Http\Controllers\TaskBoardController;
 use App\Http\Controllers\ConfigController;
 use App\Http\Controllers\PlansController;
+use App\Http\Controllers\TeamController;
 
 Route::middleware('auth')->group(function () {
     
@@ -21,12 +22,14 @@ Route::middleware('auth')->group(function () {
     Route::put('/task-board/task', [TaskController::class, 'update'])->name('task');
     Route::delete('/task-board/task', [TaskController::class, 'delete'])->name('task');
 
+    Route::get('/team', [TeamController::class, 'index'])->name('team');
+
     Route::get('/config', [ConfigController::class, 'index'])->name('config');
 
     Route::post('/user', [UserController::class, 'update'])->name('user');
+    Route::get('/plans', [PlansController::class, 'index'])->name('plans');
 });
 
-Route::get('/plans', [PlansController::class, 'index'])->name('plans');
 
 Route::get('/login', [UserController::class, 'login'])->name('login');
 Route::post('/login', [AuthController::class, 'auth'])->name('login');

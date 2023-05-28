@@ -121,7 +121,7 @@ import { Link, useForm } from "@inertiajs/inertia-vue3"
 import { ref } from "vue"
 
 import Layout from "../Template/Layout.vue"
-import InputForm from "../Components/InputForm.vue";
+import InputForm from "../Components/InputForm.vue"
 
 const props = defineProps( ["taskboards", "image"] )
 
