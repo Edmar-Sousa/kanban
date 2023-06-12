@@ -10,6 +10,8 @@ use App\Http\Controllers\TaskBoardController;
 use App\Http\Controllers\ConfigController;
 use App\Http\Controllers\PlansController;
 use App\Http\Controllers\TeamController;
+use App\Http\Controllers\PaymentController;
+
 
 Route::middleware('auth')->group(function () {
     
@@ -28,6 +30,9 @@ Route::middleware('auth')->group(function () {
 
     Route::post('/user', [UserController::class, 'update'])->name('user');
     Route::get('/plans', [PlansController::class, 'index'])->name('plans');
+
+    Route::get('/payment', [PaymentController::class, 'index'])->name('payment');
+    Route::post('/payment', [PaymentController::class, 'payment'])->name('payment');
 });
 
 

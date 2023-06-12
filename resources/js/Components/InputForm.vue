@@ -9,14 +9,18 @@
         :value="modelValue"
         :disabled="disabled"
         @input="$event => $emit('update:modelValue', $event.target.value)"
-        @change="$event => $emit('change', $event)" />
+        @change="$event => $emit('change', $event)"
+        v-maska
+        :data-maska="mask" />
     
     <p v-show="error" class="text-xs text-red-400 mt-2">{{ error }}</p>
 </template>
 
 <script setup>
 
-const props = defineProps( ["modelValue", "error", "type", "name", "placeholder", "disabled"] )
-const emit = defineEmits( ["update:modelValue", "change"] )
+import { vMaska } from 'maska'
+
+const props = defineProps( ['modelValue', 'error', 'type', 'name', 'placeholder', 'disabled', 'mask'] )
+const emit = defineEmits( ['update:modelValue', 'change'] )
 
 </script>
