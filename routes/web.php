@@ -33,6 +33,7 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/payment', [PaymentController::class, 'index'])->name('payment');
     Route::post('/payment', [PaymentController::class, 'payment'])->name('payment');
+    Route::get('/payment/finish', [PaymentController::class, 'status'])->name('payment.status');
 });
 
 

@@ -23,11 +23,11 @@
                         <p class="text-lg font-normal">R$ <span class="font-bold">{{ plan.price }}/mês</span></p>
                     </div>
     
-                    <button 
-                        :arial-label="`Assinar plano ${ plan.title }`"
-                        class="w-full h-14 mt-4 border border-[#1E293B] rounded-md text-[#1E293B] text-sm font-bold">
+                    <Link 
+                        :href="route( 'payment', { id: plan.id } )"
+                        class="flex items-center justify-center w-full h-14 mt-4 border border-[#1E293B] rounded-md text-[#1E293B] text-sm font-bold">
                             Assinar agora
-                    </button>
+                    </Link>
     
                     <hr class="my-4" />
     
@@ -46,6 +46,7 @@
 
 <script setup>
 
+import { Link } from '@inertiajs/inertia-vue3'
 import ArrowIcon from "../Icon/Arrow.vue"
 
 const props = defineProps( [ 'title', 'plans' ] )

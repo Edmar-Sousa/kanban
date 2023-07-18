@@ -63,9 +63,18 @@ class User extends Authenticatable
     public function update_user(int $id, array $data, string $image_path)
     {
         return $this->where('id', $id)
-                    ->update([
-                        'name'     =>  $data['username'],
-                        'image'    =>  $image_path,
-                    ]);
+            ->update([
+                'name'     =>  $data['username'],
+                'image'    =>  $image_path,
+            ]);
+    }
+
+
+    public function update_plan( int $user_id, int $plan_id )
+    {
+        return $this->where( 'id', $user_id )
+            ->update( [
+                'plan_id' => $plan_id
+            ] );
     }
 }

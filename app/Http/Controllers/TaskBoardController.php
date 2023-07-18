@@ -37,7 +37,9 @@ class TaskBoardController extends Controller
         $plan_user = $this->plans_model->get_plan_with_id( Auth::user()->plan_id )
             ->with( ['plans_rule'] )
             ->first();
-        
+
+        dd( [ Auth::user()->plan_id ], $this->plans_model->get_plan_with_id( Auth::user()->plan_id )->with( ['plans_rule'] )->first() );
+
         if ( $this->task_board_model->count_boards_user( Auth::user()->id ) < $plan_user->plans_rule->limit_boards )
         {
             $this->task_board_model->create_taskboard( $request->validated(), Auth::user()->id );
@@ -49,7 +51,7 @@ class TaskBoardController extends Controller
         }
         
         return redirect()->route( 'taskboard' )->with( [
-                'message' => 'Erro ao criar o board de tarefas! Tente atulizar seu plano.',
+                'message' => 'Erro ao criar o board de tarefas! Tente atualizar seu plano.',
                 'status' => 1
             ] );
     }
