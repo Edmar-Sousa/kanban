@@ -30,8 +30,9 @@ class Plans extends Model
     }
 
 
-    public function get_plan_with_id( int $id )
+    public function get_plan_with_id( string $id )
     {
-        return $this->where( 'id', $id )->first();
+        return $this->select( '*' )
+            ->where( 'id', $id );
     }
 }

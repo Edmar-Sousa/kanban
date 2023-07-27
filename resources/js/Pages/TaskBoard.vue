@@ -28,7 +28,7 @@
 
         </div>
 
-        <div class="w-full grid grid-cols-3">
+        <div class="w-full grid grid-cols-3 gap-4">
           
           <div 
             class="group/item w-full my-6 p-6 rounded-lg shadow-[0_4px_16px_0px_rgba(22,22,22,0.1)]" 

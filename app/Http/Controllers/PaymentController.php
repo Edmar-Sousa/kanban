@@ -24,7 +24,7 @@ class PaymentController extends Controller
 
     public function index( Request $request ) 
     {
-        $plan = $this->plan_model->get_plan_with_id( $request->get( 'id' ) );
+        $plan = $this->plan_model->get_plan_with_id( $request->get( 'id' ) )->first();
 
         Stripe\Stripe::setApiKey( env( 'STRIPE_API_PRIVATE_KEY' ) );
 

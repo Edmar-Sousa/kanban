@@ -38,8 +38,6 @@ class TaskBoardController extends Controller
             ->with( ['plans_rule'] )
             ->first();
 
-        dd( [ Auth::user()->plan_id ], $this->plans_model->get_plan_with_id( Auth::user()->plan_id )->with( ['plans_rule'] )->first() );
-
         if ( $this->task_board_model->count_boards_user( Auth::user()->id ) < $plan_user->plans_rule->limit_boards )
         {
             $this->task_board_model->create_taskboard( $request->validated(), Auth::user()->id );
