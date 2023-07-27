@@ -24,10 +24,16 @@
                     </div>
     
                     <Link 
+                        v-if="plan.id != activite_plan"
                         :href="route( 'payment', { id: plan.id } )"
                         class="flex items-center justify-center w-full h-14 mt-4 border border-[#1E293B] rounded-md text-[#1E293B] text-sm font-bold">
-                            Assinar agora
+                            Assinar Agora
                     </Link>
+
+                    <div v-else
+                        class="flex items-center justify-center w-full h-14 mt-4 border border-[#1E293B] rounded-md text-[#1E293B] text-sm font-bold">
+                            Plano Ativo
+                    </div>
     
                     <hr class="my-4" />
     
@@ -49,6 +55,6 @@
 import { Link } from '@inertiajs/inertia-vue3'
 import ArrowIcon from "../Icon/Arrow.vue"
 
-const props = defineProps( [ 'title', 'plans' ] )
+const props = defineProps( [ 'title', 'plans', 'activite_plan' ] )
 
 </script>

@@ -23,6 +23,7 @@ class PlansController extends Controller
         return Inertia::render('Plans', [
             'title' => 'Planos de assinatura',
             'plans' => $this->plans_model->get_plans(),
+            'activite_plan' => Auth::user()->plan_id,
         ]);
     }
 }
