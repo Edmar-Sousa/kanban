@@ -21,7 +21,19 @@ class Address extends Model
     ];
 
 
-    public function create_or_update_address( array $address_data, int $user_id )
+    /**
+     *   This function will create or update address from user
+     * 
+     *   @param array $address_data  A array with address data
+     * 
+     *   @param int $user_id  Id from user
+     * 
+     *   @return \Illuminate\Database\Eloquent\Model|null  Return an address model with data from new register
+     *           or null in case of failure
+     * 
+     *   @throws \Illuminate\Database\QueryException  Return an exception in case of failure
+     */
+    public function create_or_update_address( array $address_data, int $user_id ) : Address
     {
         return $this->updateOrCreate(
             [ 'user_id' => $user_id ],
@@ -39,7 +51,14 @@ class Address extends Model
     }
 
 
-    public function address_from_user( int $user_id )
+    /**
+     *   This function will find and return the first address from user
+     *
+     *   @param  int $user_id  The user id to find address
+     * 
+     *   @return \Illuminate\Database\Eloquent\Model|null  Return a address model or null if not exists
+     */
+    public function address_from_user( int $user_id ) : Address | null
     {
         return $this->where('user_id', $user_id)
                     ->first();

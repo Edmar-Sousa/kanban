@@ -12,14 +12,32 @@ class Task extends Model
     protected $fillable = ['title', 'description', 'taskboard_id', 'state'];
 
 
-    public function update_state( array $task )
+    /**
+     *   This function update state colunm from task
+     * 
+     *   @param array $task  The array with id and state to update
+     * 
+     *   @return Illuminate\Database\Eloquent\Model  Return a model with data from register
+     * 
+     *   @throws Illuminate\Database\QueryException  Return a exception in case of failure
+     */
+    public function update_state( array $task ) : Task
     {
         return $this->where( 'id', $task['id'] )
                     ->update( ['state' => $task['state'] ]);
     }
 
 
-    public function store( array $task )
+    /**
+     *   This fuction will create a new register in database
+     * 
+     *   @param array $task  Array with task data to create new register
+     * 
+     *   @return Illuminate\Database\Eloquent\Model  Return the model with data of register
+     * 
+     *   @throws Illuminate\Database\QueryException  Return an exception in case of failure
+     */
+    public function store( array $task ) : Task
     {
         return $this->create([
             'taskboard_id' => $task['id'],
@@ -29,6 +47,14 @@ class Task extends Model
         ]);
     }
 
+
+    /**
+     *   This function will find and delete the task with id from database
+     * 
+     *   @param int $id The id of task to delete
+     * 
+     *   @throws Illuminate\Database\QueryException  Return an exception in case of failure
+     */
     public function delete_task( int $id )
     {
         return $this->where('id', $id)->delete();

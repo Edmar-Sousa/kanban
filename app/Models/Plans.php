@@ -12,24 +12,46 @@ class Plans extends Model
     protected $fillable = [ 'title', 'small_description', 'price' ];
 
 
-    public function plans_items()
+    /**
+     *   This function get relationship from Plans model and PlansItem Model
+     * 
+     *   @return Illuminate\Database\Eloquent\Collection[]  Return a collection of PlansItem or empty array
+     */
+    public function plans_items() : array
     {
         return $this->hasMany( PlansItem::class, 'plan_id' );
     }
 
 
-    public function get_plans()
+    /**
+     *   This function will return all plans registred in database
+     * 
+     *   @return Illuminate\Database\Eloquent\Collection[]  Return a collection of plans or empty array
+     */
+    public function get_plans() : array
     {
         return $this->with( 'plans_items' )->get();
     }
 
-    
-    public function plans_rule()
+
+    /**
+     *   This function get the plan with rule
+     * 
+     *   @return Illuminate\Database\Eloquent\Model|null  Return a model with rule data or null
+     */
+    public function plans_rule() : PlanRules | null
     {
         return $this->hasOne( PlanRules::class, 'plan_id', 'id' );
     }
 
 
+    /**
+     *   This function will find and return the plan with id
+     * 
+     *   @param string $id  The id of plan to find in database
+     * 
+     *   @return Illuminate\Database\Eloquent\QueryBuilder  Return a query build to get the plan data
+     */
     public function get_plan_with_id( string $id )
     {
         return $this->select( '*' )
