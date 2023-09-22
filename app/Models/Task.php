@@ -21,7 +21,7 @@ class Task extends Model
      * 
      *   @throws Illuminate\Database\QueryException  Return a exception in case of failure
      */
-    public function update_state( array $task ) : Task
+    public function update_state( array $task )
     {
         return $this->where( 'id', $task['id'] )
                     ->update( ['state' => $task['state'] ]);
@@ -37,7 +37,7 @@ class Task extends Model
      * 
      *   @throws Illuminate\Database\QueryException  Return an exception in case of failure
      */
-    public function store( array $task ) : Task
+    public function store( array $task )
     {
         return $this->create([
             'taskboard_id' => $task['id'],

@@ -17,7 +17,7 @@ class TaskBoards extends Model
      * 
      *   @return Illuminate\Database\Eloquent\Collection[]  Return a collection from tasks
      */
-    public function tasks() : array
+    public function tasks()
     {
         return $this->hasMany(Task::class, 'taskboard_id', 'id');
     }
@@ -30,7 +30,7 @@ class TaskBoards extends Model
      * 
      *   @return Illuminate\Database\Eloquent\Model  Return the taskboard data
      */
-    public function get_task_board_with_tasks( int $id ) : TaskBoards
+    public function get_task_board_with_tasks( int $id )
     {
         return $this->where('id', $id)
                     ->with('tasks')
@@ -43,7 +43,7 @@ class TaskBoards extends Model
      * 
      *   @return int  The number of records in the database
      */
-    public function count_boards_user( int $id ) : int
+    public function count_boards_user( int $id )
     {
         return $this->where( 'user_id', $id )
             ->count();
@@ -57,7 +57,7 @@ class TaskBoards extends Model
      * 
      *   @return Illuminate\Database\Eloquent\Collection[]  Return array of collections with taskboard data
      */
-    public function get_task_board_user(int $user_id) : array
+    public function get_task_board_user(int $user_id)
     {
         return $this->where('user_id', $user_id)
                     ->get();
@@ -74,7 +74,7 @@ class TaskBoards extends Model
      * 
      *   @throws Illuminate\Database\QueryException  Return an exception in case of failure
      */
-    public function create_taskboard( array $task_board_data, int $user_id ) : TaskBoards
+    public function create_taskboard( array $task_board_data, int $user_id )
     {
         return $this->create([
             'user_id' => $user_id,

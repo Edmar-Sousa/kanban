@@ -17,7 +17,7 @@ class Plans extends Model
      * 
      *   @return Illuminate\Database\Eloquent\Collection[]  Return a collection of PlansItem or empty array
      */
-    public function plans_items() : array
+    public function plans_items()
     {
         return $this->hasMany( PlansItem::class, 'plan_id' );
     }
@@ -28,7 +28,7 @@ class Plans extends Model
      * 
      *   @return Illuminate\Database\Eloquent\Collection[]  Return a collection of plans or empty array
      */
-    public function get_plans() : array
+    public function get_plans()
     {
         return $this->with( 'plans_items' )->get();
     }
@@ -39,7 +39,7 @@ class Plans extends Model
      * 
      *   @return Illuminate\Database\Eloquent\Model|null  Return a model with rule data or null
      */
-    public function plans_rule() : PlanRules | null
+    public function plans_rule()
     {
         return $this->hasOne( PlanRules::class, 'plan_id', 'id' );
     }

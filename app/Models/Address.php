@@ -33,7 +33,7 @@ class Address extends Model
      * 
      *   @throws \Illuminate\Database\QueryException  Return an exception in case of failure
      */
-    public function create_or_update_address( array $address_data, int $user_id ) : Address
+    public function create_or_update_address( array $address_data, int $user_id )
     {
         return $this->updateOrCreate(
             [ 'user_id' => $user_id ],
@@ -58,7 +58,7 @@ class Address extends Model
      * 
      *   @return \Illuminate\Database\Eloquent\Model|null  Return a address model or null if not exists
      */
-    public function address_from_user( int $user_id ) : Address | null
+    public function address_from_user( int $user_id )
     {
         return $this->where('user_id', $user_id)
                     ->first();
