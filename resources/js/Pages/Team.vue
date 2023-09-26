@@ -16,6 +16,10 @@
                 </div>
             </header>
 
+            <div class="my-10">
+                <input-form />
+            </div>
+
             <div v-for="letter in getFirstLetterFriendsList" :key="letter" class="my-6">
                 <div class="w-10 h-10 rounded bg-[#7C3AED] text-white leading-10 text-xl text-center">{{ letter }}</div>
 
@@ -43,16 +47,16 @@
 import Layout from '../Template/Layout.vue'
 import { computed } from 'vue'
 
+import InputForm from '../Components/InputForm.vue'
+
 const props = defineProps( [ 'image' ] )
 
 
 const friends_list = [
     { name: 'Andre Vitor', email: 'andrevitor@gmail.com' },
-    { name: 'Beatriz Sousa', email: 'beatrizsousa@gmail.com' },
     { name: 'Carlos Igor', email: 'carlosigor@gmail.com' },
     { name: 'Vitoria', email: 'vitoria@gmail.com' },
     { name: 'Andre Vitor 02', email: 'andrevitor@gmail.com' },
-    { name: 'Beatriz Sousa 02', email: 'beatrizsousa@gmail.com' },
     { name: 'Andre Vitor 03', email: 'andrevitor@gmail.com' },
 ]
 

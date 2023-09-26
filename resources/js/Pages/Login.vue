@@ -59,7 +59,7 @@
         </div>
 
         <div class="hidden lg:block h-full">
-            <img :src="require('~/images/background-login.svg').default" alt="" class="w-full" />
+            <img :src="require('~/images/background-login.svg').default" alt="" class="w-full h-full" />
         </div>
     </div>
 </template>
