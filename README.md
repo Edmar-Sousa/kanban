@@ -28,7 +28,7 @@ git clone https://github.com/Edmar-Sousa/kanban.git
 composer update
 
 # em seguida
-npm install 
+npm install
 
 # esse comando criar um atributo chamado APP_KEY no arquivo .env
 php artisan key:generate
