@@ -30,6 +30,9 @@ composer update
 # em seguida
 npm install 
 
+# esse comando criar um atributo chamado APP_KEY no arquivo .env
+php artisan key:generate
+
 # O projeto esta configurado para usar o banco de dados SQLite
 # Execute a criação das tabelas
 php artisan migrate
