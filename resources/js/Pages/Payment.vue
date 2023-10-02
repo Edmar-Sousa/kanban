@@ -31,50 +31,9 @@
 
 <script setup>
 
-import { onMounted } from "vue"
 import { Link } from "@inertiajs/inertia-vue3"
 
 import ArrowIcon from "../Icon/Arrow.vue"
 
-const props = defineProps( [ 'client_secret', 'stripe_public_key' ] )
-
-onMounted( () => {
-    const script = document.createElement( 'script' )
-
-    script.src = 'https://js.stripe.com/v3/'
-    script.type = 'text/javascript'
-
-    script.addEventListener( 'load', initStripe )
-
-    document.body.appendChild( script )
-} )
-
-
-let stripe, elements
-function initStripe() {
-    stripe = Stripe( props.stripe_public_key )
-
-    elements = stripe.elements( { clientSecret: props.client_secret } )
-
-    const linkAuthenticationElement = elements.create("linkAuthentication")
-    linkAuthenticationElement.mount("#link-authentication-element")
-
-    const paymentElementOptions = {
-        layout: "tabs",
-    }
-
-    const paymentElement = elements.create("payment", paymentElementOptions)
-    paymentElement.mount("#payment-element")
-}
-
-
-async function handleSubmit() {
-    const { error } = await stripe.confirmPayment({
-        elements,
-        confirmParams: {
-            return_url: 'http://localhost:8000/payment/finish'
-        }
-    })
-}
 
 </script>

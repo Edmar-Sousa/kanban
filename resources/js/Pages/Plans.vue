@@ -25,7 +25,6 @@
     
                     <Link 
                         v-if="plan.id != activite_plan"
-                        :href="route( 'payment', { id: plan.id } )"
                         class="flex items-center justify-center w-full h-14 mt-4 border border-[#1E293B] rounded-md text-[#1E293B] text-sm font-bold">
                             Assinar Agora
                     </Link>
