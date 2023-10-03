@@ -8,9 +8,11 @@
       <header class="w-full flex justify-between items-center">
         <h1 class="text-3xl text-[#403937] font-bold inline-block">{{ taskboard.title }}</h1>
         
-        <div>
+        <div class="flex items-center gap-10">
+          <notification />
+
           <img 
-            :src=" loadImage( image )" 
+            :src="loadImage( image )" 
             alt="imagem de perfil"
             class="w-16 h-16 rounded-full" />
         </div>
@@ -84,7 +86,7 @@
             for="input-title"
             class="block my-2 text-sm font-semibold text-[#1E293B]">Tarefa</label>
 
-          <InputForm 
+          <input-form 
             type="text"
             name="title" 
             placeholder="Digite o titulo da terfa"
@@ -125,6 +127,7 @@ import { useForm, usePage } from "@inertiajs/inertia-vue3"
 import Layout from "../Template/Layout.vue"
 import Task from "../Components/Task.vue"
 import InputForm from "../Components/InputForm.vue"
+import Notification from "../Components/Notification.vue"
 
 const props = defineProps( ["taskboard", "image"] )
 const openModal = ref(false)
