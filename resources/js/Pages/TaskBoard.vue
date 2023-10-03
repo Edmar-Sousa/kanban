@@ -25,14 +25,13 @@
             class="bg-[#7C3AED] rounded hover:scale-95" @click="openModal = true">
               <img :src="require('~/images/plus.svg').default" alt="Plus icon" />
           </button>
-
         </div>
 
-        <div class="w-full grid grid-cols-3 gap-4">
-          
+        <div class="w-full grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
           <div 
             class="group/item w-full my-6 p-6 rounded-lg shadow-[0_4px_16px_0px_rgba(22,22,22,0.1)]" 
-            v-for="taskboard in taskboards" :key="taskboard.id">
+            v-for="taskboard in taskboards" 
+            :key="taskboard.id">
               <h3 class="text-sm font-bold">{{ taskboard.title }}</h3>
               <p class="my-2.5 text-sm font-medium text-[#756966]">{{ taskboard.description }}</p>
 
@@ -47,7 +46,11 @@
                       class="w-[20px] h-[20px]" />
                 </button>
 
-                <Link :href="`${route('task')}/${taskboard.id}`" class="text-sm py-1 px-2 font-medium rounded bg-[#E2D6FF] text-[#7C3AED]">Visualizar</Link>
+                <Link 
+                  :href="`${route('task')}/${taskboard.id}`" 
+                  class="text-sm py-1 px-2 font-medium rounded bg-[#E2D6FF] text-[#7C3AED]">
+                    Visualizar
+                </Link>
               </div>
           </div>
 
@@ -56,7 +59,7 @@
     </main>
 
     <div class="fixed top-0 bottom-0 left-0 right-0 bg-[#00000033] flex justify-center items-center" v-show="openModal">
-      <div class="bg-white p-4 rounded w-full max-w-[500px]">
+      <div class="bg-white p-4 rounded w-11/12 max-w-[500px]">
         <div class="w-full flex justify-between">
           <h2 class="font-bold">Adicionar nova Board</h2>
 
@@ -69,8 +72,8 @@
           v-if="$page.props?.flash.status"
           class="w-full p-4 mt-3 text-lg font-bold border rounded" 
           :class="{ 
-            'border-green-700': $page.props?.flash.status == 2, 'text-green-700': $page.props?.flash.status == 2, 'bg-green-400': $page.props?.flash.status == 2,
-            'border-red-700': $page.props?.flash.status == 1, 'text-red-700': $page.props?.flash.status == 1, 'bg-red-400': $page.props?.flash.status == 1,
+            'border-green-700 text-green-700 bg-green-400': $page.props?.flash.status == 2,
+            'border-red-700 text-red-700 bg-red-400': $page.props?.flash.status == 1,
           }">
             <p>{{ $page.props?.flash.message }}</p>
         </div>

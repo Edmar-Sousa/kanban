@@ -1,12 +1,12 @@
 <template>
-  <button class="absolute top-4 left-2 md:hidden" @click="openMenu = !openMenu">
+  <button class="absolute top-4 left-2 md:hidden text-[#403937]" @click="openMenu = !openMenu">
     <Menu size="25" />
   </button>
 
   <aside 
     aria-label="Navegação principal" 
     class="absolute w-[175px] top-0 bottom-0 pl-9 py-8 bg-[#7C3AED] z-10 transition-all duration-300 md:relative"
-    :class="{ 'left-0 md:left-0': !openMenu, '-left-full md:left-0': openMenu }">
+    :class="{ 'left-0 md:left-0': openMenu, '-left-full md:left-0': !openMenu }">
       <button class="absolute right-2 top-4 text-[#FFFFFF] md:hidden" @click="openMenu = !openMenu">
         <X size="25" class="pointer-events-none" />
       </button>
