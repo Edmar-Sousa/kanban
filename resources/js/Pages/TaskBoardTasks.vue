@@ -6,7 +6,7 @@
   <Layout>
     <main class="flex-1 bg-white rounded-tl-2xl px-8 py-12 overflow-y-auto">
       <header class="w-full flex justify-between items-center">
-        <h1 class="text-3xl font-bold text-[#403937]">{{ taskboard.title }}</h1>
+        <h1 class="text-3xl text-[#403937] font-bold inline-block">{{ taskboard.title }}</h1>
         
         <div>
           <img 
@@ -16,9 +16,9 @@
         </div>
       </header>
       
-      <div class="w-full min-h-[821px] mt-8 flex justify-between gap-2">
+      <div class="w-full min-h-[821px] mt-8 flex justify-between gap-2 overflow-x-auto">
         <div 
-          class="w-[368px]" 
+          class="min-w-[368px]" 
           @drop="drop($event, 1)"
           @dragover.prevent 
           @dragenter.prevent>
@@ -40,7 +40,7 @@
               @onDelete="$event => DeleteTask(task)" />
         </div>
 
-        <div class="w-[368px]"
+        <div class="min-w-[368px]"
           @drop="drop($event, 2)"
           @dragover.prevent
           @dragenter.prevent>
@@ -53,7 +53,7 @@
               @onDelete="$event => DeleteTask(task)" />
           </div>
           
-          <div class="w-[368px]"
+          <div class="min-w-[368px]"
             @drop="drop($event, 3)"
             @dragover.prevent
             @dragenter.prevent>
@@ -120,7 +120,7 @@
 <script setup>
 
 import { computed, ref } from "vue"
-import { useForm } from "@inertiajs/inertia-vue3"
+import { useForm, usePage } from "@inertiajs/inertia-vue3"
 
 import Layout from "../Template/Layout.vue"
 import Task from "../Components/Task.vue"
@@ -183,5 +183,9 @@ function DeleteTask(task) {
 
   form.delete(route("task"))
 }
+
+const page = usePage()
+
+const navigateToBack = computed( () => page.props.intended ? page.props.intended.url : null )
 
 </script>
