@@ -8,7 +8,9 @@
       <header class="flex justify-between items-center">
         <h1 class="text-3xl font-bold text-[#403937]">Boards</h1>
         
-        <div>
+        <div class="flex items-center gap-10">
+          <notification />
+
           <img 
             :src="loadImage( image )" 
             alt="imagem de perfil"
@@ -22,8 +24,8 @@
 
           <button 
             arial-label="Criar um novo board"
-            class="bg-[#7C3AED] rounded hover:scale-95" @click="openModal = true">
-              <img :src="require('~/images/plus.svg').default" alt="Plus icon" />
+            class="bg-[#7C3AED] text-[#ffffff] rounded hover:scale-95" @click="openModal = true">
+              <plus size="25" />
           </button>
         </div>
 
@@ -40,9 +42,7 @@
                   arial-label="Deletar taskboard" 
                   class="hidden group-hover/item:block"
                   @click="deleteTaskBoards( taskboard.id )">
-                    <img 
-                      :src="require('~/images/trash.svg').default" 
-                      alt="Icone de uma lixeira" 
+                    <Trash size="20"
                       class="w-[20px] h-[20px]" />
                 </button>
 
@@ -64,7 +64,7 @@
           <h2 class="font-bold">Adicionar nova Board</h2>
 
           <button arial-label="Close modal" @click="openModal = false">
-            <img :src="require('~/images/x.svg').default" alt="close icon" />
+            <X sizes="20" />
           </button>
         </div>
 
@@ -120,11 +120,14 @@
 
 <script setup>
 
+import { Plus, Trash, X } from 'lucide-vue-next'
 import { Link, useForm } from "@inertiajs/inertia-vue3"
 import { ref } from "vue"
 
 import Layout from "../Template/Layout.vue"
 import InputForm from "../Components/InputForm.vue"
+
+import Notification from "../Components/Notification.vue"
 
 const props = defineProps( ["taskboards", "image"] )
 

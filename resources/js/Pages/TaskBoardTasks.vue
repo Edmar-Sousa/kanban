@@ -29,8 +29,8 @@
 
               <button 
                 arial-label="Adicionar tarefa"
-                class="bg-[#7C3AED] rounded hover:scale-95" @click="openModal = true">
-                  <img :src="require('~/images/plus.svg').default" alt="Plus icon" />
+                class="bg-[#7C3AED] rounded hover:scale-95 text-[#ffffff]" @click="openModal = true">
+                  <Plus size="25" />
               </button>
             </div>
 
@@ -77,7 +77,7 @@
           <h2 class="font-bold">Adicionar nova Tarefa</h2>
 
           <button arial-label="Close modal" @click="closeModal()">
-            <img :src="require('~/images/x.svg').default" alt="close icon" />
+            <X size="20" />
           </button>
         </div>
 
@@ -121,6 +121,7 @@
 
 <script setup>
 
+import { Plus, X } from 'lucide-vue-next'
 import { computed, ref } from "vue"
 import { useForm, usePage } from "@inertiajs/inertia-vue3"
 
