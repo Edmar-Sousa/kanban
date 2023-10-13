@@ -17,7 +17,13 @@
             </header>
 
             <div class="my-10">
-                <input-form />
+                <button 
+                    type="button" 
+                    class="w-[200px] rounded-md bg-[#7C3AED] flex items-center gap-2 justify-center h-10 text-white text-base text-center"
+                    @click="openModal = true">
+                        <user-plus-2 size="20" />
+                        <span>Convidar</span>
+                </button>
             </div>
 
             <div v-for="letter in getFirstLetterFriendsList" :key="letter" class="my-6">
@@ -39,18 +45,57 @@
             </div>
         </main>
     </Layout>
+
+    <div class="fixed top-0 bottom-0 left-0 right-0 bg-[#00000033] flex justify-center items-center" v-show="openModal">
+      <div class="bg-white p-4 rounded w-full max-w-[500px]">
+
+        <div class="w-full flex justify-between">
+          <h2 class="font-bold">Enviar convite</h2>
+
+          <button arial-label="Close modal" @click="openModal = false">
+            <X size="20" />
+          </button>
+        </div>
+
+        <form action="#" method="POST" @submit.prevent>
+            <div class="my-4">
+                <InputForm
+                    type="email"
+                    name="username"
+                    placeholder="Email do usuario"
+                    v-model="inviteForm.email" />
+            </div>
+
+            <button 
+                type="button" 
+                class="w-[200px] float-right rounded-md bg-[#7C3AED] flex items-center gap-2 justify-center h-10 text-white text-base text-center"
+                @click="submitForm">
+                    <user-plus-2 size="20" />
+                    <span>Convidar</span>
+            </button>
+        </form>
+        
+      </div>
+    </div>
 </template>
 
 
 <script setup>
 
+import { UserPlus2, X } from 'lucide-vue-next'
+
 import Layout from '../Template/Layout.vue'
-import { computed } from 'vue'
+import { computed, shallowRef } from 'vue'
+import { useForm, usePage } from '@inertiajs/inertia-vue3'
 
 import InputForm from '../Components/InputForm.vue'
 
 const props = defineProps( [ 'image' ] )
 
+const openModal = shallowRef( false )
+const inviteForm = useForm( {
+    email: '',
+} )
 
 const friends_list = [
     { name: 'Andre Vitor', email: 'andrevitor@gmail.com' },
@@ -66,6 +111,11 @@ const getFirstLetterFriendsList = computed( () => new Set( friends_list.map( fri
 
 function filterByLetter( letter ) {
     return friends_list.filter( friend => friend.name.charAt(0) == letter )
+}
+
+
+function submitForm() {
+    inviteForm.post( route( 'store.invite' ) )
 }
 
 </script>

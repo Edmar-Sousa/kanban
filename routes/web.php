@@ -8,6 +8,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\TaskBoardController;
 use App\Http\Controllers\ConfigController;
+use App\Http\Controllers\InviteController;
 use App\Http\Controllers\PlansController;
 use App\Http\Controllers\TeamController;
 
@@ -29,6 +30,14 @@ Route::middleware('auth')->group(function () {
 
     Route::post('/user', [UserController::class, 'update'])->name('user');
     Route::get('/plans', [PlansController::class, 'index'])->name('plans');
+
+    Route::group( [
+        'as' => 'invite.',
+        'prefix' => 'invite',
+    ], function () {
+        Route::post( '/', [ InviteController::class, 'store' ] )->name( 'store' );
+        Route::get( '/', [InviteController::class, 'index'] )->name( 'index' );
+    } );
 });
 
 

@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 use App\Http\Requests\TaskBoardStoreRequest;
+use App\Models\Notification;
 use App\Models\TaskBoards;
 use App\Models\Plans;
 
@@ -15,11 +16,13 @@ class TaskBoardController extends Controller
 {
     protected TaskBoards $task_board_model;
     protected Plans $plans_model;
+    protected Notification $notification_model;
 
-    public function __construct( TaskBoards $task_board, Plans $plans )
+    public function __construct( TaskBoards $task_board, Plans $plans, Notification $notification_model )
     {
         $this->task_board_model = $task_board;
         $this->plans_model = $plans;
+        $this->notification_model = $notification_model;
     }
 
 

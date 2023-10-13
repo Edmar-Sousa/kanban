@@ -122,32 +122,32 @@
 
 import { Plus, Trash, X } from 'lucide-vue-next'
 import { Link, useForm } from "@inertiajs/inertia-vue3"
-import { ref } from "vue"
+import { ref } from 'vue'
 
-import Layout from "../Template/Layout.vue"
-import InputForm from "../Components/InputForm.vue"
+import Layout from '../Template/Layout.vue'
+import InputForm from '../Components/InputForm.vue'
 
-import Notification from "../Components/Notification.vue"
+import Notification from '../Components/Notification.vue'
 
-const props = defineProps( ["taskboards", "image"] )
+const props = defineProps( ['taskboards', 'image'] )
 
 const openModal = ref(false)
 
 const form = useForm({
-  title: "",
-  description: "",
+  title: '',
+  description: '',
 })
 
 const errors = ref({
-  title: "",
-  description: "",
+  title: '',
+  description: '',
 })
 
 function createTaskBoard() {
-  form.post(route("taskboard"), {
+  form.post(route('taskboard'), {
     onSuccess: () => { 
-      form.title = "" 
-      form.description = ""
+      form.title = '' 
+      form.description = ''
     },
     onError: (error) => errors.value = error
   })
@@ -156,7 +156,7 @@ function createTaskBoard() {
 
 function deleteTaskBoards( id ) {
   const deleteForm = useForm({ id })
-  deleteForm.delete(route("taskboard"))
+  deleteForm.delete(route('taskboard'))
 }
 
 </script>

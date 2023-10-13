@@ -59,4 +59,10 @@ class UserController extends Controller
         return redirect()->route('config');
     }
 
+
+    public function list( Request $request )
+    {
+        
+    }
+
 }
