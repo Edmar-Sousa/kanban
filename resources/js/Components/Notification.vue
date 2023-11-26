@@ -62,6 +62,8 @@
 import { Bell, AlertTriangle } from 'lucide-vue-next'
 import { shallowRef, computed, onMounted, onUnmounted } from 'vue'
 
+import socket from '../Utils/websocket'
+import jwttoken from '../Utils/jwttoken'
 
 const openNotificationMenu = shallowRef( false )
 const notificationCount = shallowRef( 0 )
@@ -74,6 +76,8 @@ const hasNotification = computed( () => notificationCount.value != 0 )
 
 onMounted( () => {
     window.addEventListener( 'click', handleClick ) 
+
+    socket.connect(jwttoken.getToken())
 } )
 
 onUnmounted( () => window.removeEventListener( 'click', handleClick ) )

@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Hash;
 
 use App\Models\User;
 use App\Http\Requests\LoginRequest;
+use Illuminate\Support\Facades\Session;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class AuthController extends Controller
 {
@@ -28,6 +30,9 @@ class AuthController extends Controller
         if ( Hash::check( $user_credentials['password'], $user->password ) )
         {
             Auth::login( $user );
+
+            Session::put('jwt_token', JWTAuth::fromUser($user));
+
             return redirect()->route('taskboard');
         }
     }

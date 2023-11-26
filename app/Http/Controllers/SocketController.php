@@ -4,23 +4,26 @@ namespace App\Http\Controllers;
 
 use Ratchet\MessageComponentInterface;
 use Ratchet\ConnectionInterface;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 use Exception;
 use SplObjectStorage;
+use Tymon\JWTAuth\Exceptions\TokenInvalidException;
 
 class SocketController implements MessageComponentInterface
 {
-    protected SplObjectStorage $clients;
+    protected array $clients;
 
 
     public function __construct()
     {
-        $this->clients = new SplObjectStorage();
+        $this->clients = [];
     }
 
 
     public function onOpen( ConnectionInterface $connection ) 
     {
+        
     }
 
     public function onClose( ConnectionInterface $conn ) 
@@ -35,7 +38,23 @@ class SocketController implements MessageComponentInterface
 
     public function onMessage( ConnectionInterface $from, $msg ) 
     {
-        $from->send(json_encode([ 'event' => 'notification', 'data' => [ 'msg' => 'Hello client!' ] ]));
+        $payload = json_decode($msg);
+
+        if (!empty($payload->event) && $payload->event == 'auth')
+        {
+            try {
+                $user = JWTAuth::setToken($payload->token)->authenticate();
+
+                $this->clients[$user->id] = $from;
+            }
+
+            catch (TokenInvalidException $err)
+            {
+                print_r($err->getMessage());
+                $from->close();
+            }
+
+        }
     }
 
 }

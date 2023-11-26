@@ -2,9 +2,22 @@
 class WebSocketClient {
 
     constructor() {
-        this.connection = new WebSocket('ws://localhost:8091')
+        this.connection = null
+    }
 
-        this.connection.onopen = () => console.log('ok')
+
+    connect(token) {
+
+        if (!this.connection)
+        {
+            this.connection = new WebSocket('ws://localhost:8091')
+
+            console.log('ok')
+
+            this.connection.addEventListener('open', () => {
+                this.connection.send(JSON.stringify({ event: 'auth', token }))
+            })
+        }
     }
 
 

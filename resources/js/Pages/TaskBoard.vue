@@ -122,14 +122,16 @@
 
 import { Plus, Trash, X } from 'lucide-vue-next'
 import { Link, useForm } from "@inertiajs/inertia-vue3"
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
+
+import jwttoken from '../Utils/jwttoken'
 
 import Layout from '../Template/Layout.vue'
 import InputForm from '../Components/InputForm.vue'
 
 import Notification from '../Components/Notification.vue'
 
-const props = defineProps( ['taskboards', 'image'] )
+const props = defineProps( ['taskboards', 'image', 'token'] )
 
 const openModal = ref(false)
 
@@ -142,6 +144,10 @@ const errors = ref({
   title: '',
   description: '',
 })
+
+
+onMounted(() => jwttoken.setToken(props.token)) 
+
 
 function createTaskBoard() {
   form.post(route('taskboard'), {
