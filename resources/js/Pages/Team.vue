@@ -63,7 +63,7 @@
                     type="email"
                     name="username"
                     placeholder="Email do usuario"
-                    v-model="inviteForm.email" />
+                    v-model="email" />
             </div>
 
             <button 
@@ -85,17 +85,18 @@
 import { UserPlus2, X } from 'lucide-vue-next'
 
 import Layout from '../Template/Layout.vue'
-import { computed, shallowRef } from 'vue'
+import { computed, shallowRef, onMounted } from 'vue'
 import { useForm, usePage } from '@inertiajs/inertia-vue3'
 
 import InputForm from '../Components/InputForm.vue'
 
+import websocket from '../Utils/websocket'
+import jwttoken from '../Utils/jwttoken'
+
 const props = defineProps( [ 'image' ] )
 
 const openModal = shallowRef( false )
-const inviteForm = useForm( {
-    email: '',
-} )
+const email = shallowRef('')
 
 const friends_list = [
     { name: 'Andre Vitor', email: 'andrevitor@gmail.com' },
@@ -109,13 +110,26 @@ const friends_list = [
 const getFirstLetterFriendsList = computed( () => new Set( friends_list.map( friend => friend.name.charAt(0) ) ) )
 
 
+onMounted(() => websocket.connect(jwttoken.getToken()))
+
+
 function filterByLetter( letter ) {
     return friends_list.filter( friend => friend.name.charAt(0) == letter )
 }
 
 
 function submitForm() {
-    inviteForm.post( route( 'store.invite' ) )
+    
+    console.log('send')
+
+    websocket.send({
+        event: 'notificate',
+        token: jwttoken.getToken(),
+        data: {
+            email: email.value,
+        }
+    })
+
 }
 
 </script>

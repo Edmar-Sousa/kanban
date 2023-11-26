@@ -30,14 +30,6 @@ Route::middleware('auth')->group(function () {
 
     Route::post('/user', [UserController::class, 'update'])->name('user');
     Route::get('/plans', [PlansController::class, 'index'])->name('plans');
-
-    Route::group( [
-        'as' => 'invite.',
-        'prefix' => 'invite',
-    ], function () {
-        Route::post( '/', [ InviteController::class, 'store' ] )->name( 'store' );
-        Route::get( '/', [InviteController::class, 'index'] )->name( 'index' );
-    } );
 });
 
 

@@ -78,6 +78,8 @@ onMounted( () => {
     window.addEventListener( 'click', handleClick ) 
 
     socket.connect(jwttoken.getToken())
+
+    socket.recv('notificate', () => notificationCount.value += 1)
 } )
 
 onUnmounted( () => window.removeEventListener( 'click', handleClick ) )
