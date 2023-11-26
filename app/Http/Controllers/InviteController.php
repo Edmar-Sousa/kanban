@@ -49,7 +49,11 @@ class InviteController extends Controller
 
     public function index()
     {
-        $notifications = $this->notification_model->notifications_with_source_user( Auth::user()->id );
+        $notifications = Notification::where( 'destination_user', Auth::user()->id )
+        ->with( [ 
+            'source_user_data' => fn ( $query ) => $query->select( [ 'id', 'name', 'image' ] ),
+        ] )
+        ->get();
 
         $notifications = $notifications->transform( function ( $notification ) {
             return [

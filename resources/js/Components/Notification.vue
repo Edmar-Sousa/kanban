@@ -4,12 +4,12 @@
         <button 
             class="text-[#403937] hover:text-[#7C3AED] relative"
             aria-label="Abrir menu de notificações"
-            @click="openNotificationMenu = !openNotificationMenu"
+            @click="handleOpenMenu"
             type="button">
                 <Bell size="25" />
     
                 <span 
-                    v-show="hasNotification"
+                    v-show="notificationCount != 0"
                     class="block w-5 h-5 rounded-md bg-[#7C3AED] text-[#ffffff] text-[14px] absolute -right-3 -top-3">
                         {{ notificationCount }}
                 </span>
@@ -65,13 +65,15 @@ import { shallowRef, computed, onMounted, onUnmounted } from 'vue'
 import socket from '../Utils/websocket'
 import jwttoken from '../Utils/jwttoken'
 
+import axios from 'axios'
+
 const openNotificationMenu = shallowRef( false )
 const notificationCount = shallowRef( 0 )
 const menuElement = shallowRef( null )
 
 const notifications = shallowRef( [] )
 
-const hasNotification = computed( () => notificationCount.value != 0 )
+const hasNotification = computed( () => notifications.value.length )
 
 
 onMounted( () => {
@@ -89,6 +91,24 @@ function handleClick( event ) {
         openNotificationMenu.value = false
 }
 
+
+function handleOpenMenu() {
+    openNotificationMenu.value = !openNotificationMenu.value
+    findNotifications()
+
+    notificationCount.value = 0
+}
+
+
+async function findNotifications() {
+    try {
+        const response = await axios.get( route( 'invite.index' ) )
+        notifications.value = response.data
+    }
+    catch ( err ) {
+        console.log( err )
+    }
+}
 
 
 </script>
