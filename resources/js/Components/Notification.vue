@@ -62,8 +62,6 @@
 import { Bell, AlertTriangle } from 'lucide-vue-next'
 import { shallowRef, computed, onMounted, onUnmounted } from 'vue'
 
-import axios from 'axios'
-
 
 const openNotificationMenu = shallowRef( false )
 const notificationCount = shallowRef( 0 )
@@ -76,8 +74,8 @@ const hasNotification = computed( () => notificationCount.value != 0 )
 
 onMounted( () => {
     window.addEventListener( 'click', handleClick ) 
-    findNotifications()
 } )
+
 onUnmounted( () => window.removeEventListener( 'click', handleClick ) )
 
 function handleClick( event ) {
@@ -86,17 +84,5 @@ function handleClick( event ) {
 }
 
 
-async function findNotifications() {
-    try {
-        const response = await axios.get( route( 'invite.index' ) )
-
-        notifications.value = response.data
-        notificationCount.value = response.data.length
-    }
-
-    catch ( err ) {
-        console.log( err )
-    }
-}
 
 </script>
