@@ -9,9 +9,9 @@
                 <Bell size="25" />
     
                 <span 
-                    v-show="notificationCount != 0"
+                    v-show="hasUnrededNotification"
                     class="block w-5 h-5 rounded-md bg-[#7C3AED] text-[#ffffff] text-[14px] absolute -right-3 -top-3">
-                        {{ notificationCount }}
+                        {{ hasUnrededNotification }}
                 </span>
         </button>
     
@@ -20,7 +20,7 @@
             class="w-full min-w-[300px] py-4 px-3 absolute transition-all duration-300 shadow-[0_4px_16px_0px_rgba(22,22,22,0.1)] right-0 bg-[#ffffff] rounded-md">
                 <h3 class="text-xl text-[#403937] font-bold">Notificações</h3>
         
-                <ul class="w-full mt-3" v-show="hasNotification">
+                <ul class="w-full mt-3" v-show="notifications.length">
                     <li 
                         v-for="( notification, index ) in notifications"
                         :key="index"
@@ -46,7 +46,7 @@
                     </li>
                 </ul>
 
-                <div v-show="!hasNotification">
+                <div v-show="!notifications.length">
                     <alert-triangle size="25" class="mt-4 mb-2 mx-auto text-[#7C3AED]" />
                     <p class="text-base text-[#403937] text-center">
                         Voçê não tem nenhuma notificação.
@@ -68,20 +68,21 @@ import jwttoken from '../Utils/jwttoken'
 import axios from 'axios'
 
 const openNotificationMenu = shallowRef( false )
-const notificationCount = shallowRef( 0 )
 const menuElement = shallowRef( null )
 
 const notifications = shallowRef( [] )
 
-const hasNotification = computed( () => notifications.value.length )
+
+const hasUnrededNotification = computed( () => notifications.value.filter( notification => !notification.visible ).length )
 
 
 onMounted( () => {
     window.addEventListener( 'click', handleClick ) 
 
     socket.connect(jwttoken.getToken())
+    findNotifications()
 
-    socket.recv('notificate', () => notificationCount.value += 1)
+    socket.recv('notificate', handleNewNotification)
 } )
 
 onUnmounted( () => window.removeEventListener( 'click', handleClick ) )
@@ -92,11 +93,13 @@ function handleClick( event ) {
 }
 
 
+function handleNewNotification() {
+    findNotifications()
+}
+
+
 function handleOpenMenu() {
     openNotificationMenu.value = !openNotificationMenu.value
-    findNotifications()
-
-    notificationCount.value = 0
 }
 
 

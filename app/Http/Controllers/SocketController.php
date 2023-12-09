@@ -74,6 +74,7 @@ class SocketController implements MessageComponentInterface
                 ]));
             }
         }
+        
     }
 
 }
