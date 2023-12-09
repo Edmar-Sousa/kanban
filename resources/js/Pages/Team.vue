@@ -5,10 +5,12 @@
         </Head>
 
         <main class="flex-1 bg-white rounded-tl-2xl px-8 py-12 overflow-y-auto">
-            <header class="flex justify-between items-center">
-                <h1 class="text-3xl font-bold text-[#403937]">Adicionar Membro a Equipe</h1>
+            <header class="w-full flex justify-between items-center">
+                <h1 class="text-3xl text-[#403937] font-bold inline-block">Adicionar Membro a Equipe</h1>
                 
-                <div>
+                <div class="flex items-center gap-10">
+                    <notification />
+
                     <img 
                         :src="loadImage( image )" 
                         alt="imagem de perfil"
@@ -86,9 +88,9 @@ import { UserPlus2, X } from 'lucide-vue-next'
 
 import Layout from '../Template/Layout.vue'
 import { computed, shallowRef, onMounted } from 'vue'
-import { useForm, usePage } from '@inertiajs/inertia-vue3'
 
 import InputForm from '../Components/InputForm.vue'
+import Notification from '../Components/Notification.vue'
 
 import websocket from '../Utils/websocket'
 import jwttoken from '../Utils/jwttoken'
