@@ -8,7 +8,10 @@ use Ratchet\Server\IoServer;
 use Ratchet\Http\HttpServer;
 use Ratchet\WebSocket\WsServer;
 
-use App\Http\Controllers\SocketController;
+use App\Utils\SocketIO;
+
+
+include __DIR__ . '/../../../routes/sockets.php';
 
 class SocketServe extends Command
 {
@@ -30,13 +33,13 @@ class SocketServe extends Command
         $socketServer = IoServer::factory(
             new HttpServer(
                 new WsServer(
-                    new SocketController()
+                    new SocketIO()
                 ),
             ),
             self::SERVER_PORT
         );
 
-        echo 'SERVER running on port ' . self::SERVER_PORT;
+        echo 'SERVER running on port ' . self::SERVER_PORT . PHP_EOL;
         $socketServer->run();
 
     }
