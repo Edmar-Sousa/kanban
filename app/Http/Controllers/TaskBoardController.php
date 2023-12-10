@@ -48,7 +48,7 @@ class TaskBoardController extends Controller
             $this->task_board_model->create_taskboard( $request->validated(), Auth::user()->id );
             
             return redirect()->route( 'taskboard' )->with( [
-                    'message' => 'Plano criado com sucesso!',
+                    'message' => 'bBoard de tarefas criado com sucesso!',
                     'status' => 2
                 ] );
         }
