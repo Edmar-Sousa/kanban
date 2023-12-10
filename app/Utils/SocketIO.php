@@ -4,31 +4,30 @@ namespace App\Utils;
 
 use Ratchet\MessageComponentInterface;
 use Ratchet\ConnectionInterface;
-use Tymon\JWTAuth\Facades\JWTAuth;
 
 use Exception;
-use Illuminate\Support\Facades\Auth;
-use SplObjectStorage;
 use stdClass;
-use Tymon\JWTAuth\Exceptions\TokenInvalidException;
 
 
 class SocketIO implements MessageComponentInterface
 {
+    protected static array $events = [];
+
+
     protected static array $clients = [];
 
 
     public static function on(string $event, array $callback): void
     {
-        self::$clients[$event] = $callback;
+        self::$events[$event] = $callback;
     }
 
 
-    private function call(stdClass $payload): void
+    private function call(ConnectionInterface $from, stdClass $payload,): void
     {
-        $arr = self::$clients[$payload->event];
+        $arr = self::$events[$payload->event];
 
-        call_user_func([new $arr[0], $arr[1]]);
+        call_user_func([new $arr[0], $arr[1]], $from, $payload);
     }
 
 
@@ -59,42 +58,7 @@ class SocketIO implements MessageComponentInterface
 
         $payload = $this->parseMessage($msg);
 
-        $this->call($payload);
-
-
-        // if (!empty($payload->event) && $payload->event == 'auth')
-        // {
-        //     try {
-        //         $user = JWTAuth::setToken($payload->token)->authenticate();
-
-        //         $this->clients[$user->id] = $from;
-        //     }
-
-        //     catch (TokenInvalidException $err)
-        //     {
-        //         print_r($err->getMessage());
-        //         $from->close();
-        //     }
-        // }
-
-
-        // if (!empty($payload->event) && $payload->event == 'notificate')
-        // {
-        //     $user = JWTAuth::setToken($payload->token)->authenticate();
-            
-        //     $invite = new InviteController();
-        //     $target_user_id = $invite->store($payload->data, $user);
-            
-        //     $socket_connection = $this->clients[$target_user_id];
-
-        //     if (!empty($socket_connection))
-        //     {
-        //         $socket_connection->send(json_encode([
-        //             'event' => 'notificate',
-        //             'data' => null
-        //         ]));
-        //     }
-        // }
+        $this->call($from, $payload);
         
     }
 
