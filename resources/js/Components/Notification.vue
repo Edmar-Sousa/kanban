@@ -22,8 +22,8 @@
         
                 <ul class="w-full mt-3" v-show="notifications.length">
                     <li 
-                        v-for="( notification, index ) in notifications"
-                        :key="index"
+                        v-for="notification in notifications"
+                        :key="notification.id"
                         class="flex items-center gap-2 my-3 cursor-pointer">
                             <div class="w-[50px] h-[50px] bg-slate-400 rounded-full">
                                 <img 
@@ -36,6 +36,15 @@
                                 <p class="text-sm">
                                     Você tem um convite de
                                     <span class="font-bold">{{ notification.source_user }}</span>
+                                </p>
+
+                                <p>
+                                    <button 
+                                        type="button"
+                                        class="text-xs text-[#7C3AED] border"
+                                        @click="handleAcceptInvite(notification.id)">
+                                            aceitar
+                                    </button>
                                 </p>
                             </div>
 
@@ -87,6 +96,7 @@ onMounted( () => {
 
 onUnmounted( () => window.removeEventListener( 'click', handleClick ) )
 
+
 function handleClick( event ) {
     if ( !menuElement.value.contains( event.target ) )
         openNotificationMenu.value = false
@@ -104,10 +114,23 @@ async function findNotifications() {
         const response = await axios.get( route( 'invite.index' ) )
         notifications.value = response.data
     }
+
     catch ( err ) {
         console.log( err )
     }
 }
 
+
+async function handleAcceptInvite(id) {
+    try {
+        await axios.put( route( 'invite.accept', id ) )
+
+        findNotifications()
+    }
+
+    catch ( err ) {
+        console.log( err )
+    }
+}
 
 </script>

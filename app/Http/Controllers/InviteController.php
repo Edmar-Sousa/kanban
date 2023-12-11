@@ -4,12 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Notification;
 use App\Models\User;
-use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Redirect;
-use stdClass;
+use Illuminate\Support\Facades\Response;
 
 class InviteController extends Controller
 {
@@ -17,6 +14,12 @@ class InviteController extends Controller
     protected Notification $notification_model;
     protected User $user_model;
 
+
+    public function __construct(Notification $notification_model, User $user_model)
+    {
+        $this->notification_model = $notification_model;
+        $this->user_model = $user_model;
+    }
 
 
     public function index()
@@ -29,6 +32,7 @@ class InviteController extends Controller
 
         $notifications = $notifications->transform( function ( $notification ) {
             return [
+                'id' => $notification->id,
                 'source_user' => $notification->source_user_data->name,
                 'image' => $notification->source_user_data->image,
                 'visible' => $notification->visible,
@@ -36,5 +40,18 @@ class InviteController extends Controller
         } );
 
         return $notifications;
+    }
+
+
+    public function accept(Request $request, string $id)
+    {
+        
+        $this->notification_model->accept($id);
+
+        return Response::json([ 
+            'type' => 'success', 
+            'message' => 'Convite aceito' 
+        ]);
+
     }
 }

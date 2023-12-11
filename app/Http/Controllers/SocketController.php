@@ -6,7 +6,6 @@ use App\Models\Notification;
 use App\Models\User;
 use App\Utils\SocketIO;
 use Exception;
-use Illuminate\Support\Facades\DB;
 use Ratchet\ConnectionInterface;
 use Tymon\JWTAuth\Exceptions\TokenInvalidException;
 use Tymon\JWTAuth\Facades\JWTAuth;
@@ -54,8 +53,6 @@ class SocketController extends SocketIO
 
         try 
         {
-            DB::beginTransaction();
-
             $user = User::where( 'email', $payload->data->email )->first();
 
             if ( empty( $user ) )
@@ -65,8 +62,6 @@ class SocketController extends SocketIO
                 'destination_user' => $user->id,
                 'source_user' => $logged_user->id,
             ] );
-
-            DB::commit();
 
             $this->sendToSocket($user->id, 'notification');
             
@@ -81,8 +76,6 @@ class SocketController extends SocketIO
 
         catch ( Exception $err )
         {
-            DB::rollBack();
-
             $this->sendToSocket( $logged_user->id, 'invite-friend-error', [
                 'status' => 'error',
                 'message' => $err->getMessage(),

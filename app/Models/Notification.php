@@ -43,4 +43,13 @@ class Notification extends Model
             ] )
             ->get();
     }
+
+
+    public function accept(string $id)
+    {
+        $this->where( 'id', $id )
+            ->update( [
+                'visible' => true,
+            ] );
+    }
 }
