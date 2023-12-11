@@ -59,6 +59,17 @@
           </button>
         </div>
 
+        <div 
+            v-show="messageresponse.status.length"
+            class="w-full p-4 mt-3 text-lg font-bold border rounded" 
+            :class="{ 
+                'border-green-700 text-green-700 bg-green-400': messageresponse.status == 'success',
+                'border-red-700 text-red-700 bg-red-400': messageresponse.status == 'error',
+            }"
+        >
+            <p>{{ messageresponse.message }}</p>
+        </div>
+
         <form action="#" method="POST" @submit.prevent>
             <div class="my-4">
                 <InputForm
@@ -87,7 +98,7 @@
 import { UserPlus2, X } from 'lucide-vue-next'
 
 import Layout from '../Template/Layout.vue'
-import { computed, shallowRef, onMounted } from 'vue'
+import { computed, shallowRef, ref, onMounted } from 'vue'
 
 import InputForm from '../Components/InputForm.vue'
 import Notification from '../Components/Notification.vue'
@@ -99,6 +110,11 @@ const props = defineProps( [ 'image' ] )
 
 const openModal = shallowRef( false )
 const email = shallowRef('')
+
+const messageresponse = ref({
+    status: '',
+    message: '',
+})
 
 const friends_list = [
     { name: 'Andre Vitor', email: 'andrevitor@gmail.com' },
@@ -120,18 +136,17 @@ function filterByLetter( letter ) {
 }
 
 
-function submitForm() {
-    
-    console.log('send')
-
+async function submitForm() {
     websocket.send({
-        event: 'notificate',
+        event: 'invite-friend',
         token: jwttoken.getToken(),
         data: {
             email: email.value,
         }
     })
 
+    websocket.recv('invite-friend-success', data => messageresponse.value = data)
+    websocket.recv('invite-friend-error', data => messageresponse.value = data)
 }
 
 </script>

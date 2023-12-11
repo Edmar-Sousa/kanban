@@ -81,8 +81,8 @@ onMounted( () => {
 
     socket.connect(jwttoken.getToken())
     findNotifications()
-
-    socket.recv('notificate', handleNewNotification)
+    
+    socket.recv('notificate', () => findNotifications())
 } )
 
 onUnmounted( () => window.removeEventListener( 'click', handleClick ) )
@@ -92,10 +92,6 @@ function handleClick( event ) {
         openNotificationMenu.value = false
 }
 
-
-function handleNewNotification() {
-    findNotifications()
-}
 
 
 function handleOpenMenu() {
