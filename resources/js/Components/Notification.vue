@@ -42,9 +42,23 @@
                                     <button 
                                         v-if="!notification.visible"
                                         type="button"
-                                        class="text-xs text-[#7C3AED]"
+                                        class="text-sm text-[#7C3AED] mr-2"
                                         @click="handleMarkVisible(notification.id)">
                                             ver
+                                    </button>
+
+                                    <button
+                                        type="button"
+                                        class="text-sm text-[#7C3AED] mr-2"
+                                        v-if="notification.type == 2">
+                                            aceitar
+                                    </button>
+
+                                    <button
+                                        type="button"
+                                        class="text-sm text-[#7C3AED] mr-2"
+                                        v-if="notification.type == 2">
+                                            recusar
                                     </button>
                                 </p>
                             </div>
