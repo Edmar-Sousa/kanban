@@ -34,16 +34,17 @@
 
                             <div class="flex-1">
                                 <p class="text-sm">
-                                    Você tem um convite de
+                                    {{ notification.message }}
                                     <span class="font-bold">{{ notification.source_user }}</span>
                                 </p>
 
                                 <p>
                                     <button 
+                                        v-if="!notification.visible"
                                         type="button"
                                         class="text-xs text-[#7C3AED]"
-                                        @click="handleAcceptInvite(notification.id)">
-                                            aceitar
+                                        @click="handleMarkVisible(notification.id)">
+                                            ver
                                     </button>
                                 </p>
                             </div>
@@ -121,7 +122,7 @@ async function findNotifications() {
 }
 
 
-async function handleAcceptInvite(id) {
+async function handleMarkVisible(id) {
     try {
         await axios.put( route( 'invite.accept', id ) )
 
