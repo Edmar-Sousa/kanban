@@ -8,7 +8,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\TaskBoardController;
 use App\Http\Controllers\ConfigController;
-use App\Http\Controllers\InviteController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\PlansController;
 use App\Http\Controllers\TeamController;
 
@@ -32,11 +32,11 @@ Route::middleware('auth')->group(function () {
     Route::get('/plans', [PlansController::class, 'index'])->name('plans');
 
     Route::group( [
-        'as' => 'invite.',
-        'prefix' => 'invite',
+        'as' => 'notifications.',
+        'prefix' => 'notifications',
     ], function () {
-        Route::get( '/', [InviteController::class, 'index'] )->name( 'index' );
-        Route::put( '/mark-view/{id}', [InviteController::class, 'markview'] )->name('mark-view');
+        Route::get( '/', [NotificationController::class, 'index'] )->name( 'index' );
+        Route::put( '/mark-view/{id}', [NotificationController::class, 'markview'] )->name('mark-view');
     } );
 });
 

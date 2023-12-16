@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Response;
 
-class InviteController extends Controller
+class NotificationController extends Controller
 {
 
     protected Notification $notification_model;
@@ -68,6 +68,6 @@ class InviteController extends Controller
 
     public function markaccept(Request $request, string $id)
     {
-        
+
     }
 }

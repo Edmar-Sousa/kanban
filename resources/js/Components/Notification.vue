@@ -112,7 +112,7 @@ function handleOpenMenu() {
 
 async function findNotifications() {
     try {
-        const response = await axios.get( route( 'invite.index' ) )
+        const response = await axios.get( route( 'notifications.index' ) )
         notifications.value = response.data
     }
 
@@ -124,7 +124,7 @@ async function findNotifications() {
 
 async function handleMarkVisible(id) {
     try {
-        await axios.put( route( 'invite.accept', id ) )
+        await axios.put( route( 'notifications.mark-view', id ) )
 
         findNotifications()
     }

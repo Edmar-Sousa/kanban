@@ -32,8 +32,8 @@
                 <div class="w-10 h-10 rounded bg-[#7C3AED] text-white leading-10 text-xl text-center uppercase">{{ letter }}</div>
 
                 <ul class="mt-5">
-                    <li class="px-10 mt-4 flex justify-between items-center" v-for="( friend, i ) in filterByLetter( letter )" :key="i">
-                        <div class="flex items-center">
+                    <li class="px-10 mt-4 flex justify-between flex-col md:items-center md:flex-row" v-for="( friend, i ) in filterByLetter( letter )" :key="i">
+                        <div class="flex items-center mb-4">
                             <img 
                                 :src="loadImage( friend.user_image )" 
                                 alt="imagem de perfil"
@@ -45,19 +45,17 @@
                             </div>
                         </div>
 
-                        <div>
+                        <div class="flex flex-wrap justify-end gap-4">
                             <template v-if="friend.status == 3">
                                 <button
                                     type="button"
-                                    class="inline-flex rounded-md bg-[#7C3AED] px-4 items-center gap-2 justify-center h-10 text-white text-base text-center mr-4">
-                                        <Check />
+                                    class="inline-block w-[150px] rounded-md bg-[#7C3AED] px-4 items-center gap-2 justify-center h-10 text-white text-sm text-center hover:scale-95">
                                         Aceitar convite
                                 </button>
-    
+
                                 <button
                                     type="button"
-                                    class="inline-flex rounded-md bg-[#7C3AED] px-4 items-center gap-2 justify-center h-10 text-white text-base text-center">
-                                        <X />
+                                    class="inline-block w-[150px] rounded-md bg-[#7C3AED] px-4 items-center gap-2 justify-center h-10 text-white text-sm text-center hover:scale-95">
                                         Recusar convite
                                 </button>
                             </template>
@@ -116,7 +114,7 @@
 
 <script setup>
 
-import { UserPlus2, X, Check } from 'lucide-vue-next'
+import { UserPlus2, X } from 'lucide-vue-next'
 
 import Layout from '../Template/Layout.vue'
 import { computed, shallowRef, ref, onMounted } from 'vue'
