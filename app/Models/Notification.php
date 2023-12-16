@@ -55,7 +55,7 @@ class Notification extends Model
     }
 
 
-    public function accept(string $id)
+    public function markview(string $id)
     {
         $this->where( 'id', $id )
             ->update( [

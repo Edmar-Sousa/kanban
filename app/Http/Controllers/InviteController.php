@@ -53,15 +53,21 @@ class InviteController extends Controller
     }
 
 
-    public function accept(Request $request, string $id)
+    public function markview(Request $request, string $id)
     {
         
-        $this->notification_model->accept($id);
+        $this->notification_model->markview($id);
 
         return Response::json([ 
             'type' => 'success', 
-            'message' => 'Convite aceito' 
+            'message' => 'Notificação atualizada' 
         ]);
 
+    }
+
+
+    public function markaccept(Request $request, string $id)
+    {
+        
     }
 }

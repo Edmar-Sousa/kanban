@@ -21,4 +21,11 @@ class Friends extends Model
         'status',
     ];
 
+
+
+    public function destination_user_data()
+    {
+        return $this->belongsTo(User::class, 'destination_user', 'id');
+    }
+
 }

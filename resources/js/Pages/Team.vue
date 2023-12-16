@@ -29,18 +29,39 @@
             </div>
 
             <div v-for="letter in getFirstLetterFriendsList" :key="letter" class="my-6">
-                <div class="w-10 h-10 rounded bg-[#7C3AED] text-white leading-10 text-xl text-center">{{ letter }}</div>
+                <div class="w-10 h-10 rounded bg-[#7C3AED] text-white leading-10 text-xl text-center uppercase">{{ letter }}</div>
 
                 <ul class="mt-5">
-                    <li class="px-10 mt-4 flex items-center" v-for="( friend, i ) in filterByLetter( letter )" :key="i">
-                        <img 
-                            :src="loadImage( image )" 
-                            alt="imagem de perfil"
-                            class="w-16 h-16 mx-7 rounded-full" />
-                        
+                    <li class="px-10 mt-4 flex justify-between items-center" v-for="( friend, i ) in filterByLetter( letter )" :key="i">
+                        <div class="flex items-center">
+                            <img 
+                                :src="loadImage( friend.user_image )" 
+                                alt="imagem de perfil"
+                                class="w-16 h-16 mx-7 rounded-full" />
+                            
+                            <div>
+                                <p class="font-bold text-xl">{{ friend.user_name }}</p>
+                                <p class="text-base text-[#1E293B]">{{ friend.user_email }}</p>
+                            </div>
+                        </div>
+
                         <div>
-                            <p class="font-bold text-xl">{{ friend.name }}</p>
-                            <p class="text-base text-[#1E293B]">{{ friend.email }}</p>
+                            <template v-if="friend.status == 3">
+                                <button
+                                    type="button"
+                                    class="inline-flex rounded-md bg-[#7C3AED] px-4 items-center gap-2 justify-center h-10 text-white text-base text-center mr-4">
+                                        <Check />
+                                        Aceitar convite
+                                </button>
+    
+                                <button
+                                    type="button"
+                                    class="inline-flex rounded-md bg-[#7C3AED] px-4 items-center gap-2 justify-center h-10 text-white text-base text-center">
+                                        <X />
+                                        Recusar convite
+                                </button>
+                            </template>
+
                         </div>
                     </li>
                 </ul>
@@ -95,7 +116,7 @@
 
 <script setup>
 
-import { UserPlus2, X } from 'lucide-vue-next'
+import { UserPlus2, X, Check } from 'lucide-vue-next'
 
 import Layout from '../Template/Layout.vue'
 import { computed, shallowRef, ref, onMounted } from 'vue'
@@ -106,7 +127,7 @@ import Notification from '../Components/Notification.vue'
 import websocket from '../Utils/websocket'
 import jwttoken from '../Utils/jwttoken'
 
-const props = defineProps( [ 'image' ] )
+const props = defineProps( [ 'image', 'friends' ] )
 
 const openModal = shallowRef( false )
 const email = shallowRef('')
@@ -116,23 +137,16 @@ const messageresponse = ref({
     message: '',
 })
 
-const friends_list = [
-    { name: 'Andre Vitor', email: 'andrevitor@gmail.com' },
-    { name: 'Carlos Igor', email: 'carlosigor@gmail.com' },
-    { name: 'Vitoria', email: 'vitoria@gmail.com' },
-    { name: 'Andre Vitor 02', email: 'andrevitor@gmail.com' },
-    { name: 'Andre Vitor 03', email: 'andrevitor@gmail.com' },
-]
 
 
-const getFirstLetterFriendsList = computed( () => new Set( friends_list.map( friend => friend.name.charAt(0) ) ) )
+const getFirstLetterFriendsList = computed( () => new Set( props.friends.map( friend => friend.user_name.charAt(0) ) ) )
 
 
 onMounted(() => websocket.connect(jwttoken.getToken()))
 
 
 function filterByLetter( letter ) {
-    return friends_list.filter( friend => friend.name.charAt(0) == letter )
+    return props.friends.filter( friend => friend.user_name.charAt(0) == letter )
 }
 
 

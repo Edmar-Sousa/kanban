@@ -36,7 +36,7 @@ Route::middleware('auth')->group(function () {
         'prefix' => 'invite',
     ], function () {
         Route::get( '/', [InviteController::class, 'index'] )->name( 'index' );
-        Route::put( '/accept/{id}', [InviteController::class, 'accept'] )->name('accept');
+        Route::put( '/mark-view/{id}', [InviteController::class, 'markview'] )->name('mark-view');
     } );
 });
 
