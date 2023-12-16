@@ -65,6 +65,14 @@ class SocketController extends SocketIO
 
             DB::beginTransaction();
 
+            $fried = Friends::where('destination_user', $user->id)
+                ->where('source_user', $logged_user->id)
+                ->first();
+
+            if (!empty($fried))
+                throw new Exception('Convite já enviado para o usuario');
+
+
             Notification::create( [ 
                 'destination_user' => $user->id,
                 'source_user' => $logged_user->id,
