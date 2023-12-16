@@ -41,7 +41,7 @@
                                 <p>
                                     <button 
                                         type="button"
-                                        class="text-xs text-[#7C3AED] border"
+                                        class="text-xs text-[#7C3AED]"
                                         @click="handleAcceptInvite(notification.id)">
                                             aceitar
                                     </button>
