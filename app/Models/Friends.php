@@ -28,4 +28,10 @@ class Friends extends Model
         return $this->belongsTo(User::class, 'destination_user', 'id');
     }
 
+
+    public function source_user_data()
+    {
+        return $this->belongsTo(User::class, 'source_user', 'id');
+    }
+
 }

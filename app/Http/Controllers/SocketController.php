@@ -110,4 +110,59 @@ class SocketController extends SocketIO
 
     }
     
+
+    public function acceptInvite(ConnectionInterface $from, stdClass $payload)
+    {
+        $logged_user = JWTAuth::setToken($payload->token)->authenticate();
+
+        try 
+        {
+            DB::beginTransaction();
+
+            $friendInvite = Friends::where('id', $payload->data->inviteId)
+                ->with([
+                    'source_user_data'
+                ])
+                ->first();
+
+            $friendInvite->update([
+                'status' => Friends::STATUS_ACEPTED,
+            ]);
+
+
+            Notification::create([
+                'destination_user' => $friendInvite->source_user_data->id,
+                'source_user' => $logged_user->id,
+                'message' => 'Seu convite foi aceito, agora vocês são amigos',
+                'type' => Notification::TYPE_SYSTEM,
+            ]);
+
+            DB::commit();
+
+            $this->sendToSocket( $friendInvite->source_user_data->id, 'notification');
+
+            $from->send(json_encode([
+                'event' => 'accept-invite-success',
+                'data' => [
+                    'status' => 'success',
+                    'message' => 'Amigo adicionado',
+                ],
+            ]));
+        }
+
+        catch ( Exception $err )
+        {
+            DB::rollBack();
+
+            print_r($err->getMessage());
+
+            $from->send(json_encode([
+                'event' => 'accept-invite-error',
+                'data' => [
+                    'status' => 'error',
+                    'message' => 'Erro ao adicionar amigo',
+                ],
+            ]));
+        }
+    }
 }

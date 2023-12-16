@@ -49,7 +49,8 @@
                             <template v-if="friend.status == 3">
                                 <button
                                     type="button"
-                                    class="inline-block w-[150px] rounded-md bg-[#7C3AED] px-4 items-center gap-2 justify-center h-10 text-white text-sm text-center hover:scale-95">
+                                    class="inline-block w-[150px] rounded-md bg-[#7C3AED] px-4 items-center gap-2 justify-center h-10 text-white text-sm text-center hover:scale-95"
+                                    @click="handleAcceptInvite(friend.id)">
                                         Aceitar convite
                                 </button>
 
@@ -159,6 +160,24 @@ async function submitForm() {
 
     websocket.recv('invite-friend-success', data => messageresponse.value = data)
     websocket.recv('invite-friend-error', data => messageresponse.value = data)
+}
+
+
+function handleAcceptInvite(id) {
+
+    console.log('ok')
+
+    websocket.send({
+        event: 'accept-invite',
+        token: jwttoken.getToken(),
+        data: {
+            inviteId: id,
+        },
+    })
+
+    websocket.recv('accept-invite-success', data => console.log(data))
+    websocket.recv('accept-invite-error', data => console.log(data))
+
 }
 
 </script>
