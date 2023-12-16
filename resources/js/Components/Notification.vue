@@ -20,7 +20,7 @@
             class="w-full min-w-[300px] py-4 px-3 absolute transition-all duration-300 shadow-[0_4px_16px_0px_rgba(22,22,22,0.1)] right-0 bg-[#ffffff] rounded-md">
                 <h3 class="text-xl text-[#403937] font-bold">Notificações</h3>
         
-                <ul class="w-full mt-3" v-show="notifications.length">
+                <ul class="w-full mt-3 max-h-[300px] overflow-y-auto" v-show="notifications.length">
                     <li 
                         v-for="notification in notifications"
                         :key="notification.id"
