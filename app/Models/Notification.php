@@ -10,7 +10,17 @@ class Notification extends Model
     use HasFactory;
 
 
-    protected $fillable = [ 'destination_user', 'source_user', 'visible' ];
+    public const TYPE_SYSTEM = 1;
+    public const TYPE_INVITE = 2;
+
+
+    protected $fillable = [ 
+        'destination_user', 
+        'message',
+        'type', 
+        'source_user', 
+        'visible'
+    ];
 
 
     public function source_user_data()

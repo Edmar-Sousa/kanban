@@ -2,14 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Notification;
-use App\Models\User;
-use App\Utils\SocketIO;
-use Exception;
+use Illuminate\Support\Facades\DB;
 use Ratchet\ConnectionInterface;
 use Tymon\JWTAuth\Exceptions\TokenInvalidException;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
+use App\Models\Friends;
+use App\Models\Notification;
+use App\Models\User;
+use App\Utils\SocketIO;
+
+use Exception;
 use stdClass;
 
 class SocketController extends SocketIO
@@ -28,6 +31,8 @@ class SocketController extends SocketIO
             ] ) );
         }
 
+        else
+            print_r('socket conection is empty'. PHP_EOL);
     }
 
 
@@ -58,10 +63,21 @@ class SocketController extends SocketIO
             if ( empty( $user ) )
                 throw new Exception('Usuario não encontrado');
 
+            DB::beginTransaction();
+
             Notification::create( [ 
                 'destination_user' => $user->id,
                 'source_user' => $logged_user->id,
+                'message' => 'Você tem um convite de amizade',
+                'type' => Notification::TYPE_INVITE,
             ] );
+
+            Friends::create([
+                'destination_user' => $user->id,
+                'source_user' => $logged_user->id,
+            ]);
+
+            DB::commit();
 
             $this->sendToSocket($user->id, 'notification');
             
@@ -76,6 +92,8 @@ class SocketController extends SocketIO
 
         catch ( Exception $err )
         {
+            DB::rollBack();
+
             $this->sendToSocket( $logged_user->id, 'invite-friend-error', [
                 'status' => 'error',
                 'message' => $err->getMessage(),

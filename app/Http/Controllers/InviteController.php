@@ -24,7 +24,15 @@ class InviteController extends Controller
 
     public function index()
     {
-        $notifications = Notification::where( 'destination_user', Auth::user()->id )
+        $notifications = Notification::select([
+            'id',
+            'destination_user',
+            'source_user',
+            'message',
+            'type',
+            'visible',
+        ])
+        ->where( 'destination_user', Auth::user()->id )
         ->with( [ 
             'source_user_data' => fn ( $query ) => $query->select( [ 'id', 'name', 'image' ] ),
         ] )
@@ -35,6 +43,8 @@ class InviteController extends Controller
                 'id' => $notification->id,
                 'source_user' => $notification->source_user_data->name,
                 'image' => $notification->source_user_data->image,
+                'message' => $notification->message,
+                'type' => $notification->type,
                 'visible' => $notification->visible,
             ];
         } );

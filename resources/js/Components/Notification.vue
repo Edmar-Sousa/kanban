@@ -91,7 +91,7 @@ onMounted( () => {
     socket.connect(jwttoken.getToken())
     findNotifications()
     
-    socket.recv('notificate', () => findNotifications())
+    socket.recv('notification', () => findNotifications())
 } )
 
 onUnmounted( () => window.removeEventListener( 'click', handleClick ) )

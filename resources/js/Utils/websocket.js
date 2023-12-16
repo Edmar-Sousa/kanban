@@ -3,6 +3,7 @@ class WebSocketClient {
 
     constructor() {
         this.connection = null
+        this.callbacks = {}
     }
 
 
@@ -15,7 +16,17 @@ class WebSocketClient {
             this.connection.addEventListener('open', () => {
                 this.connection.send(JSON.stringify({ event: 'auth', token }))
             })
+
+
+            this.connection.onmessage = payload => {
+                const payloadjson = JSON.parse(payload.data)
+                const callback = this.callbacks[payloadjson.event]
+    
+                if (callback)
+                    callback(payloadjson.data)
+            }
         }
+
     }
 
 
@@ -28,14 +39,7 @@ class WebSocketClient {
 
 
     async recv(event, callback) {
-
-        this.connection.onmessage = payload => {
-            const payloadjson = JSON.parse(payload.data)
-
-            if (payloadjson.event == event)
-                callback(payloadjson.data)
-        }
-
+        this.callbacks[event] = callback
     }
 
 }
