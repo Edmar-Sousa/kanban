@@ -55,6 +55,21 @@
                     </ul>
                 </div>
             </template>
+
+            <div v-else class="mt-10">
+                <h2 class="text-xl font-bold text-center mb-1 text-[#403937]">
+                    Nenhum amigo encontrado
+                </h2>
+
+                <p class="text-center text-base mb-8 text-[#403937]">
+                    Adicione amigos para interagir com suas tarrefas
+                </p>
+
+                <img 
+                    :src="require('~/images/undraw_social_friends.svg').default"
+                    class="w-1/2 mx-auto max-w-[500px]" />
+
+            </div>
         </main>
     </Layout>
 
