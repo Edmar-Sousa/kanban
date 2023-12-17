@@ -28,43 +28,45 @@
                 </button>
             </div>
 
-            <div v-for="letter in getFirstLetterFriendsList" :key="letter" class="my-6">
-                <div class="w-10 h-10 rounded bg-[#7C3AED] text-white leading-10 text-xl text-center uppercase">{{ letter }}</div>
-
-                <ul class="mt-5">
-                    <li class="px-10 mt-4 flex justify-between flex-col md:items-center md:flex-row" v-for="( friend, i ) in filterByLetter( letter )" :key="i">
-                        <div class="flex items-center mb-4">
-                            <img 
-                                :src="loadImage( friend.user_image )" 
-                                alt="imagem de perfil"
-                                class="w-16 h-16 mx-7 rounded-full" />
-                            
-                            <div>
-                                <p class="font-bold text-xl">{{ friend.user_name }}</p>
-                                <p class="text-base text-[#1E293B]">{{ friend.user_email }}</p>
+            <template v-if="friendsList.length">
+                <div v-for="letter in getFirstLetterFriendsList" :key="letter" class="my-6">
+                    <div class="w-10 h-10 rounded bg-[#7C3AED] text-white leading-10 text-xl text-center uppercase">{{ letter }}</div>
+    
+                    <ul class="mt-5">
+                        <li class="px-10 mt-4 flex justify-between flex-col md:items-center md:flex-row" v-for="( friend, i ) in filterByLetter( letter )" :key="i">
+                            <div class="flex items-center mb-4">
+                                <img 
+                                    :src="loadImage( friend.source_user_data.image )" 
+                                    alt="imagem de perfil"
+                                    class="w-16 h-16 mx-7 rounded-full" />
+                                
+                                <div>
+                                    <p class="font-bold text-xl">{{ friend.source_user_data.name }}</p>
+                                    <p class="text-base text-[#1E293B]">{{ friend.source_user_data.email }}</p>
+                                </div>
                             </div>
-                        </div>
-
-                        <div class="flex flex-wrap justify-end gap-4">
-                            <template v-if="friend.status == 3">
-                                <button
-                                    type="button"
-                                    class="inline-block w-[150px] rounded-md bg-[#7C3AED] px-4 items-center gap-2 justify-center h-10 text-white text-sm text-center hover:scale-95"
-                                    @click="handleAcceptInvite(friend.id)">
-                                        Aceitar convite
-                                </button>
-
-                                <button
-                                    type="button"
-                                    class="inline-block w-[150px] rounded-md bg-[#7C3AED] px-4 items-center gap-2 justify-center h-10 text-white text-sm text-center hover:scale-95">
-                                        Recusar convite
-                                </button>
-                            </template>
-
-                        </div>
-                    </li>
-                </ul>
-            </div>
+    
+                            <div class="flex flex-wrap justify-end gap-4">
+                                <template v-if="friend.status == 3">
+                                    <button
+                                        type="button"
+                                        class="inline-block w-[150px] rounded-md bg-[#7C3AED] px-4 items-center gap-2 justify-center h-10 text-white text-sm text-center hover:scale-95"
+                                        @click="handleAcceptInvite(friend.id)">
+                                            Aceitar convite
+                                    </button>
+    
+                                    <button
+                                        type="button"
+                                        class="inline-block w-[150px] rounded-md bg-[#7C3AED] px-4 items-center gap-2 justify-center h-10 text-white text-sm text-center hover:scale-95">
+                                            Recusar convite
+                                    </button>
+                                </template>
+    
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </template>
         </main>
     </Layout>
 
@@ -125,6 +127,7 @@ import Notification from '../Components/Notification.vue'
 
 import websocket from '../Utils/websocket'
 import jwttoken from '../Utils/jwttoken'
+import axios from 'axios'
 
 const props = defineProps( [ 'image', 'friends' ] )
 
@@ -136,16 +139,20 @@ const messageresponse = ref({
     message: '',
 })
 
+const friendsList = ref([])
+
+const getFirstLetterFriendsList = computed( () => new Set( friendsList.value.map( friend => friend.source_user_data.name.charAt(0) ) ) )
 
 
-const getFirstLetterFriendsList = computed( () => new Set( props.friends.map( friend => friend.user_name.charAt(0) ) ) )
+onMounted(() => {
+    websocket.connect(jwttoken.getToken())
 
-
-onMounted(() => websocket.connect(jwttoken.getToken()))
+    findFrinds()
+})
 
 
 function filterByLetter( letter ) {
-    return props.friends.filter( friend => friend.user_name.charAt(0) == letter )
+    return friendsList.value.filter( friend => friend.source_user_data.name.charAt(0) == letter )
 }
 
 
@@ -178,6 +185,19 @@ function handleAcceptInvite(id) {
     websocket.recv('accept-invite-success', data => console.log(data))
     websocket.recv('accept-invite-error', data => console.log(data))
 
+}
+
+
+async function findFrinds() {
+    try {
+        const response = await axios.get(route('team.list'))
+
+        friendsList.value = response.data
+    }
+
+    catch {
+        console.log('ok')
+    }
 }
 
 </script>

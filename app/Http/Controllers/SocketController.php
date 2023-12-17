@@ -80,10 +80,8 @@ class SocketController extends SocketIO
                 'type' => Notification::TYPE_INVITE,
             ] );
 
-            Friends::create([
-                'destination_user' => $user->id,
-                'source_user' => $logged_user->id,
-            ]);
+            
+            $user->friends()->attach($logged_user->id);
 
             DB::commit();
 

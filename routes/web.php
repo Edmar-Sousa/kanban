@@ -24,7 +24,13 @@ Route::middleware('auth')->group(function () {
     Route::put('/task-board/task', [TaskController::class, 'update'])->name('task');
     Route::delete('/task-board/task', [TaskController::class, 'delete'])->name('task');
 
-    Route::get('/team', [TeamController::class, 'index'])->name('team');
+    Route::group([
+        'as' => 'team.',
+        'prefix'=> 'team',
+    ], function () {
+        Route::get('/', [TeamController::class, 'index'])->name('index');
+        Route::get('/list', [TeamController::class, 'list'])->name('list');
+    });
 
     Route::get('/config', [ConfigController::class, 'index'])->name('config');
 
