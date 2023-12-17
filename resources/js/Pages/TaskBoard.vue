@@ -24,7 +24,7 @@
 
           <button 
             arial-label="Criar um novo board"
-            class="bg-[#7C3AED] text-[#ffffff] rounded hover:scale-95" @click="openModal = true">
+            class="bg-[#7C3AED] text-[#ffffff] rounded hover:scale-95" @click="handleOpenModal">
               <plus size="25" />
           </button>
         </div>
@@ -58,69 +58,63 @@
       </div>
     </main>
 
-    <div class="fixed top-0 bottom-0 left-0 right-0 bg-[#00000033] flex justify-center items-center" v-show="openModal">
-      <div class="bg-white p-4 rounded w-11/12 max-w-[500px]">
-        <div class="w-full flex justify-between">
-          <h2 class="font-bold">Adicionar nova Board</h2>
-
-          <button arial-label="Close modal" @click="openModal = false">
-            <X sizes="20" />
-          </button>
-        </div>
-
-        <div 
-          v-if="$page.props?.flash.status"
-          class="w-full p-4 mt-3 text-lg font-bold border rounded" 
-          :class="{ 
-            'border-green-700 text-green-700 bg-green-400': $page.props?.flash.status == 2,
-            'border-red-700 text-red-700 bg-red-400': $page.props?.flash.status == 1,
-          }">
-            <p>{{ $page.props?.flash.message }}</p>
-        </div>
-
-        <form action="#" method="POST" @submit.prevent>
-          <label 
-            for="input-title"
-            class="block my-2 text-sm font-semibold text-[#1E293B]">Titulo</label>
-
-          <InputForm 
-            type="text"
-            name="title" 
-            placeholder="Digite o titulo"
-            v-model="form.title"
-            :error="errors.title" />
-
-          <label 
-            for="input-title"
-            class="block my-2 text-sm font-semibold text-[#1E293B]">Descrição</label>
-
-          <textarea 
-            name="description" 
-            class="w-full h-[150px] border border-[#E2E8F0] rounded text-sm p-3 outline-none hover:border-[#7C3AED] focus:border-[#7C3AED]"
-            :class="{ 'border-red-400': errors.description }"
-            v-model="form.description"
-            :error="errors.description"></textarea> 
-
-          <p v-show="errors.description" class="text-xs text-red-400 mt-2">{{ errors.description }}</p> 
-
-          <div class="w-full flex justify-end">
-            <button 
-              aria-label="Botão para filtrar tarefas"
-              class="flex justify-center align-items text-sm font-normal gap-2 text-white bg-[#7C3AED] p-3 w-[135px] rounded hover:scale-95"
-              @click="createTaskBoard()">
-                Criar
-            </button>
+    <Modal 
+      ref="modalCreateTaskboard" 
+      title="Adicionar nova Board">
+        <template #modal-body>
+          <div 
+            v-if="$page.props?.flash.status"
+            class="w-full p-4 mt-3 text-lg font-bold border rounded" 
+            :class="{ 
+              'border-green-700 text-green-700 bg-green-400': $page.props?.flash.status == 2,
+              'border-red-700 text-red-700 bg-red-400': $page.props?.flash.status == 1,
+            }">
+              <p>{{ $page.props?.flash.message }}</p>
           </div>
-        </form>
-      </div>
-    </div>
+
+          <form action="#" method="POST" @submit.prevent>
+            <label 
+              for="input-title"
+              class="block my-2 text-sm font-semibold text-[#1E293B]">Titulo</label>
+
+            <InputForm 
+              type="text"
+              name="title" 
+              placeholder="Digite o titulo"
+              v-model="form.title"
+              :error="errors.title" />
+
+            <label 
+              for="input-title"
+              class="block my-2 text-sm font-semibold text-[#1E293B]">Descrição</label>
+
+            <textarea 
+              name="description" 
+              class="w-full h-[150px] border border-[#E2E8F0] rounded text-sm p-3 outline-none hover:border-[#7C3AED] focus:border-[#7C3AED]"
+              :class="{ 'border-red-400': errors.description }"
+              v-model="form.description"
+              :error="errors.description"></textarea> 
+
+            <p v-show="errors.description" class="text-xs text-red-400 mt-2">{{ errors.description }}</p> 
+
+            <div class="w-full flex justify-end">
+              <button 
+                aria-label="Botão para filtrar tarefas"
+                class="flex justify-center align-items text-sm font-normal gap-2 text-white bg-[#7C3AED] p-3 w-[135px] rounded hover:scale-95"
+                @click="createTaskBoard()">
+                  Criar
+              </button>
+            </div>
+          </form>
+        </template>
+    </Modal>
 
   </Layout>
 </template>
 
 <script setup>
 
-import { Plus, Trash, X } from 'lucide-vue-next'
+import { Plus, Trash } from 'lucide-vue-next'
 import { Link, useForm } from "@inertiajs/inertia-vue3"
 import { ref, onMounted } from 'vue'
 
@@ -130,10 +124,13 @@ import Layout from '../Template/Layout.vue'
 import InputForm from '../Components/InputForm.vue'
 
 import Notification from '../Components/Notification.vue'
+import Modal from '../Components/Modal.vue'
 
 const props = defineProps( ['taskboards', 'image', 'token'] )
 
-const openModal = ref(false)
+
+onMounted(() => jwttoken.setToken(props.token)) 
+
 
 const form = useForm({
   title: '',
@@ -144,10 +141,6 @@ const errors = ref({
   title: '',
   description: '',
 })
-
-
-onMounted(() => jwttoken.setToken(props.token)) 
-
 
 function createTaskBoard() {
   form.post(route('taskboard'), {
@@ -163,6 +156,13 @@ function createTaskBoard() {
 function deleteTaskBoards( id ) {
   const deleteForm = useForm({ id })
   deleteForm.delete(route('taskboard'))
+}
+
+const modalCreateTaskboard = ref(null)
+
+function handleOpenModal() {
+  if (modalCreateTaskboard.value)
+    modalCreateTaskboard.value.showModal()
 }
 
 </script>
