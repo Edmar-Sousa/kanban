@@ -29,7 +29,7 @@
 
               <button 
                 arial-label="Adicionar tarefa"
-                class="bg-[#7C3AED] rounded hover:scale-95 text-[#ffffff]" @click="openModal = true">
+                class="bg-[#7C3AED] rounded hover:scale-95 text-[#ffffff]" @click="handleOpenModal">
                   <Plus size="25" />
               </button>
             </div>
@@ -70,89 +70,69 @@
       </div>
     </main>
 
+    <Modal 
+      ref="modalCreateTask" 
+      title="Adicionar nova Tarefa" 
+      @close-modal="closeModal">
+        <template #modal-body>
+          <form action="#" method="POST" @submit.prevent>
+            <label 
+              for="input-title"
+              class="block my-2 text-sm font-semibold text-[#1E293B]">Tarefa</label>
 
-    <div class="fixed top-0 bottom-0 left-0 right-0 bg-[#00000033] flex justify-center items-center" v-show="openModal">
-      <div class="bg-white p-4 rounded w-full max-w-[500px]">
-        <div class="w-full flex justify-between">
-          <h2 class="font-bold">Adicionar nova Tarefa</h2>
+            <input-form 
+              type="text"
+              name="title" 
+              placeholder="Digite o titulo da terfa"
+              v-model="formInputTasks.title"
+              :error="formInputTasksErrors.title" />
 
-          <button arial-label="Close modal" @click="closeModal()">
-            <X size="20" />
-          </button>
-        </div>
+            <label 
+              for="input-title"
+              class="block my-2 text-sm font-semibold text-[#1E293B]">Descrição</label>
 
-        <form action="#" method="POST" @submit.prevent>
-          <label 
-            for="input-title"
-            class="block my-2 text-sm font-semibold text-[#1E293B]">Tarefa</label>
+            <textarea 
+              name="description" 
+              class="w-full h-[150px] border border-[#E2E8F0] rounded text-sm p-3 outline-none hover:border-[#7C3AED] focus:border-[#7C3AED]"
+              :class="{ 'border-red-400': formInputTasksErrors.description }"
+              v-model="formInputTasks.description"></textarea>
 
-          <input-form 
-            type="text"
-            name="title" 
-            placeholder="Digite o titulo da terfa"
-            v-model="formInputTasks.title"
-            :error="formInputTasksErrors.title" />
+            <p v-show="formInputTasksErrors.description" class="text-xs text-red-400 mt-2">{{ formInputTasksErrors.description }}</p>
 
-          <label 
-            for="input-title"
-            class="block my-2 text-sm font-semibold text-[#1E293B]">Descrição</label>
+            <div class="w-full flex justify-end">
+              <button 
+                aria-label="Botão para filtrar tarefas"
+                class="flex justify-center align-items text-sm font-normal gap-2 text-white bg-[#7C3AED] p-3 w-[135px] rounded hover:scale-95"
+                @click="addNewTask()">
+                  Adicionar
+              </button>
+            </div>
+          </form>
+        </template>
+    </Modal>
 
-          <textarea 
-            name="description" 
-            class="w-full h-[150px] border border-[#E2E8F0] rounded text-sm p-3 outline-none hover:border-[#7C3AED] focus:border-[#7C3AED]"
-            :class="{ 'border-red-400': formInputTasksErrors.description }"
-            v-model="formInputTasks.description"></textarea>
-
-          <p v-show="formInputTasksErrors.description" class="text-xs text-red-400 mt-2">{{ formInputTasksErrors.description }}</p>
-
-          <div class="w-full flex justify-end">
-            <button 
-              aria-label="Botão para filtrar tarefas"
-              class="flex justify-center align-items text-sm font-normal gap-2 text-white bg-[#7C3AED] p-3 w-[135px] rounded hover:scale-95"
-              @click="addNewTask()">
-                Adicionar
-            </button>
-          </div>
-        </form>
-      </div>
-    </div>
   </Layout>
 </template>
 
 <script setup>
 
-import { Plus, X } from 'lucide-vue-next'
+import { Plus } from 'lucide-vue-next'
+import { useForm } from "@inertiajs/inertia-vue3"
 import { computed, ref } from "vue"
-import { useForm, usePage } from "@inertiajs/inertia-vue3"
 
 import Layout from "../Template/Layout.vue"
 import Task from "../Components/Task.vue"
 import InputForm from "../Components/InputForm.vue"
 import Notification from "../Components/Notification.vue"
+import Modal from "../Components/Modal.vue"
 
 const props = defineProps( ["taskboard", "image"] )
-const openModal = ref(false)
 
-const formInputTasks = ref({
-  id: props.taskboard?.id,
-  title: "",
-  description: "",
-})
-
-const formInputTasksErrors = ref({
-  title: "",
-  description: "",
-})
 
 const taskToDo  = computed( () => props.taskboard?.tasks.filter( task => task.state == 1 ) )
 const taskDoing = computed( () => props.taskboard?.tasks.filter( task => task.state == 2 ) )
 const taskDone  = computed( () => props.taskboard?.tasks.filter( task => task.state == 3 ) )
 
-
-function closeModal() {
-  openModal.value = false
-  formInputTasks.value = { title: "", description: "" }
-}
 
 function dragStart( event, item ) {
   event.dataTransfer.dropEffect = "move"
@@ -173,6 +153,22 @@ function drop( event, state ) {
 
 }
 
+
+const formInputTasks = ref({
+  id: props.taskboard?.id,
+  title: "",
+  description: "",
+})
+
+function closeModal() {
+  formInputTasks.value = { title: "", description: "" }
+}
+
+const formInputTasksErrors = ref({
+  title: "",
+  description: "",
+})
+
 function addNewTask() {
   const form = useForm( { ...formInputTasks.value } )
 
@@ -182,14 +178,21 @@ function addNewTask() {
   })
 }
 
+
 function DeleteTask(task) {
   const form = useForm( { id: task.id } )
 
   form.delete(route("task"))
 }
 
-const page = usePage()
 
-const navigateToBack = computed( () => page.props.intended ? page.props.intended.url : null )
+const modalCreateTask = ref(null)
+
+function handleOpenModal() {
+
+  if (modalCreateTask.value)
+    modalCreateTask.value.showModal()
+
+}
 
 </script>

@@ -28,6 +28,7 @@ import { shallowRef } from 'vue'
 
 
 defineProps([ 'title' ])
+const emit = defineEmits([ 'closeModal' ])
 
 
 defineExpose({
@@ -44,6 +45,7 @@ function showModal() {
 
 function closeModal() {
     openModal.value = false
+    emit('closeModal')
 }
 
 </script>
