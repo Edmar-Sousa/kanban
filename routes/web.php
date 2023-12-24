@@ -30,6 +30,7 @@ Route::middleware('auth')->group(function () {
     ], function () {
         Route::get('/', [TeamController::class, 'index'])->name('index');
         Route::get('/list', [TeamController::class, 'list'])->name('list');
+        Route::get('/team/invites', [TeamController::class, 'invites'])->name('invites');
     });
 
     Route::get('/config', [ConfigController::class, 'index'])->name('config');

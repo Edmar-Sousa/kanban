@@ -80,8 +80,7 @@ class SocketController extends SocketIO
                 'type' => Notification::TYPE_INVITE,
             ] );
 
-            
-            $user->friends()->attach($logged_user->id);
+            $logged_user->friends()->attach($user->id);
 
             DB::commit();
 
@@ -99,6 +98,9 @@ class SocketController extends SocketIO
         catch ( Exception $err )
         {
             DB::rollBack();
+
+            print_r('line: ');
+            print_r($err->getLine());
 
             $this->sendToSocket( $logged_user->id, 'invite-friend-error', [
                 'status' => 'error',

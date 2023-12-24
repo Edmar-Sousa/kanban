@@ -30,7 +30,7 @@
                 <button 
                     type="button" 
                     class="w-[200px] rounded-md text-[#7C3AED] bg-[#7C3AED]/30 inline-flex items-center gap-2 justify-center h-10 text-base text-center ml-4"
-                    >
+                    @click="handleViewInvites">
                         <user-plus-2 size="20" />
                         <span>Convites</span>
                 </button>
@@ -106,6 +106,55 @@
             </template>
     </modal>
 
+
+    <modal 
+        ref="modalFriendsInvite"
+        title="Seu convites de amizade">
+            <template #modal-body>
+
+                <ul v-if="invitesData?.data.length">
+                    <li v-for="invite in invitesData.data"
+                        :key="invite.id"
+                        class="mt-4">
+
+                            <div class="inline-block">
+                                <img 
+                                    :src="loadImage(invite.source_user_data?.image)"
+                                    class="w-10 h-10 rounded-full" />
+                            </div>
+
+                            <div class="inline-block ml-3">
+                                <p class="text-base font-bold">{{ invite.source_user_data?.name }}</p>
+                                <p class="text-sm text-gray-600">{{ invite.source_user_data?.email }}</p>
+                            </div>
+
+                            <div class="inline-block float-right">
+                                <button 
+                                    type="button"
+                                    class="w-9 h-9 bg-green-500/50 text-green-700 leading-10 rounded-md mr-4 hover:scale-95">
+                                        <user-check size="20" class="mx-auto" />
+                                </button>
+
+                                <button
+                                    type="button"
+                                    class="w-9 h-9 bg-red-500/50 text-red-700 leading-10 rounded-md hover:scale-95">
+                                        <user-x size="20" class="mx-auto" />
+                                </button>
+                            </div>
+                    </li>
+                </ul>
+
+                <div v-else>
+                    <img 
+                        :src="require('~/images/undraw_invite_re_rrcp.svg').default"
+                        class="w-1/2 mx-auto my-5" />
+
+                    <h2 class="text-lg font-bold text-center text-[#1E293B]">Nenhum convite encontrado!</h2>
+                    <p class="text-base text-gray-600 text-center">Seus convites apareceram aqui</p>
+                </div>
+            </template>
+    </modal>
+
 </template>
 
 
@@ -113,7 +162,7 @@
 
 import axios from 'axios'
 
-import { UserPlus2 } from 'lucide-vue-next'
+import { UserPlus2, UserCheck, UserX } from 'lucide-vue-next'
 import { computed, shallowRef, ref, onMounted } from 'vue'
 
 
@@ -171,8 +220,6 @@ async function submitForm() {
 
 function handleAcceptInvite(id) {
 
-    console.log('ok')
-
     websocket.send({
         event: 'accept-invite',
         token: jwttoken.getToken(),
@@ -192,6 +239,24 @@ const modalSendInvite = ref(null)
 function handleOpenModal() {
     if (modalSendInvite.value)
         modalSendInvite.value.showModal()
+}
+
+
+const invitesData = shallowRef(null)
+const modalFriendsInvite = shallowRef(null)
+
+async function handleViewInvites() {
+    try {
+        const response = await axios.get(route('team.invites'));
+
+        invitesData.value = response.data
+
+        if (modalFriendsInvite.value)
+            modalFriendsInvite.value.showModal()
+    }
+    catch {
+        console.log('handleViewInvites(): error')
+    }
 }
 
 
