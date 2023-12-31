@@ -31,6 +31,7 @@ class TeamController extends Controller
             ->with([
                 'source_user_data' => fn ($query) => $query->select([ 'id', 'name', 'email', 'image' ]),
             ])
+            ->where('status', Friends::STATUS_ACEPTED)
             ->get();
 
         return response()->json($friends);
