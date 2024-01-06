@@ -60,7 +60,7 @@ class SocketController extends SocketIO
         {
             $user = User::where( 'email', $payload->data->email )->first();
 
-            if ( empty( $user ) )
+            if ( !isset( $user ) )
                 throw new Exception('Usuario não encontrado');
 
             DB::beginTransaction();
@@ -69,7 +69,7 @@ class SocketController extends SocketIO
                 ->where('source_user', $logged_user->id)
                 ->first();
 
-            if (!empty($fried))
+            if ( isset($fried) )
                 throw new Exception('Convite já enviado para o usuario');
 
 
@@ -98,9 +98,6 @@ class SocketController extends SocketIO
         catch ( Exception $err )
         {
             DB::rollBack();
-
-            print_r('line: ');
-            print_r($err->getLine());
 
             $this->sendToSocket( $logged_user->id, 'invite-friend-error', [
                 'status' => 'error',
@@ -154,7 +151,6 @@ class SocketController extends SocketIO
         {
             DB::rollBack();
 
-            print_r($err->getMessage());
 
             $from->send(json_encode([
                 'event' => 'accept-invite-error',

@@ -78,7 +78,9 @@
           <form action="#" method="POST" @submit.prevent>
             <label 
               for="input-title"
-              class="block my-2 text-sm font-semibold text-[#1E293B]">Tarefa</label>
+              class="block my-2 text-sm font-semibold text-[#1E293B]">
+                Tarefa
+            </label>
 
             <input-form 
               type="text"
@@ -89,13 +91,16 @@
 
             <label 
               for="input-title"
-              class="block my-2 text-sm font-semibold text-[#1E293B]">Descrição</label>
+              class="block my-2 text-sm font-semibold text-[#1E293B]">
+                Descrição
+            </label>
 
             <textarea 
               name="description" 
               class="w-full h-[150px] border border-[#E2E8F0] rounded text-sm p-3 outline-none hover:border-[#7C3AED] focus:border-[#7C3AED]"
               :class="{ 'border-red-400': formInputTasksErrors.description }"
-              v-model="formInputTasks.description"></textarea>
+              v-model="formInputTasks.description">
+            </textarea>
 
             <p v-show="formInputTasksErrors.description" class="text-xs text-red-400 mt-2">{{ formInputTasksErrors.description }}</p>
 

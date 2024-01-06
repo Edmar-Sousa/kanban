@@ -30,8 +30,12 @@ class TeamController extends Controller
             'source_user',
             'status',
         ])
-            ->where('destination_user', Auth::user()->id)
-            ->orWhere('source_user', Auth::user()->id)
+            ->where(fn ($query) =>
+                $query->where('destination_user', Auth::user()->id)
+                    ->orWhere('source_user', Auth::user()->id)
+            )
+            ->where('status', Friends::STATUS_ACEPTED)
+
             ->with([
                 'source_user_data' => fn ($query) => $query->select([ 'id', 'name', 'email', 'image' ]),
                 'destination_user_data' => fn ($query) => $query->select([ 'id', 'name', 'email', 'image' ]),

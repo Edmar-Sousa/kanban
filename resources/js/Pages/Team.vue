@@ -91,16 +91,13 @@
 
     <modal 
         ref="modalSendInvite" 
-        title="Enviar convite">
+        title="Enviar convite"
+        @close-modal="clearMessages">
             <template #modal-body>
-                <div 
-                    v-show="messageresponse.status.length"
-                    class="w-full p-4 mt-3 text-lg font-bold border rounded" 
-                    :class="messagestyle">
-                        <p>
-                            {{ messageresponse.message }}
-                        </p>
-                </div>
+                <form-alert 
+                    v-if="messageresponse.status"
+                    :message="messageresponse.message"
+                    :type="messageresponse.status" /> 
 
                 <form action="#" method="POST" @submit.prevent>
                     <div class="my-4">
@@ -182,7 +179,7 @@ import axios from 'axios'
 import { UserPlus2, UserCheck, UserX } from 'lucide-vue-next'
 import { computed, shallowRef, ref, onMounted } from 'vue'
 
-
+import FormAlert from '../Components/FormAlert.vue'
 import Layout from '../Template/Layout.vue'
 import InputForm from '../Components/InputForm.vue'
 import Notification from '../Components/Notification.vue'
@@ -212,7 +209,7 @@ onMounted(() => {
 function filterByLetter( letter ) {
     return friendsList.value.filter( friend => { 
         const firstLetter = friend.source_user_data.id == props.id  ?
-           friend.destination_user_data.name.charAt(0)       :
+           friend.destination_user_data.name.charAt(0) :
            friend.source_user_data.name.charAt(0) 
 
 
@@ -227,10 +224,14 @@ const messageresponse = ref({
     message: '',
 })
 
-const messagestyle = computed(() => messageresponse.value.status == 'success' 
-    ? 'border-green-700 text-green-700 bg-green-400'
-    : 'border-red-700 text-red-700 bg-red-400'
-)
+function clearMessages() {
+    messageresponse.value = {
+        status: '',
+        message: '',
+    }
+
+    email.value = ''
+}
 
 async function submitForm() {
     websocket.send({
@@ -256,8 +257,18 @@ function handleAcceptInvite(id) {
         },
     })
 
-    websocket.recv('accept-invite-success', data => console.log(data))
-    websocket.recv('accept-invite-error', data => console.log(data))
+    websocket.recv('accept-invite-success', data => {
+        messageresponse.value = data
+
+        handleViewInvites()
+        findFrinds()
+    })
+    websocket.recv('accept-invite-error', data => {
+        messageresponse.value = data
+
+        handleViewInvites()
+        findFrinds()
+    })
 
 }
 
