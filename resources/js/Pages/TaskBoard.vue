@@ -60,7 +60,8 @@
 
     <Modal 
       ref="modalCreateTaskboard" 
-      title="Adicionar nova Board">
+      title="Adicionar nova Board"
+      @close-modal="clearMessages">
         <template #modal-body>
           <form-alert 
             v-if="$page.props?.flash.status"
@@ -110,7 +111,7 @@
 <script setup>
 
 import { ref, onMounted } from 'vue'
-import { Link, useForm } from "@inertiajs/inertia-vue3"
+import { Link, useForm, usePage } from "@inertiajs/inertia-vue3"
 import { Plus, Trash } from 'lucide-vue-next'
 
 import jwttoken from '../Utils/jwttoken'
@@ -159,6 +160,14 @@ const modalCreateTaskboard = ref(null)
 function handleOpenModal() {
   if (modalCreateTaskboard.value)
     modalCreateTaskboard.value.showModal()
+}
+
+
+const page = usePage()
+
+function clearMessages() {
+  if ( page.props.value.flash )
+    page.props.value.flash = {}
 }
 
 </script>
