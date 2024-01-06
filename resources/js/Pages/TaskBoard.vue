@@ -62,15 +62,10 @@
       ref="modalCreateTaskboard" 
       title="Adicionar nova Board">
         <template #modal-body>
-          <div 
+          <form-alert 
             v-if="$page.props?.flash.status"
-            class="w-full p-4 mt-3 text-lg font-bold border rounded" 
-            :class="{ 
-              'border-green-700 text-green-700 bg-green-400': $page.props?.flash.status == 2,
-              'border-red-700 text-red-700 bg-red-400': $page.props?.flash.status == 1,
-            }">
-              <p>{{ $page.props?.flash.message }}</p>
-          </div>
+            :message="$page.props?.flash.message"
+            :type="$page.props?.flash.status" /> 
 
           <form action="#" method="POST" @submit.prevent>
             <label 
@@ -114,12 +109,13 @@
 
 <script setup>
 
-import { Plus, Trash } from 'lucide-vue-next'
-import { Link, useForm } from "@inertiajs/inertia-vue3"
 import { ref, onMounted } from 'vue'
+import { Link, useForm } from "@inertiajs/inertia-vue3"
+import { Plus, Trash } from 'lucide-vue-next'
 
 import jwttoken from '../Utils/jwttoken'
 
+import FormAlert from '../Components/FormAlert.vue'
 import Layout from '../Template/Layout.vue'
 import InputForm from '../Components/InputForm.vue'
 
