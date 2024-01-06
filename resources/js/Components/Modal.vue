@@ -8,7 +8,7 @@
                     {{ title }}
                 </h2>
 
-                <button arial-label="Close modal" @click="openModal = false">
+                <button arial-label="Close modal" @click="handleCloseModal">
                     <X size="20" />
                 </button>
             </div>
@@ -33,7 +33,6 @@ const emit = defineEmits([ 'closeModal' ])
 
 defineExpose({
     showModal,
-    closeModal,
 })
 
 const openModal = shallowRef(false)
@@ -43,9 +42,11 @@ function showModal() {
 }
 
 
-function closeModal() {
+function handleCloseModal() {
     openModal.value = false
+
     emit('closeModal')
 }
+
 
 </script>

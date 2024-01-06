@@ -49,13 +49,13 @@ class TaskBoardController extends Controller
             
             return redirect()->route( 'taskboard' )->with( [
                     'message' => 'bBoard de tarefas criado com sucesso!',
-                    'status' => 2
+                    'status' => 'success'
                 ] );
         }
         
         return redirect()->route( 'taskboard' )->with( [
                 'message' => 'Erro ao criar o board de tarefas! Tente atualizar seu plano.',
-                'status' => 1
+                'status' => 'error'
             ] );
     }
 
