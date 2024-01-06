@@ -14,12 +14,15 @@ class TeamController extends Controller
     {
         return Inertia::render('Team', [
             'image' =>  Auth::user()->image,
+            'id' => Auth::user()->id,
         ]);
     }
 
 
-    public function list()
+    public function list(Request $request)
     {
+
+        $perPage = $request->per_page ?? 10;
 
         $friends = Friends::select([
             'id',
@@ -28,11 +31,14 @@ class TeamController extends Controller
             'status',
         ])
             ->where('destination_user', Auth::user()->id)
+            ->orWhere('source_user', Auth::user()->id)
             ->with([
                 'source_user_data' => fn ($query) => $query->select([ 'id', 'name', 'email', 'image' ]),
+                'destination_user_data' => fn ($query) => $query->select([ 'id', 'name', 'email', 'image' ]),
             ])
             ->where('status', Friends::STATUS_ACEPTED)
             ->get();
+
 
         return response()->json($friends);
     }
@@ -51,4 +57,6 @@ class TeamController extends Controller
 
         return response()->json($friends);
     }
+
+
 }

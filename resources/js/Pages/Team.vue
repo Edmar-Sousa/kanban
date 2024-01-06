@@ -43,13 +43,29 @@
                     <ul class="mt-5">
                         <li class="px-10 mt-4 flex items-center" v-for="( friend, i ) in filterByLetter( letter )" :key="i">
                             <img 
-                                :src="loadImage( friend.source_user_data.image )" 
+                                :src="loadImage( 
+                                    friend.source_user_data.id == id ?
+                                    friend.destination_user_data.image :
+                                    friend.source_user_data.image
+                                )"
                                 alt="imagem de perfil"
                                 class="w-16 h-16 mx-7 rounded-full" />
                             
                             <div>
-                                <p class="font-bold text-xl">{{ friend.source_user_data.name }}</p>
-                                <p class="text-base text-[#1E293B]">{{ friend.source_user_data.email }}</p>
+                                <p class="font-bold text-xl">
+                                    {{ 
+                                        friend.source_user_data.id == id ? 
+                                        friend.destination_user_data.name : 
+                                        friend.source_user_data.name 
+                                    }}
+                                </p>
+                                <p class="text-base text-[#1E293B]">
+                                    {{ 
+                                        friend.source_user_data.id == id ? 
+                                        friend.destination_user_data.name : 
+                                        friend.source_user_data.email 
+                                    }}
+                                </p>
                             </div>
                         </li>
                     </ul>
@@ -131,7 +147,8 @@
                             <div class="inline-block float-right">
                                 <button 
                                     type="button"
-                                    class="w-9 h-9 bg-green-500/50 text-green-700 leading-10 rounded-md mr-4 hover:scale-95">
+                                    class="w-9 h-9 bg-green-500/50 text-green-700 leading-10 rounded-md mr-4 hover:scale-95"
+                                    @click="handleAcceptInvite(invite.id)">
                                         <user-check size="20" class="mx-auto" />
                                 </button>
 
@@ -174,12 +191,16 @@ import Modal from '../Components/Modal.vue'
 import websocket from '../Utils/websocket'
 import jwttoken from '../Utils/jwttoken'
 
-const props = defineProps( [ 'image', 'friends' ] )
+const props = defineProps( [ 'image', 'id' ] )
 
 
 const friendsList = ref([])
 
-const getFirstLetterFriendsList = computed( () => new Set( friendsList.value.map( friend => friend.source_user_data.name.charAt(0) ) ) )
+const getFirstLetterFriendsList = computed( () => new Set( friendsList.value.map( friend => { 
+    return friend.source_user_data.id == props.id       ?
+           friend.destination_user_data.name.charAt(0)  :
+           friend.source_user_data.name.charAt(0) 
+} ) ) )
 
 onMounted(() => {
     websocket.connect(jwttoken.getToken())
@@ -189,7 +210,14 @@ onMounted(() => {
 
 
 function filterByLetter( letter ) {
-    return friendsList.value.filter( friend => friend.source_user_data.name.charAt(0) == letter )
+    return friendsList.value.filter( friend => { 
+        const firstLetter = friend.source_user_data.id == props.id  ?
+           friend.destination_user_data.name.charAt(0)       :
+           friend.source_user_data.name.charAt(0) 
+
+
+        return firstLetter == letter 
+    })
 }
 
 
