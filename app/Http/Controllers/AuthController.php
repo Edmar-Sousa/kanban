@@ -33,7 +33,7 @@ class AuthController extends Controller
 
             Session::put('jwt_token', JWTAuth::fromUser($user));
 
-            return redirect()->route('taskboard');
+            return redirect()->route('taskboard.index');
         }
     }
 

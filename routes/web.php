@@ -15,9 +15,15 @@ use App\Http\Controllers\TeamController;
 
 Route::middleware('auth')->group(function () {
     
-    Route::get('/task-board', [TaskBoardController::class, 'index'])->name('taskboard');
-    Route::post('/task-board', [TaskBoardController::class, 'store'])->name('taskboard');
-    Route::delete('/task-board', [TaskBoardController::class, 'delete'])->name('taskboard');
+    Route::group([
+        'as' => 'taskboard.',
+        'prefix' => '/task-board'
+    ], function () {
+
+        Route::get('/', [TaskBoardController::class, 'index'])->name('index');
+        Route::post('/', [TaskBoardController::class, 'store'])->name('create');
+        Route::delete('/', [TaskBoardController::class, 'delete'])->name('delete');
+    });
     
     Route::get('/task-board/task/{id}', [TaskController::class, 'index'])->name('task');
     Route::post('/task-board/task', [TaskController::class, 'store'])->name('task');

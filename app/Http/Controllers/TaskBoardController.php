@@ -47,13 +47,13 @@ class TaskBoardController extends Controller
         {
             $this->task_board_model->create_taskboard( $request->validated(), Auth::user()->id );
             
-            return redirect()->route( 'taskboard' )->with( [
+            return redirect()->route( 'taskboard.index' )->with( [
                     'message' => 'Board de tarefas criado com sucesso!',
                     'status' => 'success'
                 ] );
         }
         
-        return redirect()->route( 'taskboard' )->with( [
+        return redirect()->route( 'taskboard.index' )->with( [
                 'message' => 'Erro ao criar o board de tarefas! Tente atualizar seu plano.',
                 'status' => 'error'
             ] );

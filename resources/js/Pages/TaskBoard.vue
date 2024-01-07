@@ -146,7 +146,7 @@ const errors = ref({
 })
 
 function createTaskBoard() {
-  form.post(route('taskboard'), {
+  form.post(route('taskboard.create'), {
     onSuccess: () => { 
       form.title = '' 
       form.description = ''
@@ -158,7 +158,7 @@ function createTaskBoard() {
 
 function deleteTaskBoards( id ) {
   const deleteForm = useForm({ id })
-  deleteForm.delete(route('taskboard'))
+  deleteForm.delete(route('taskboard.delete'))
 }
 
 const modalCreateTaskboard = ref(null)

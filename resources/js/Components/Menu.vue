@@ -18,7 +18,7 @@
             class="flex gap-4 items-center text-[#CAB3FF] hover:text-[#FFFFFF]" 
             :class="{ 'text-[#FFFFFF]': $page.url.startsWith('/task-board') }">
               <TabletIcon />
-              <Link :href="route('taskboard')" class="font-bold text-4">Boards</Link>
+              <Link :href="route('taskboard.index')" class="font-bold text-4">Boards</Link>
           </li>
           
           <li 

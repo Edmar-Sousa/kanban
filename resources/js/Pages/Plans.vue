@@ -7,7 +7,7 @@
     <main class="w-full p-5">
         
         <div class="h-8 mb-14">
-            <Link :href="route('taskboard')" class="flex items-center text-[#7C3AED]">
+            <Link :href="route('taskboard.index')" class="flex items-center text-[#7C3AED]">
                 <arrow-icon /> Voltar para pagina principal
             </Link>
         </div>
