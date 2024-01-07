@@ -151,7 +151,7 @@ function drop( event, state ) {
 
   const form = useForm( { id: task.id, state } )
 
-  form.put(route("task", { id: task.id, }), {
+  form.put(route('taskboard.task.update', { id: task.id, }), {
     onSuccess: () => task.state = state,
     onError: err => console.log(err)
   })
@@ -177,7 +177,7 @@ const formInputTasksErrors = ref({
 function addNewTask() {
   const form = useForm( { ...formInputTasks.value } )
 
-  form.post(route("task"), {
+  form.post(route("taskboard.task.create"), {
     onSuccess: () => formInputTasks.value = { id: props.taskboard?.id, title: "", description: "" },
     onError: errors => formInputTasksErrors.value = errors
   })
@@ -187,7 +187,7 @@ function addNewTask() {
 function DeleteTask(task) {
   const form = useForm( { id: task.id } )
 
-  form.delete(route("task"))
+  form.delete(route("taskboard.task.delete"))
 }
 
 

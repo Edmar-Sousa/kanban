@@ -48,7 +48,7 @@
                 </button>
 
                 <Link 
-                  :href="`${route('task')}/${taskboard.id}`" 
+                  :href="route('taskboard.task.index', { id: taskboard.id })" 
                   class="text-sm py-1 px-2 font-medium rounded bg-[#E2D6FF] text-[#7C3AED]">
                     Visualizar
                 </Link>

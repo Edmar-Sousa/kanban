@@ -23,12 +23,20 @@ Route::middleware('auth')->group(function () {
         Route::get('/', [TaskBoardController::class, 'index'])->name('index');
         Route::post('/', [TaskBoardController::class, 'store'])->name('create');
         Route::delete('/', [TaskBoardController::class, 'delete'])->name('delete');
+
+        Route::group([
+            'as' => 'task.',
+            'prefix' => '/task',
+        ], function () {
+
+            Route::get('/{id}', [TaskController::class, 'index'])->name('index');
+            Route::post('/', [TaskController::class, 'store'])->name('create');
+            Route::put('/', [TaskController::class, 'update'])->name('update');
+            Route::delete('/', [TaskController::class, 'delete'])->name('delete');
+        });
+
     });
     
-    Route::get('/task-board/task/{id}', [TaskController::class, 'index'])->name('task');
-    Route::post('/task-board/task', [TaskController::class, 'store'])->name('task');
-    Route::put('/task-board/task', [TaskController::class, 'update'])->name('task');
-    Route::delete('/task-board/task', [TaskController::class, 'delete'])->name('task');
 
     Route::group([
         'as' => 'team.',
@@ -36,7 +44,7 @@ Route::middleware('auth')->group(function () {
     ], function () {
         Route::get('/', [TeamController::class, 'index'])->name('index');
         Route::get('/list', [TeamController::class, 'list'])->name('list');
-        Route::get('/team/invites', [TeamController::class, 'invites'])->name('invites');
+        Route::get('/invites', [TeamController::class, 'invites'])->name('invites');
     });
 
     Route::get('/config', [ConfigController::class, 'index'])->name('config');
