@@ -61,12 +61,12 @@ import { Menu, X,  } from 'lucide-vue-next'
 import { Link } from "@inertiajs/inertia-vue3"
 import { shallowRef } from 'vue'
 
-import TabletIcon from "../Icon/Table.vue"
-import PeopleIcon from "../Icon/People.vue"
-import DocumentIcon from "../Icon/Document.vue"
-import ConfigIcon from "../Icon/Config.vue"
-import LogOutIcon from "../Icon/LogOut.vue"
-import DollarIcon from "../Icon/Dollar.vue"
+import TabletIcon from "@/Icon/Table.vue"
+import PeopleIcon from "@/Icon/People.vue"
+import DocumentIcon from "@/Icon/Document.vue"
+import ConfigIcon from "@/Icon/Config.vue"
+import LogOutIcon from "@/Icon/LogOut.vue"
+import DollarIcon from "@/Icon/Dollar.vue"
 
 
 const openMenu = shallowRef( false )

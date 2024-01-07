@@ -120,14 +120,14 @@ import { ref, onMounted } from 'vue'
 import { Link, useForm, usePage } from "@inertiajs/inertia-vue3"
 import { Plus, Trash } from 'lucide-vue-next'
 
-import jwttoken from '../Utils/jwttoken'
+import jwttoken from '@/Utils/jwttoken'
 
-import FormAlert from '../Components/FormAlert.vue'
-import Layout from '../Template/Layout.vue'
-import InputForm from '../Components/InputForm.vue'
+import FormAlert from '@/Components/FormAlert.vue'
+import Layout from '@/Template/Layout.vue'
+import InputForm from '@/Components/InputForm.vue'
 
-import Notification from '../Components/Notification.vue'
-import Modal from '../Components/Modal.vue'
+import Notification from '@/Components/Notification.vue'
+import Modal from '@/Components/Modal.vue'
 
 const props = defineProps( ['taskboards', 'image', 'token'] )
 

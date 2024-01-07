@@ -72,7 +72,7 @@ import { useForm, Link } from "@inertiajs/inertia-vue3"
 import { useVuelidate } from "@vuelidate/core"
 import { required, email, minLength, helpers } from "@vuelidate/validators"
 
-import InputForm from "../Components/InputForm.vue"
+import InputForm from "@/Components/InputForm.vue"
 
 const rules = {
     email: {

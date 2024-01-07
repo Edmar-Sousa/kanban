@@ -69,13 +69,14 @@
 
 <script setup>
 
+
+import axios from 'axios'
+
 import { Bell, AlertTriangle } from 'lucide-vue-next'
 import { shallowRef, computed, onMounted, onUnmounted } from 'vue'
 
-import socket from '../Utils/websocket'
-import jwttoken from '../Utils/jwttoken'
-
-import axios from 'axios'
+import socket from '@/Utils/websocket'
+import jwttoken from '@/Utils/jwttoken'
 
 const openNotificationMenu = shallowRef( false )
 const menuElement = shallowRef( null )

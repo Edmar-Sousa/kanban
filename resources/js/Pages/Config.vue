@@ -171,8 +171,8 @@ import { useForm } from "@inertiajs/inertia-vue3"
 import { useVuelidate } from "@vuelidate/core"
 import { minLength, maxLength, integer, helpers } from "@vuelidate/validators"
 
-import Layout from "../Template/Layout.vue"
-import InputForm from "../Components/InputForm.vue"
+import Layout from "@/Template/Layout.vue"
+import InputForm from "@/Components/InputForm.vue"
 
 const props = defineProps(["user", "address"])
 const inputfile = ref()

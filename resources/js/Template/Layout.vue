@@ -7,6 +7,6 @@
 
 <script setup>
 
-import Menu from "../Components/Menu.vue"
+import Menu from "@/Components/Menu.vue"
 
 </script>

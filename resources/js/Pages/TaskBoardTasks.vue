@@ -125,11 +125,11 @@ import { Plus } from 'lucide-vue-next'
 import { useForm } from "@inertiajs/inertia-vue3"
 import { computed, ref } from "vue"
 
-import Layout from "../Template/Layout.vue"
-import Task from "../Components/Task.vue"
-import InputForm from "../Components/InputForm.vue"
-import Notification from "../Components/Notification.vue"
-import Modal from "../Components/Modal.vue"
+import Layout from "@/Template/Layout.vue"
+import Task from "@/Components/Task.vue"
+import InputForm from "@/Components/InputForm.vue"
+import Notification from "@/Components/Notification.vue"
+import Modal from "@/Components/Modal.vue"
 
 const props = defineProps( ["taskboard", "image"] )
 

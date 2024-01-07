@@ -179,14 +179,14 @@ import axios from 'axios'
 import { UserPlus2, UserCheck, UserX } from 'lucide-vue-next'
 import { computed, shallowRef, ref, onMounted } from 'vue'
 
-import FormAlert from '../Components/FormAlert.vue'
-import Layout from '../Template/Layout.vue'
-import InputForm from '../Components/InputForm.vue'
-import Notification from '../Components/Notification.vue'
-import Modal from '../Components/Modal.vue'
+import FormAlert from '@/Components/FormAlert.vue'
+import Layout from '@/Template/Layout.vue'
+import InputForm from '@/Components/InputForm.vue'
+import Notification from '@/Components/Notification.vue'
+import Modal from '@/Components/Modal.vue'
 
-import websocket from '../Utils/websocket'
-import jwttoken from '../Utils/jwttoken'
+import websocket from '@/Utils/websocket'
+import jwttoken from '@/Utils/jwttoken'
 
 const props = defineProps( [ 'image', 'id' ] )
 

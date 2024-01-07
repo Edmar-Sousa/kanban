@@ -33,7 +33,7 @@
 
 import { Link } from "@inertiajs/inertia-vue3"
 
-import ArrowIcon from "../Icon/Arrow.vue"
+import ArrowIcon from "@/Icon/Arrow.vue"
 
 
 </script>
