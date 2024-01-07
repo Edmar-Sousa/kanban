@@ -37,7 +37,7 @@
                     <div class="flex-1">
                         <label for="input-username" class="block mb-4 text-sm font-semibold text-[#1E293B]">Nome</label>
                         
-                        <InputForm 
+                        <input-form 
                             type="text"
                             name="username"
                             placeholder="Altere seu node de usuario"
@@ -56,7 +56,7 @@
                                 for="input-street"
                                 class="block mb-4 text-sm font-semibold text-[#1E293B]">Digite o nome da sua rua</label>
                                 
-                            <InputForm 
+                            <input-form 
                                 type="text"
                                 name="street"
                                 placeholder="Rua"
@@ -69,7 +69,7 @@
                                 for="input-zip-code"
                                 class="block mb-4 text-sm font-semibold text-[#1E293B]">Digite o cep</label>
                             
-                            <InputForm 
+                            <input-form 
                                 type="text"
                                 name="zip-code"
                                 placeholder="00000-000"
@@ -83,7 +83,7 @@
                                 for="input-number"
                                 class="block mb-4 text-sm font-semibold text-[#1E293B]">Digite o numero da sua casa</label>
                             
-                            <InputForm 
+                            <input-form 
                                 type="number"
                                 name="number"
                                 placeholder="Numero"
@@ -98,7 +98,7 @@
                                 for="input-complement"
                                 class="block mb-4 text-sm font-semibold text-[#1E293B]">Complemento</label>
                             
-                            <InputForm 
+                            <input-form 
                                 type="text"
                                 name="complement"
                                 placeholder="Complemento"
@@ -111,7 +111,7 @@
                                 for="input-uf"
                                 class="block mb-4 text-sm font-semibold text-[#1E293B]">Estado</label>
                             
-                            <InputForm 
+                            <input-form 
                                 type="text"
                                 name="uf"
                                 placeholder="UF"
@@ -125,7 +125,7 @@
                                 for="input-city"
                                 class="block mb-4 text-sm font-semibold text-[#1E293B]">Cidade</label>
                             
-                            <InputForm 
+                            <input-form 
                                 type="text"
                                 name="city"
                                 placeholder="Cidade"
@@ -139,7 +139,7 @@
                             for="input-neighborhood"
                             class="block mb-4 text-sm font-semibold text-[#1E293B]">Bairro</label>
                         
-                        <InputForm 
+                        <input-form 
                             type="text"
                             name="neighborhood"
                             placeholder="Bairro"

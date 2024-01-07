@@ -8,7 +8,7 @@
         <header class="p-5">
             <nav>
                 <Link :href="route('taskboard')" class="flex items-center text-[#7C3AED]">
-                    <ArrowIcon /> Voltar para pagina principal
+                    <arrow-icon /> Voltar para pagina principal
                 </Link>
             </nav>
         </header>

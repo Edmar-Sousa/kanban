@@ -24,7 +24,8 @@
 
           <button 
             arial-label="Criar um novo board"
-            class="bg-[#7C3AED] text-[#ffffff] rounded hover:scale-95" @click="handleOpenModal">
+            class="bg-[#7C3AED] text-[#ffffff] rounded hover:scale-95" 
+            @click="handleOpenModal">
               <plus size="25" />
           </button>
         </div>
@@ -42,7 +43,7 @@
                   arial-label="Deletar taskboard" 
                   class="hidden group-hover/item:block"
                   @click="deleteTaskBoards( taskboard.id )">
-                    <Trash size="20"
+                    <trash size="20"
                       class="w-[20px] h-[20px]" />
                 </button>
 
@@ -73,7 +74,7 @@
               for="input-title"
               class="block my-2 text-sm font-semibold text-[#1E293B]">Titulo</label>
 
-            <InputForm 
+            <input-form 
               type="text"
               name="title" 
               placeholder="Digite o titulo"
@@ -82,16 +83,21 @@
 
             <label 
               for="input-title"
-              class="block my-2 text-sm font-semibold text-[#1E293B]">Descrição</label>
+              class="block my-2 text-sm font-semibold text-[#1E293B]">
+                Descrição
+            </label>
 
             <textarea 
               name="description" 
               class="w-full h-[150px] border border-[#E2E8F0] rounded text-sm p-3 outline-none hover:border-[#7C3AED] focus:border-[#7C3AED]"
               :class="{ 'border-red-400': errors.description }"
               v-model="form.description"
-              :error="errors.description"></textarea> 
+              :error="errors.description">
+            </textarea> 
 
-            <p v-show="errors.description" class="text-xs text-red-400 mt-2">{{ errors.description }}</p> 
+            <p v-show="errors.description" class="text-xs text-red-400 mt-2">
+              {{ errors.description }}
+            </p> 
 
             <div class="w-full flex justify-end">
               <button 

@@ -17,7 +17,7 @@
                             for="input-email"
                             class="block mb-4 text-sm font-semibold text-[#1E293B]">E-mail</label>
                         
-                        <InputForm 
+                        <input-form 
                             type="email"
                             name="email"
                             placeholder="Digite seu email"
@@ -34,7 +34,7 @@
                             <a href="#" class="text-sm font-bold text-[#7C3AED]">Esqueceu a senha?</a>
                         </div>
 
-                        <InputForm 
+                        <input-form 
                             type="password"
                             name="password"
                             placeholder="Digite sua senha"

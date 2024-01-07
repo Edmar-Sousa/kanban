@@ -17,7 +17,7 @@
                             for="input-user-name"
                             class="block mb-4 text-sm font-semibold text-[#1E293B]">Nome</label>
 
-                        <InputForm
+                        <input-form
                             type="text"
                             name="user-name"
                             placeholder="Digite seu nome"
@@ -30,7 +30,7 @@
                             for="input-email"
                             class="block mb-4 text-sm font-semibold text-[#1E293B]">E-mail</label>
 
-                        <InputForm 
+                        <input-form 
                             type="email"
                             name="email"
                             placeholder="Digite seu e-mail"
@@ -43,7 +43,7 @@
                             for="input-password"
                             class="block mb-4 text-sm font-semibold text-[#1E293B]">Senha</label>
 
-                        <InputForm 
+                        <input-form 
                             type="password"
                             name="password"
                             placeholder="Digite sua senha"

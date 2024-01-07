@@ -7,9 +7,9 @@
     <main class="w-full p-5">
         
         <div class="h-8 mb-14">
-            <a :href="route('taskboard')" class="flex items-center text-[#7C3AED]">
-                <ArrowIcon /> Voltar para pagina principal
-            </a>
+            <Link :href="route('taskboard')" class="flex items-center text-[#7C3AED]">
+                <arrow-icon /> Voltar para pagina principal
+            </Link>
         </div>
 
         <div class="mx-auto max-w-[980px] flex flex-wrap items-center flex-col gap-6  md:flex-row md:items-stretch md:justify-between">

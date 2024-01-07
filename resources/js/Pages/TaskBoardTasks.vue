@@ -34,12 +34,12 @@
               </button>
             </div>
 
-            <Task 
+            <task 
               v-for="task in taskToDo" 
               :key="task.id" 
               :task="task" 
-              @dragStart="$event => dragStart($event, task)"
-              @onDelete="$event => DeleteTask(task)" />
+              @drag-start="$event => dragStart($event, task)"
+              @on-delete="$event => DeleteTask(task)" />
         </div>
 
         <div class="min-w-[368px]"
@@ -47,12 +47,12 @@
           @dragover.prevent
           @dragenter.prevent>
             <h2 class="font-bold text-xl text-[#403937]">Fazendo</h2>
-            <Task 
+            <task 
               v-for="task in taskDoing" 
               :key="task.id" 
               :task="task" 
-              @dragStart="$event => dragStart($event, task)"
-              @onDelete="$event => DeleteTask(task)" />
+              @drag-start="$event => dragStart($event, task)"
+              @on-delete="$event => DeleteTask(task)" />
           </div>
           
           <div class="min-w-[368px]"
@@ -60,12 +60,12 @@
             @dragover.prevent
             @dragenter.prevent>
               <h2 class="font-bold text-xl text-[#403937]">Feito</h2>
-              <Task 
+              <task 
                 v-for="task in taskDone" 
                 :key="task.id" 
                 :task="task" 
-                @dragStart="$event => dragStart($event, task)"
-                @onDelete="$event => DeleteTask(task)" />
+                @drag-start="$event => dragStart($event, task)"
+                @on-delete="$event => DeleteTask(task)" />
         </div>
       </div>
     </main>
