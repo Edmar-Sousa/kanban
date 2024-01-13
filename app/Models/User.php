@@ -109,17 +109,13 @@ class User extends Authenticatable implements JWTSubject
      * 
      *   @param int $id  The id of user to update data
      *   @param array $data  The data to update register
-     *   @param string $image_path  The image from uploaded file
      * 
      *   @return Illuminate\Database\Eloquent\Model  The model with data of register
      */
-    public function update_user(int $id, array $data, string $image_path)
+    public function update_user(int $id, array $data)
     {
         return $this->where('id', $id)
-            ->update([
-                'name'     =>  $data['username'],
-                'image'    =>  $image_path,
-            ]);
+            ->update($data);
     }
 
 

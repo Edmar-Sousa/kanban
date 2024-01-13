@@ -47,13 +47,16 @@ class UserController extends Controller
 
     public function update( UserUpdateRequest $request )
     {
-        $image_path = '/profile-picture.png';
         $data = $request->validated();
 
-        if ( $request->hasFile('image') )
-            $image_path = $request->file('image')->store('images', 'public');
+        $user_data = [
+            'name' => $data['username'],
+        ];
 
-        $this->user_model->update_user( Auth::user()->id, $data, $image_path );
+        if ( $request->hasFile('image') )
+            $user_data['image'] = $request->file('image')->store('images', 'public');
+
+        $this->user_model->update_user( Auth::user()->id, $user_data );
         $this->address_model->create_or_update_address( $data, Auth::user()->id );
 
         return redirect()->route('config');
