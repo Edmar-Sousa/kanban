@@ -165,44 +165,45 @@
 
 <script setup>
 
-import { ref } from "vue"
-import { useForm } from "@inertiajs/inertia-vue3"
+import { ref } from 'vue'
+import { useForm } from '@inertiajs/inertia-vue3'
+import { useToast } from 'vue-toast-notification'
 
-import { useVuelidate } from "@vuelidate/core"
-import { minLength, maxLength, integer, helpers } from "@vuelidate/validators"
+import { useVuelidate } from '@vuelidate/core'
+import { minLength, maxLength, integer, helpers } from '@vuelidate/validators'
 
-import Layout from "@/Template/Layout.vue"
-import InputForm from "@/Components/InputForm.vue"
+import Layout from '@/Template/Layout.vue'
+import InputForm from '@/Components/InputForm.vue'
 
-const props = defineProps(["user", "address"])
+const props = defineProps(['user', 'address'])
 const inputfile = ref()
 
 
 const rules = {
     username: {
-        minLength: helpers.withMessage( "Este campo deve ter no minimo 3 caracteres", minLength( 3 ) ),
-        maxLength: helpers.withMessage( "Este campo deve ter no maximo 40 caracteres", maxLength( 40 ) ),
+        minLength: helpers.withMessage( 'Este campo deve ter no minimo 3 caracteres', minLength( 3 ) ),
+        maxLength: helpers.withMessage( 'Este campo deve ter no maximo 40 caracteres', maxLength( 40 ) ),
     },
     street: {
-        minLength: helpers.withMessage( "Este campo deve ter no minimo 3 caracteres", minLength( 3 ) ),
+        minLength: helpers.withMessage( 'Este campo deve ter no minimo 3 caracteres', minLength( 3 ) ),
     },
     zip_code: {
-        integer: helpers.withMessage( "Este campo deve conter apenas numeros", integer )
+        integer: helpers.withMessage( 'Este campo deve conter apenas numeros', integer )
     },
     number: {
-        integer: helpers.withMessage( "Este campo deve conter apenas numeros", integer ),
+        integer: helpers.withMessage( 'Este campo deve conter apenas numeros', integer ),
     },
     complement: {
-        minLength: helpers.withMessage( "Este campo deve ter no minimo 3 caracteres", minLength( 3 ) ),
+        minLength: helpers.withMessage( 'Este campo deve ter no minimo 3 caracteres', minLength( 3 ) ),
     },
     uf: {
-        minLength: helpers.withMessage( "Este campo deve ter no minimo 3 caracteres", minLength( 2 ) ),
+        minLength: helpers.withMessage( 'Este campo deve ter no minimo 3 caracteres', minLength( 2 ) ),
     },
     city: {
-        minLength: helpers.withMessage( "Este campo deve ter no minimo 3 caracteres", minLength( 3 ) ),
+        minLength: helpers.withMessage( 'Este campo deve ter no minimo 3 caracteres', minLength( 3 ) ),
     },
     neighborhood: {
-        minLength: helpers.withMessage( "Este campo deve ter no minimo 3 caracteres", minLength( 3 ) ),
+        minLength: helpers.withMessage( 'Este campo deve ter no minimo 3 caracteres', minLength( 3 ) ),
     }
 }
 
@@ -223,18 +224,28 @@ const errors = ref({})
 
 const v$ = useVuelidate( rules, form )
 
-async function handleChangeZipcode( $event ) {
-    const data = await ( await fetch(`https://viacep.com.br/ws/${ $event.target.value }/json`, { 
-        headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-            "Access-Control-Allow-Origin": "*"
-        },
-        method: "GET",
-    }) ).json()
+const toast = useToast({
+  position: 'top-right',
+})
 
-    form.uf = data.uf
-    form.city = data.localidade
+async function handleChangeZipcode( $event ) {
+    try {
+        const data = await ( await fetch(`https://viacep.com.br/ws/${ $event.target.value }/json`, { 
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*'
+            },
+            method: 'GET',
+        }) ).json()
+    
+        form.uf = data.uf
+        form.city = data.localidade
+    }
+
+    catch {
+        toast.error('Erro ao buscar informações do cep')
+    }
 }
 
 
@@ -257,7 +268,7 @@ function submit() {
 
     if ( !v$.value.$error )
         form.post(route("user"), {
-            onSuccess: () => console.log("ok"),
+            onSuccess: () => toast.success('Dados atualizados com sucesso'),
             onError: err => errors.value = err
         })
 }

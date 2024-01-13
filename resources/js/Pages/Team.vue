@@ -178,6 +178,7 @@ import axios from 'axios'
 
 import { UserPlus2, UserCheck, UserX } from 'lucide-vue-next'
 import { computed, shallowRef, ref, onMounted } from 'vue'
+import { useToast } from 'vue-toast-notification'
 
 import FormAlert from '@/Components/FormAlert.vue'
 import Layout from '@/Template/Layout.vue'
@@ -281,6 +282,10 @@ function handleOpenModal() {
 }
 
 
+const toast = useToast({
+  position: 'top-right',
+})
+
 const invitesData = shallowRef(null)
 const modalFriendsInvite = shallowRef(null)
 
@@ -294,7 +299,7 @@ async function handleViewInvites() {
             modalFriendsInvite.value.showModal()
     }
     catch {
-        console.log('handleViewInvites(): error')
+        toast.error('Erro ao buscar convites, tente mais tarde')
     }
 }
 
@@ -307,7 +312,7 @@ async function findFrinds() {
     }
 
     catch {
-        console.log('ok')
+        toast.error('Erro ao fazer convite, tente mais tarde')
     }
 }
 
