@@ -14,7 +14,7 @@ class AlterTasksTableAddStartAndEndDate extends Migration
     public function up()
     {
         
-        Schema::table('plans', function (Blueprint $table) {
+        Schema::table('tasks', function (Blueprint $table) {
             $table->dateTime('start_date')->nullable();
             $table->dateTime('end_date')->nullable();
         });
@@ -28,7 +28,7 @@ class AlterTasksTableAddStartAndEndDate extends Migration
      */
     public function down()
     {
-        Schema::table('plans', function (Blueprint $table) {
+        Schema::table('tasks', function (Blueprint $table) {
             $table->dropColumn([ 'start_date', 'end_date' ]);
         });
     }

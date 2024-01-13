@@ -18,6 +18,8 @@ class StoreTaskRequest extends FormRequest
             'id'     => ['exists:task_boards,id'],
             'title'  => ['required', 'min:3'],
             'description' => ['required'],
+            'date_start' => ['date', 'after:now'],
+            'date_end' => ['nullable', 'date', 'after:date_start'],
         ];
     }
 
@@ -26,7 +28,9 @@ class StoreTaskRequest extends FormRequest
     {
         return [
             'title' => 'tarefa',
-            'description' => 'descrição'
+            'description' => 'descrição',
+            'date_start' => 'data de inicio',
+            'date_end' => 'data de fim',
         ];
     }
 
@@ -35,6 +39,10 @@ class StoreTaskRequest extends FormRequest
         return [
             'required' => 'O campo :attribute é obrigatorio.',
             'min'      => 'O campo :attribute deve ter no minimo :min caracteres.',
+            'date'     => 'O campo :attribute deve ser uma data valida',
+
+            'date_start.after' => 'O campo deve ser posterio a data atual',
+            'date_end.after' => 'O campo deve ser posterior a data de inicio'
         ];
     }
 }

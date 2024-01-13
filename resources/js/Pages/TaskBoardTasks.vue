@@ -76,6 +76,41 @@
       @close-modal="closeModal">
         <template #modal-body>
           <form action="#" method="POST" @submit.prevent>
+            <fieldset class="flex gap-2">
+              <div class="flex-1">
+                <label
+                  for="input-date-start"
+                  class="block my-2 text-sm font-semibold text-[#1E293B]">
+                    Data de inicio
+                </label>
+
+                <date-input
+                  type="text"
+                  name="date-start"
+                  placeholder="Data de inicio"
+                  v-model="formInputTasks.date_start"
+                  :error="formInputTasksErrors.date_start">
+                </date-input>
+              </div>
+
+              <div class="flex-1">
+                <label
+                  for="input-date-end"
+                  class="block my-2 text-sm font-semibold text-[#1E293B]">
+                    Data de fim
+                </label>
+
+                <date-input
+                  type="text"
+                  name="date-end"
+                  placeholder="Data de fim"
+                  v-model="formInputTasks.date_end"
+                  :error="formInputTasksErrors.date_end">
+                </date-input>
+              </div>
+
+            </fieldset>
+
             <label 
               for="input-title"
               class="block my-2 text-sm font-semibold text-[#1E293B]">
@@ -90,12 +125,13 @@
               :error="formInputTasksErrors.title" />
 
             <label 
-              for="input-title"
+              for="input-description"
               class="block my-2 text-sm font-semibold text-[#1E293B]">
                 Descrição
             </label>
 
             <textarea 
+              id="input-description"
               name="description" 
               class="w-full h-[150px] border border-[#E2E8F0] rounded text-sm p-3 outline-none hover:border-[#7C3AED] focus:border-[#7C3AED]"
               :class="{ 'border-red-400': formInputTasksErrors.description }"
@@ -128,6 +164,7 @@ import { computed, ref } from "vue"
 import Layout from "@/Template/Layout.vue"
 import Task from "@/Components/Task.vue"
 import InputForm from "@/Components/InputForm.vue"
+import DateInput from '../Components/DateInput.vue'
 import Notification from "@/Components/Notification.vue"
 import Modal from "@/Components/Modal.vue"
 
@@ -161,6 +198,8 @@ function drop( event, state ) {
 
 const formInputTasks = ref({
   id: props.taskboard?.id,
+  date_start: null,
+  date_end: null,
   title: "",
   description: "",
 })
@@ -178,7 +217,7 @@ function addNewTask() {
   const form = useForm( { ...formInputTasks.value } )
 
   form.post(route("taskboard.task.create"), {
-    onSuccess: () => formInputTasks.value = { id: props.taskboard?.id, title: "", description: "" },
+    onSuccess: () => formInputTasks.value = { id: props.taskboard?.id, title: "", description: "", date_start: null, date_end: null },
     onError: errors => formInputTasksErrors.value = errors
   })
 }
