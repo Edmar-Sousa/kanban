@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Inertia\Inertia;
 
 use App\Models\User;
@@ -12,6 +13,8 @@ use App\Models\Address;
 
 use App\Http\Requests\UserStoreRequest;
 use App\Http\Requests\UserUpdateRequest;
+
+use App\Jobs\UploadImageJob;
 
 class UserController extends Controller
 {
@@ -53,8 +56,20 @@ class UserController extends Controller
             'name' => $data['username'],
         ];
 
+
         if ( $request->hasFile('image') )
-            $user_data['image'] = $request->file('image')->store('images', 'public');
+        {
+            $file = $request->file('image');
+
+            $file_extension = $file->getClientOriginalExtension();
+            $file_name = Str::random(35) . time();
+
+            $store_path = storage_path('app/jobs') . '/' . $file_name . '.' . $file_extension;
+
+            move_uploaded_file($file->getRealPath(), $store_path);
+
+            UploadImageJob::dispatch(Auth::user()->id, $store_path, $file_name);
+        }
 
         $this->user_model->update_user( Auth::user()->id, $user_data );
         $this->address_model->create_or_update_address( $data, Auth::user()->id );
