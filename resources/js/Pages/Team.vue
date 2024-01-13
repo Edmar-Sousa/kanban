@@ -62,7 +62,7 @@
                                 <p class="text-base text-[#1E293B]">
                                     {{ 
                                         friend.source_user_data.id == id ? 
-                                        friend.destination_user_data.name : 
+                                        friend.destination_user_data.email : 
                                         friend.source_user_data.email 
                                     }}
                                 </p>
