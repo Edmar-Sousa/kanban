@@ -45,6 +45,8 @@ Route::middleware('auth')->group(function () {
         Route::get('/', [TeamController::class, 'index'])->name('index');
         Route::get('/list', [TeamController::class, 'list'])->name('list');
         Route::get('/invites', [TeamController::class, 'invites'])->name('invites');
+
+        Route::delete('/{id}', [TeamController::class, 'delete'])->name('delete');
     });
 
     Route::get('/config', [ConfigController::class, 'index'])->name('config');

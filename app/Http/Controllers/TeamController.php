@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\DeleteFriendRequest;
 use App\Models\Friends;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
@@ -10,6 +11,16 @@ use Illuminate\Support\Facades\Auth;
 
 class TeamController extends Controller
 {
+
+    protected Friends $friends_model;
+
+
+    public function __construct(Friends $friends_model)
+    {
+        $this->friends_model = $friends_model;
+    }
+
+
     public function index()
     {
         return Inertia::render('Team', [
@@ -63,4 +74,13 @@ class TeamController extends Controller
     }
 
 
+
+    public function delete(DeleteFriendRequest $request)
+    {
+        $this->friends_model->remove_friend( $request->input('id'), Auth::user()->id );
+
+        return response()->json([
+            'message' => 'Amigo removido com sucesso',
+        ]);
+    }
 }

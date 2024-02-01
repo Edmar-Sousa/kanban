@@ -51,7 +51,7 @@
                                 alt="imagem de perfil"
                                 class="w-16 h-16 mx-7 rounded-full" />
                             
-                            <div>
+                            <div class="flex-1">
                                 <p class="font-bold text-xl">
                                     {{ 
                                         friend.source_user_data.id == id ? 
@@ -66,6 +66,15 @@
                                         friend.source_user_data.email 
                                     }}
                                 </p>
+                            </div>
+
+                            <div>
+                                <button
+                                    type="button"
+                                    class="w-9 h-9 bg-red-500/50 text-red-700 leading-10 rounded-md hover:scale-95"
+                                    @click="handleDeleteFriend( friend.source_user_data.id == id ? friend.destination_user_data.id : friend.source_user_data.id)">
+                                        <user-x size="20" class="mx-auto" />
+                                </button>
                             </div>
                         </li>
                     </ul>
@@ -313,6 +322,23 @@ async function findFrinds() {
 
     catch {
         toast.error('Erro ao fazer convite, tente mais tarde')
+    }
+}
+
+
+async function handleDeleteFriend(id) {
+    try {
+        const response = await axios.delete(route('team.delete', { id }))
+
+        if (response.status == 200)
+        {
+            toast.success(response.data?.message)
+            findFrinds()
+        }
+    }
+
+    catch {
+        toast.error('Erro ao remover da lista de amigos')
     }
 }
 
