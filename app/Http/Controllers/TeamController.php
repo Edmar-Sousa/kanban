@@ -62,13 +62,7 @@ class TeamController extends Controller
 
     public function invites() 
     {
-        $friends = Friends::where('destination_user', Auth::user()->id)
-            ->where('status', Friends::STATUS_INVITED)
-            ->with([
-                'source_user_data'
-            ])
-            ->paginate(10);
-
+        $friends = $this->friends_model->find_user_invites( Auth::user()->id );
 
         return response()->json($friends);
     }

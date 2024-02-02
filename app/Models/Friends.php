@@ -47,4 +47,15 @@ class Friends extends Model
         })
         ->delete();
     }
+
+
+    public function find_user_invites( int $id ) 
+    {
+        return $this->where('destination_user', $id)
+            ->where('status', self::STATUS_INVITED)
+            ->with([
+                'source_user_data'
+            ])
+            ->paginate(10);
+    }
 }
