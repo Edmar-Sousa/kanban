@@ -35,6 +35,29 @@ class Friends extends Model
     }
 
 
+    public function list_friends( int $id )
+    {
+        return $this->select([
+            'id',
+            'destination_user',
+            'source_user',
+            'status',
+        ])
+            ->where(fn ($query) =>
+                $query->where('destination_user', $id )
+                    ->orWhere('source_user', $id)
+            )
+            ->where('status', self::STATUS_ACEPTED)
+
+            ->with([
+                'source_user_data' => fn ($query) => $query->select([ 'id', 'name', 'email', 'image' ]),
+                'destination_user_data' => fn ($query) => $query->select([ 'id', 'name', 'email', 'image' ]),
+            ])
+            ->where('status', self::STATUS_ACEPTED)
+            ->get();
+    }
+
+
     public function remove_friend(int $id, int $logged_user_id)
     {
         $this->where(function ($query) use ($id, $logged_user_id) {
