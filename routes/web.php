@@ -69,7 +69,18 @@ Route::post('/login', [AuthController::class, 'auth'])->name('login');
 
 Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
-Route::get('/registre-se', [UserController::class, 'create'])->name('register');
-Route::post('/registre-se', [UserController::class, 'store'])->name('register');
+
+Route::group([
+    'as' => 'register.',
+    'prefix' => '/registre-se',
+], function () {
+    
+    Route::get('/', [UserController::class, 'create'])->name('index');
+    Route::post('/', [UserController::class, 'store'])->name('create');
+
+
+    Route::post('/validate-step-one', [UserController::class, 'validateStepOne'])->name('step-one');
+    Route::post('/validate-step-two', [UserController::class, 'validateStepTwo'])->name('step-two');
+});
 
 Route::redirect('/', '/task-board');
