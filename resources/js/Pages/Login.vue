@@ -52,7 +52,7 @@
 
                     <p class="text-base font-normal text-[#475569]">
                         Ainda não tem uma conta? 
-                        <Link :href="route('register')" class="font-bold text-[#7C3AED]">Inscreva-se</Link>
+                        <Link :href="route('register.index')" class="font-bold text-[#7C3AED]">Inscreva-se</Link>
                     </p>
                 </form>
             </div>
