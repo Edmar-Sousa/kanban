@@ -13,8 +13,10 @@ use App\Models\Address;
 
 use App\Http\Requests\UserStoreRequest;
 use App\Http\Requests\UserUpdateRequest;
-
+use App\Http\Requests\ValidateStepOneRequest;
+use App\Http\Requests\ValidateStepTwoRequest;
 use App\Jobs\UploadImageJob;
+use Facade\FlareClient\Http\Response;
 
 class UserController extends Controller
 {
@@ -81,6 +83,18 @@ class UserController extends Controller
     public function list( Request $request )
     {
         
+    }
+
+
+
+    public function validateStepOne(ValidateStepOneRequest $request)
+    {
+        $request->validated();
+    }
+
+    public function validateStepTwo(ValidateStepTwoRequest $request)
+    {
+        $request->validated();
     }
 
 }
