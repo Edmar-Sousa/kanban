@@ -15,8 +15,10 @@ use App\Http\Requests\UserStoreRequest;
 use App\Http\Requests\UserUpdateRequest;
 use App\Http\Requests\ValidateStepOneRequest;
 use App\Http\Requests\ValidateStepTwoRequest;
+use App\Jobs\CreateCustomerAssas;
 use App\Jobs\UploadImageJob;
-use Facade\FlareClient\Http\Response;
+use App\Logic\ProcessFile;
+use GuzzleHttp\Client;
 
 class UserController extends Controller
 {
@@ -39,7 +41,20 @@ class UserController extends Controller
 
     public function store( UserStoreRequest $request )
     {
-        $this->user_model->store( $request->validated() );
+        $validated = $request->validated();
+
+        $createdUser = $this->user_model->store( $validated );
+
+        if ($request->hasFile('image'))
+            ProcessFile::processUploadFile($request, $createdUser);
+
+        CreateCustomerAssas::dispatch(
+            $createdUser->id,
+            $createdUser->name,
+            $createdUser->document,
+            $createdUser->phone
+        );
+
         return redirect()->route('login');
     }
 
@@ -60,18 +75,7 @@ class UserController extends Controller
 
 
         if ( $request->hasFile('image') )
-        {
-            $file = $request->file('image');
-
-            $file_extension = $file->getClientOriginalExtension();
-            $file_name = Str::random(35) . time();
-
-            $store_path = storage_path('app/jobs') . '/' . $file_name . '.' . $file_extension;
-
-            move_uploaded_file($file->getRealPath(), $store_path);
-
-            UploadImageJob::dispatch(Auth::user()->id, $store_path, $file_name);
-        }
+            ProcessFile::processUploadFile($request, Auth::user());
 
         $this->user_model->update_user( Auth::user()->id, $user_data );
         $this->address_model->create_or_update_address( $data, Auth::user()->id );

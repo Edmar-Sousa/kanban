@@ -21,6 +21,9 @@ class User extends Authenticatable implements JWTSubject
         'image',
         'password',
         'address_id',
+        'document', 
+        'phone',
+        'customer',
     ];
 
 
@@ -81,13 +84,17 @@ class User extends Authenticatable implements JWTSubject
      * 
      *   @throws Illuminate\Database\QueryException  Return a exception in case of failure
      */
-    public function store(array $userdata)
+    public function store(array $userdata): User
     {
-        return $this->create([
+        $user = $this->create([
             'name'     => $userdata['username'],
             'email'    => $userdata['email'],
             'password' => Hash::make($userdata['password']), 
+            'document' => $userdata['document'], 
+            'phone'    => $userdata['phone'],
         ]);
+
+        return $user;
     }
 
 
@@ -132,6 +139,16 @@ class User extends Authenticatable implements JWTSubject
         return $this->where( 'id', $user_id )
             ->update( [
                 'plan_id' => $plan_id
+            ] );
+    }
+
+
+
+    public function update_customer_from_user( int $user_id, string $customer_id )
+    {
+        return $this->where('id', $user_id)
+            ->update( [
+                'customer' => $customer_id,
             ] );
     }
 }

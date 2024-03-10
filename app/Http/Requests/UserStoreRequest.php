@@ -17,6 +17,9 @@ class UserStoreRequest extends FormRequest
             'username' => ['required', 'min:3', 'max:40'],
             'email'    => ['required', 'email', 'unique:users,email'],
             'password' => ['required', 'min:6', 'max:40'],
+            'document' => ['required'],
+            'phone'    => ['required'],
+            'image'    => ['required', 'mimes:png,jpg'],
         ];
     }
 
@@ -39,6 +42,9 @@ class UserStoreRequest extends FormRequest
             'username' => 'usuario',
             'email'    => 'e-mail',
             'password' => 'senha',
+            'document' => 'cpf',
+            'phone'    => 'telefone',
+            'image'    => 'imagem',
         ];
     }
 }
