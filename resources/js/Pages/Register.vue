@@ -30,7 +30,7 @@
                                 class="p-3 rounded-full bg-white border border-[#475569]"
                                 :class="{ 
                                     '!bg-[#7C3AED] text-white !border-[#7C3AED]' : amountStep == index,
-                                    '!border-green-600 text-green-600': amountStep > index
+                                    '!border-[#7C3AED] text-[#7C3AED]': amountStep > index
                                 }">
                                     <component :is="step.icon" class="mx-auto" :size="22" v-if="amountStep <= index" />
                                     <Check :size="22" v-else />
@@ -39,8 +39,7 @@
                             <p 
                                 class="text-sm mt-2 text-center"
                                 :class="{ 
-                                    'text-[#7C3AED]' : amountStep == index,
-                                    'text-green-600': amountStep > index,
+                                    'text-[#7C3AED]' : amountStep == index || amountStep > index
                                 }">
                                 {{ step.section }}
                             </p>
