@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\PaymentController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -14,7 +15,15 @@ use App\Http\Controllers\TeamController;
 
 
 Route::middleware('auth')->group(function () {
-    
+    Route::group([
+        'as' => 'payment.',
+        'prefix' => '/payment',
+    ], function () {
+
+        Route::get('/', [PaymentController::class, 'index'])->name('index');
+    });
+
+
     Route::group([
         'as' => 'taskboard.',
         'prefix' => '/task-board'
@@ -36,7 +45,7 @@ Route::middleware('auth')->group(function () {
         });
 
     });
-    
+
 
     Route::group([
         'as' => 'team.',
@@ -74,7 +83,7 @@ Route::group([
     'as' => 'register.',
     'prefix' => '/registre-se',
 ], function () {
-    
+
     Route::get('/', [UserController::class, 'create'])->name('index');
     Route::post('/', [UserController::class, 'store'])->name('create');
 
