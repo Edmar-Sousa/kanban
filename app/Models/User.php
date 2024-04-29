@@ -122,7 +122,7 @@ class User extends Authenticatable implements JWTSubject
     public function update_user(int $id, array $data)
     {
         return $this->where('id', $id)
-            ->update($data);
+                    ->update($data);
     }
 
 
@@ -137,9 +137,9 @@ class User extends Authenticatable implements JWTSubject
     public function update_plan( int $user_id, int $plan_id )
     {
         return $this->where( 'id', $user_id )
-            ->update( [
-                'plan_id' => $plan_id
-            ] );
+                    ->update( [
+                        'plan_id' => $plan_id
+                    ] );
     }
 
 
@@ -147,8 +147,8 @@ class User extends Authenticatable implements JWTSubject
     public function update_customer_from_user( int $user_id, string $customer_id )
     {
         return $this->where('id', $user_id)
-            ->update( [
-                'customer' => $customer_id,
-            ] );
+                    ->update( [
+                        'customer' => $customer_id,
+                    ] );
     }
 }

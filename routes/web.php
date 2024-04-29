@@ -20,7 +20,8 @@ Route::middleware('auth')->group(function () {
         'prefix' => '/payment',
     ], function () {
 
-        Route::get('/', [PaymentController::class, 'index'])->name('index');
+        Route::get('/{id}', [PaymentController::class, 'index'])->name('index');
+        Route::post('/', [PaymentController::class, 'create'])->name('create');
     });
 
 

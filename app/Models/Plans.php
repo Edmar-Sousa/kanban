@@ -52,9 +52,24 @@ class Plans extends Model
      * 
      *   @return Illuminate\Database\Eloquent\QueryBuilder  Return a query build to get the plan data
      */
-    public function get_plan_with_id( string $id )
+    private function get_plan( string $id )
     {
         return $this->select( '*' )
             ->where( 'id', $id );
+    }
+
+
+    public function get_plan_with_id( string $id )
+    {
+        return $this->get_plan($id)
+                    ->first();
+    }
+
+
+    public function get_plan_with_rules( string $id )
+    {
+        return $this->get_plan($id)
+                    ->with( ['plans_rule'] )
+                    ->first();
     }
 }

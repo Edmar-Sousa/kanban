@@ -24,7 +24,7 @@
                     </div>
 
                     <Link
-                        :href="route('payment.index')"
+                        :href="route('payment.index', { id: plan.id })"
                         v-if="plan.id != activite_plan"
                         class="flex items-center justify-center w-full h-14 mt-4 border border-[#1E293B] rounded-md text-[#1E293B] text-sm font-bold">
                             Assinar Agora
