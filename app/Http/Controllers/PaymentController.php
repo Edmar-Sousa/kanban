@@ -3,15 +3,14 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 
 
 use App\Http\Requests\CreditCardRequest;
+use App\Logic\AssasClient;
 use App\Models\Plans;
-use App\Models\User;
-use App\Services\AssasServices;
-use Carbon\Carbon;
-use Illuminate\Support\Facades\Auth;
 
 class PaymentController extends Controller
 {
@@ -49,7 +48,7 @@ class PaymentController extends Controller
         $dueData = Carbon::now()->addDay()->format('Y-m-d');
 
 
-        $assasService = new AssasServices();
+        $assasService = new AssasClient();
         $response = $assasService->createCreditCardPayment([
             'customer' => Auth::user()->customer,
             'dueDate' => $dueData,
