@@ -54,6 +54,19 @@ class PaymentController extends Controller
             'customer' => Auth::user()->customer,
             'dueDate' => $dueData,
             'value' => $plan->price,
+
+            'name' => '',
+            'creditCardNumber' => '',
+            'expiryMonth' => '',
+            'expiryYear' => '',
+            'cvv' => '',
+            'email' => '',
+            'cpf' => '',
+            'postalCode' => '',
+            'addressNumber' => '',
+            'phone' => '',
+
+            'ip' => '',
         ]);
 
 
