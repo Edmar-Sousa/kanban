@@ -9,6 +9,7 @@ use Inertia\Inertia;
 
 
 use App\Http\Requests\CreditCardRequest;
+use App\Jobs\CreditCardPaymentJob;
 use App\Logic\AssasClient;
 use App\Models\Plans;
 use App\Models\User;
@@ -39,11 +40,11 @@ class PaymentController extends Controller
     public function create(CreditCardRequest $request)
     {
         $forms = $request->validated();
-
+        $forms['ip'] = $request->ip();
 
         $user = $this->userModel->getUserWithAddress(Auth::user()->id);
 
-        // TODO adicionar a mensagem no front end
+
         if (is_null($user->address))
             return Redirect::back()
                 ->with('status', 'error')
@@ -56,38 +57,8 @@ class PaymentController extends Controller
         if (is_null($plan))
             return abort(404);
 
-        
-        $dueData = Carbon::now()->addDay()->format('Y-m-d');
 
-        [$monthExpired, $yearExpired] = explode('/', $forms['dateExpired']);
-
-        $assasService = new AssasClient();
-        $response = $assasService->createCreditCardPayment([
-            'customer' => $user->customer,
-            'dueDate' => $dueData,
-            'value' => $plan->price,
-
-            'name' => $forms['name'],
-            'creditCardNumber' => str_replace(' ', '', $forms['creditCardNumber']),
-
-            'expiryMonth' => $monthExpired,
-            'expiryYear' => $yearExpired,
-            
-            'cvv' => $forms['cvv'],
-
-            'email' => $user->email,
-            'cpf'   => $user->document,
-
-            'postalCode' => $user->address->zip_code,
-            'addressNumber' => $user->address->numero,
-            'phone' => preg_replace('/[^0-9]/', '', $user->phone),
-
-            'ip' => $request->ip(),
-        ]);
-
-
-        if ($response->status == 'CONFIRMED')
-            $this->userModel->update_plan($user->id, $plan->id);
+        CreditCardPaymentJob::dispatch($user, $plan, $forms);
 
 
         return Redirect::route('taskboard')
