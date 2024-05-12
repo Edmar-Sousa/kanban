@@ -1,4 +1,4 @@
-import { createApp, h } from 'vue'
+import { createApp, h, provide } from 'vue'
 import { createInertiaApp, Link, Head } from '@inertiajs/inertia-vue3'
 import { InertiaProgress } from '@inertiajs/progress'
 

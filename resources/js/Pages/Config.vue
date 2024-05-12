@@ -268,7 +268,6 @@ function submit() {
 
     if ( !v$.value.$error )
         form.post(route("user"), {
-            onSuccess: () => toast.success('Dados atualizados com sucesso'),
             onError: err => errors.value = err
         })
 }

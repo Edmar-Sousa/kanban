@@ -80,14 +80,12 @@ class UserController extends Controller
         $this->user_model->update_user( Auth::user()->id, $user_data );
         $this->address_model->create_or_update_address( $data, Auth::user()->id );
 
-        return redirect()->route('config');
-    }
-
-
-    public function list( Request $request )
-    {
         
+        return redirect()->route('config')
+                         ->with('status', 'success')
+                         ->with('message', 'Perfil atualizado com sucesso');
     }
+
 
 
 
