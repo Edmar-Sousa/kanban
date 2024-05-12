@@ -64,6 +64,21 @@ class User extends Authenticatable implements JWTSubject
     }
     
 
+    public function address()
+    {
+        return $this->hasOne(Address::class, 'user_id', 'id');
+    }
+
+
+
+    public function getUserWithAddress(string $id)
+    {
+        return $this->where('id', $id)
+                    ->with('address')
+                    ->first();
+    }
+
+
     /**
      *   This function return the user with the plan activite
      * 

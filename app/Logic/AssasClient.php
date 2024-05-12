@@ -12,19 +12,19 @@ class AssasClient
 
     private Client $assasHttpClient;
 
+    private array $headers;
+
 
     public function __construct()
     {
-        $this->assasHttpClient = new Client([
-            'base_uri' => env('ASSAS_API_URL'),
+        $this->assasHttpClient = new Client();
 
-            'headers' => [
-                'access_token' => env('ASSAS_API_KEY'),
-                
-                'accept' => 'application/json',
-                'content-type' => 'application/json',
-            ],
-        ]);
+        $this->headers = [
+            'access_token' => env('ASSAS_API_KEY'),
+            
+            'accept' => 'application/json',
+            'content-type' => 'application/json',
+        ];
     }
 
 
@@ -34,10 +34,13 @@ class AssasClient
 
         try 
         {
-            $response = $this->assasHttpClient->post('/customers', [
+            $response = $this->assasHttpClient->post(env('ASSAS_API_URL') . '/customers', [
+                'headers' => $this->headers,
                 'body' => json_encode($body),
             ]);
 
+
+            dd($response->getBody()->getContents());
 
             return json_decode($response->getBody()->getContents());
         }
@@ -69,42 +72,69 @@ class AssasClient
 
     public function createCreditCardPayment(array $data)
     {
-        $response = $this->assasHttpClient->post('/payments', [
-            'body' => json_encode([
-                'customer' => $data['customer'],
-                'billingType' => 'CREDIT_CARD',
+        try 
+        {
 
-                'value' => $data['value'],
-                'dueDate' => $data['dueDate'],
+            $response = $this->assasHttpClient->post( env('ASSAS_API_URL') . '/payments', [
+                'headers' => $this->headers,
 
-                'creditCard' => [
-                    'holderName' => $data['name'],
-                    'number' => $data['creditCardNumber'],
-                    
-                    'expiryMonth' => $data['expiryMonth'],
-                    'expiryYear' => $data['expiryYear'],
-    
-                    'cvv' => $data['cvv'],
-                ],
+                'body' => json_encode([
+                    'customer' => $data['customer'],
+                    'billingType' => 'CREDIT_CARD',
+
+                    'value' => $data['value'],
+                    'dueDate' => $data['dueDate'],
 
 
-                'creditCardHolderInfo' => [
-                    'name' => $data['name'],
-                    'email' => $data['email'],
-                    'cpfCnpj' => $data['cpf'],
-                    
-                    'postalCode' => $data['postalCode'],
-                    'addressNumber' => $data['addressNumber'],
+                    'creditCard' => [
+                        'holderName' => $data['name'],
+                        'number' => $data['creditCardNumber'],
+                        
+                        'expiryMonth' => $data['expiryMonth'],
+                        'expiryYear' => $data['expiryYear'],
+        
+                        'ccv' => $data['cvv'],
+                    ],
 
-                    'phone' => $data['phone'],
-                ],
 
-                'remoteIp' => $data['ip'],
-            ])
-        ]);
+                    'creditCardHolderInfo' => [
+                        'name' => $data['name'],
+                        'email' => $data['email'],
+                        'cpfCnpj' => $data['cpf'],
+                        
+                        'postalCode' => $data['postalCode'],
+                        'addressNumber' => $data['addressNumber'],
 
-        return json_decode($response->getBody()->getContents());
+                        'phone' => $data['phone'],
+                    ],
+
+                    'remoteIp' => $data['ip'],
+                ])
+            ]);
+
+            return json_decode($response->getBody()->getContents());
+        }
+
+        catch (GuzzleException $err)
+        {
+
+            Log::error('AssasClient http error: ', [
+                'body' => $data,
+                'message' => $err->getMessage(),
+            ]);
+
+            throw $err;
+        }
+        
+        catch (Exception $err) 
+        {
+            Log::error('AssasClient error: ', [
+                'body' => $data,
+                'message' => $err->getMessage(),
+            ]);
+
+            throw $err;
+        }
+
     }
-
-
 }

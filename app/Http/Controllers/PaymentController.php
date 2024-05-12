@@ -11,16 +11,20 @@ use Inertia\Inertia;
 use App\Http\Requests\CreditCardRequest;
 use App\Logic\AssasClient;
 use App\Models\Plans;
+use App\Models\User;
+use Illuminate\Support\Facades\Redirect;
 
 class PaymentController extends Controller
 {
 
     protected Plans $planModel;
+    protected User  $userModel;
 
 
-    public function __construct(Plans $planModel)
+    public function __construct(Plans $planModel, User $userModel)
     {
         $this->planModel = $planModel;
+        $this->userModel = $userModel;
     }
 
 
@@ -36,41 +40,59 @@ class PaymentController extends Controller
     {
         $forms = $request->validated();
 
-        dd(Auth::user()->customer);
 
+        $user = $this->userModel->getUserWithAddress(Auth::user()->id);
+
+        // TODO adicionar a mensagem no front end
+        if (is_null($user->address))
+            return Redirect::back()
+                ->with('status', 'error')
+                ->with('message', 'É necessario cadastrar um endereço');
+
+        
         $plan = $this->planModel->get_plan_with_id($forms['planId']);
-
 
         // temporario
         if (is_null($plan))
             return abort(404);
 
+        
         $dueData = Carbon::now()->addDay()->format('Y-m-d');
 
+        [$monthExpired, $yearExpired] = explode('/', $forms['dateExpired']);
 
         $assasService = new AssasClient();
         $response = $assasService->createCreditCardPayment([
-            'customer' => Auth::user()->customer,
+            'customer' => $user->customer,
             'dueDate' => $dueData,
             'value' => $plan->price,
 
-            'name' => '',
-            'creditCardNumber' => '',
-            'expiryMonth' => '',
-            'expiryYear' => '',
-            'cvv' => '',
-            'email' => '',
-            'cpf' => '',
-            'postalCode' => '',
-            'addressNumber' => '',
-            'phone' => '',
+            'name' => $forms['name'],
+            'creditCardNumber' => str_replace(' ', '', $forms['creditCardNumber']),
 
-            'ip' => '',
+            'expiryMonth' => $monthExpired,
+            'expiryYear' => $yearExpired,
+            
+            'cvv' => $forms['cvv'],
+
+            'email' => $user->email,
+            'cpf'   => $user->document,
+
+            'postalCode' => $user->address->zip_code,
+            'addressNumber' => $user->address->numero,
+            'phone' => preg_replace('/[^0-9]/', '', $user->phone),
+
+            'ip' => $request->ip(),
         ]);
 
 
-        dd($response);
+        if ($response->status == 'CONFIRMED')
+            $this->userModel->update_plan($user->id, $plan->id);
 
+
+        return Redirect::route('taskboard')
+            ->with('status', 'success')
+            ->with('message', 'Seu plano foi atualizado');
     }
 
 }
