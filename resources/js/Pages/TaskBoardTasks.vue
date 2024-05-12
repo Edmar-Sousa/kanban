@@ -114,7 +114,7 @@
             <label 
               for="input-title"
               class="block my-2 text-sm font-semibold text-[#1E293B]">
-                Tarefa
+                Tarefa:
             </label>
 
             <input-form 

@@ -232,7 +232,7 @@ async function handleChangeZipcode( $event ) {
     try {
         const data = await ( await fetch(`https://viacep.com.br/ws/${ $event.target.value }/json`, { 
             headers: {
-                Accept: 'application/json',
+                'Accept': 'application/json',
                 'Content-Type': 'application/json',
                 'Access-Control-Allow-Origin': '*'
             },
