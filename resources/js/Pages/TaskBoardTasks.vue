@@ -85,7 +85,6 @@
                 </label>
 
                 <date-input
-                  type="text"
                   name="date-start"
                   placeholder="Data de inicio"
                   v-model="formInputTasks.date_start"
@@ -101,7 +100,6 @@
                 </label>
 
                 <date-input
-                  type="text"
                   name="date-end"
                   placeholder="Data de fim"
                   v-model="formInputTasks.date_end"
@@ -217,7 +215,7 @@ function addNewTask() {
   const form = useForm( { ...formInputTasks.value } )
 
   form.post(route("taskboard.task.create"), {
-    onSuccess: () => formInputTasks.value = { id: props.taskboard?.id, title: "", description: "", date_start: null, date_end: null },
+    onSuccess: () => formInputTasks.value = { ...formInputTasks.value, title: "", description: "", date_start: null, date_end: null },
     onError: errors => formInputTasksErrors.value = errors
   })
 }
