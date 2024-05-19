@@ -2,28 +2,25 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
-use Inertia\Inertia;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Redirect;
 
+use Inertia\Inertia;
 
 use App\Http\Requests\CreditCardRequest;
 use App\Jobs\CreditCardPaymentJob;
-use App\Logic\AssasClient;
 use App\Models\Plans;
 use App\Models\Transaction;
 use App\Models\User;
+
 use Exception;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Redirect;
 
 class PaymentController extends Controller
 {
 
     protected Plans $planModel;
     protected User $userModel;
-
     protected Transaction $transactionModel;
 
 
@@ -99,4 +96,14 @@ class PaymentController extends Controller
     }
 
 
+    public function status(string $id)
+    {
+
+        $transaction = $this->transactionModel->checkStatusTransaction($id);
+
+        return response()->json([
+            'status' => $transaction->status,
+            'plan' => $transaction->plan->title
+        ]);
+    }
 }

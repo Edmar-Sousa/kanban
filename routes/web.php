@@ -82,6 +82,7 @@ Route::post('/login', [AuthController::class, 'auth'])->name('login');
 
 Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
+Route::get('payment/status/{id}', [PaymentController::class, 'status'])->name('payment.check');
 
 Route::group([
     'as' => 'register.',

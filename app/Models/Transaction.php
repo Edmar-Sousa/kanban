@@ -21,6 +21,23 @@ class Transaction extends Model
     ];
 
 
+
+    public function getStatusAttribute($value)
+    {
+        return match ($value) {
+            'created', 'pedding' => PaymentsStatus::PENDDING->value,
+            'canceled' => PaymentsStatus::CANCELED->value,
+            'confirmed' => PaymentsStatus::CONFIRMED->value,
+        };
+    }
+
+
+    public function plan()
+    {
+        return $this->hasOne(Plans::class, 'id', 'plan_id');
+    }
+
+
     public function createCreditCardTransaction(array $data)
     {
         return $this->create([
@@ -44,5 +61,12 @@ class Transaction extends Model
             ]);
     }
 
+
+    public function checkStatusTransaction(string $id)
+    {
+        return $this->where('id', $id)
+            ->with('plan')
+            ->first();
+    }
 
 }
