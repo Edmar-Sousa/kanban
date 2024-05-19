@@ -2,8 +2,11 @@
 
 namespace App\Jobs;
 
+use App\Constants\PaymentsMethods;
+use App\Constants\PaymentsStatus;
 use App\Logic\AssasClient;
 use App\Models\Plans;
+use App\Models\Transaction;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
@@ -17,27 +20,44 @@ class CreditCardPaymentJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    
+
     protected User $user;
     protected Plans $plan;
 
+    protected string $transactionId;
     protected array $form;
 
 
-    public function __construct(User $user, Plans $plan, string $form)
+    public function __construct(User $user, Plans $plan, string $transactionId, array $form)
     {
         $this->user = $user;
         $this->plan = $plan;
+        $this->transactionId = $transactionId;
 
         $this->form = $form;
     }
 
 
 
+    public function getStatusEnumValue(string $status)
+    {
+
+        $status = match ($status) {
+            'PENDING', 'RECEIVED' => PaymentsStatus::PENDDING,
+            'CONFIRMED' => PaymentsStatus::CONFIRMED,
+            'REFUNDED' => PaymentsStatus::CANCELED,
+        };
+
+
+        return $status->value;
+    }
+
+
+
     public function handle()
     {
-        
-        $userModel = new User();
+
+        $transactionModel = new Transaction();
 
         $dueData = Carbon::now()->addDay()->format('Y-m-d');
 
@@ -49,28 +69,33 @@ class CreditCardPaymentJob implements ShouldQueue
 
         $response = $assasService->createCreditCardPayment([
             'customer' => $this->user->customer,
-            'value'    => $this->plan->price,
+            'value' => $this->plan->price,
             'dueDate' => $dueData,
-            
+
             'name' => $this->form['name'],
             'creditCardNumber' => str_replace(' ', '', $this->form['creditCardNumber']),
 
             'expiryMonth' => $monthExpired,
             'expiryYear' => $yearExpired,
-            
+
             'cvv' => $this->form['cvv'],
 
             'email' => $this->user->email,
-            'cpf'   => $this->user->document,
+            'cpf' => $this->user->document,
 
             'postalCode' => $this->user->address->zip_code,
             'addressNumber' => $this->user->address->numero,
-            
+
             'phone' => preg_replace('/[^0-9]/', '', $this->user->phone),
 
             'ip' => $this->form['ip'],
         ]);
 
+
+        $transactionModel->updateCreditCardTransaction($this->transactionId, [
+            'externId' => $response->id,
+            'status' => $this->getStatusEnumValue($response->status),
+        ]);
 
     }
 }

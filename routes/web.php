@@ -20,8 +20,11 @@ Route::middleware('auth')->group(function () {
         'prefix' => '/payment',
     ], function () {
 
-        Route::get('/{id}', [PaymentController::class, 'index'])->name('index');
+        Route::get('/{id}', [PaymentController::class, 'checkStatus'])->name('status');
+
+        Route::get('/plan/{id}', [PaymentController::class, 'index'])->name('index');
         Route::post('/', [PaymentController::class, 'create'])->name('create');
+
     });
 
 
@@ -50,7 +53,7 @@ Route::middleware('auth')->group(function () {
 
     Route::group([
         'as' => 'team.',
-        'prefix'=> 'team',
+        'prefix' => 'team',
     ], function () {
         Route::get('/', [TeamController::class, 'index'])->name('index');
         Route::get('/list', [TeamController::class, 'list'])->name('list');
@@ -64,13 +67,13 @@ Route::middleware('auth')->group(function () {
     Route::post('/user', [UserController::class, 'update'])->name('user');
     Route::get('/plans', [PlansController::class, 'index'])->name('plans');
 
-    Route::group( [
+    Route::group([
         'as' => 'notifications.',
         'prefix' => 'notifications',
     ], function () {
-        Route::get( '/', [NotificationController::class, 'index'] )->name( 'index' );
-        Route::put( '/mark-view/{id}', [NotificationController::class, 'markview'] )->name('mark-view');
-    } );
+        Route::get('/', [NotificationController::class, 'index'])->name('index');
+        Route::put('/mark-view/{id}', [NotificationController::class, 'markview'])->name('mark-view');
+    });
 });
 
 
