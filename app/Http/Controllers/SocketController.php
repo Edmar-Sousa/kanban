@@ -18,21 +18,18 @@ use stdClass;
 class SocketController extends SocketIO
 {
 
-    private function sendToSocket( int $id, string $event, $data = null )
+    private function sendToSocket(int $id, string $event, $data = null)
     {
 
-        $socket_connection = self::$clients[ $id ];
+        $socket_connection = self::$clients[$id];
 
-        if ( !empty( $socket_connection ) )
-        {
-            $socket_connection->send( json_encode( [
+        if (!empty($socket_connection)) {
+            $socket_connection->send(json_encode([
                 'event' => $event,
                 'data' => $data,
-            ] ) );
-        }
-
-        else
-            print_r('socket conection is empty'. PHP_EOL);
+            ]));
+        } else
+            print_r('socket conection is empty' . PHP_EOL);
     }
 
 
@@ -42,10 +39,7 @@ class SocketController extends SocketIO
             $user = JWTAuth::setToken($payload->token)->authenticate();
 
             self::$clients[$user->id] = $from;
-        }
-
-        catch (TokenInvalidException $err)
-        {
+        } catch (TokenInvalidException $err) {
             print_r($err->getMessage());
             $from->close();
         }
@@ -56,11 +50,11 @@ class SocketController extends SocketIO
     {
         $logged_user = JWTAuth::setToken($payload->token)->authenticate();
 
-        try 
-        {
-            $user = User::where( 'email', $payload->data->email )->first();
+        try {
+            $user = User::where('email', $payload->data->email)->first();
 
-            if ( !isset( $user ) )
+            // TODO check the limit users plan
+            if (!isset($user))
                 throw new Exception('Usuario não encontrado');
 
             DB::beginTransaction();
@@ -69,51 +63,47 @@ class SocketController extends SocketIO
                 ->where('source_user', $logged_user->id)
                 ->first();
 
-            if ( isset($fried) )
+            if (isset($fried))
                 throw new Exception('Convite já enviado para o usuario');
 
 
-            Notification::create( [ 
+            Notification::create([
                 'destination_user' => $user->id,
                 'source_user' => $logged_user->id,
                 'message' => 'Você tem um convite de amizade',
                 'type' => Notification::TYPE_INVITE,
-            ] );
+            ]);
 
             $logged_user->friends()->attach($user->id);
 
             DB::commit();
 
             $this->sendToSocket($user->id, 'notification');
-            
-            $from->send( json_encode( [
+
+            $from->send(json_encode([
                 'event' => 'invite-friend-success',
                 'data' => [
                     'status' => 'success',
                     'message' => 'Convite enviado com sucesso',
                 ],
-            ] ) );
-        }
-
-        catch ( Exception $err )
-        {
+            ]));
+        } catch (Exception $err) {
             DB::rollBack();
 
-            $this->sendToSocket( $logged_user->id, 'invite-friend-error', [
+            $this->sendToSocket($logged_user->id, 'invite-friend-error', [
                 'status' => 'error',
                 'message' => $err->getMessage(),
-            ] );
+            ]);
         }
 
     }
-    
+
 
     public function acceptInvite(ConnectionInterface $from, stdClass $payload)
     {
         $logged_user = JWTAuth::setToken($payload->token)->authenticate();
 
-        try 
-        {
+        try {
             DB::beginTransaction();
 
             $friendInvite = Friends::where('id', $payload->data->inviteId)
@@ -136,7 +126,7 @@ class SocketController extends SocketIO
 
             DB::commit();
 
-            $this->sendToSocket( $friendInvite->source_user_data->id, 'notification');
+            $this->sendToSocket($friendInvite->source_user_data->id, 'notification');
 
             $from->send(json_encode([
                 'event' => 'accept-invite-success',
@@ -145,10 +135,7 @@ class SocketController extends SocketIO
                     'message' => 'Amigo adicionado',
                 ],
             ]));
-        }
-
-        catch ( Exception $err )
-        {
+        } catch (Exception $err) {
             DB::rollBack();
 
 
