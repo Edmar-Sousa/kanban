@@ -61,6 +61,7 @@ class CreditCardPaymentJob implements ShouldQueue
     public function handle()
     {
         $transactionModel = new Transaction();
+        $userModel = new User();
 
         try {
             $dueData = Carbon::now()->addDay()->format('Y-m-d');
@@ -100,6 +101,8 @@ class CreditCardPaymentJob implements ShouldQueue
                 'externId' => $response->id,
                 'status' => $this->getStatusEnumValue($response->status),
             ]);
+
+            $userModel->update_plan($this->user->id, $this->plan->id);
         } catch (Exception $err) {
             $transactionModel->updateCreditCardTransaction($this->transactionId, [
                 'status' => $this->getStatusEnumValue('REFUNDED'),

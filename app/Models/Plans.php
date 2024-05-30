@@ -9,7 +9,15 @@ class Plans extends Model
 {
     use HasFactory;
 
-    protected $fillable = [ 'title', 'small_description', 'price' ];
+    protected $fillable = ['title', 'small_description', 'price'];
+
+
+    public $appends = ['isPrimium'];
+
+    public function getIsPrimiumAttribute()
+    {
+        return $this->plans_rule->limit_boards == 0 && $this->plans_rule->limit_users == 0 && $this->plans_rule->limit_reports == 0;
+    }
 
 
     /**
@@ -19,7 +27,7 @@ class Plans extends Model
      */
     public function plans_items()
     {
-        return $this->hasMany( PlansItem::class, 'plan_id' );
+        return $this->hasMany(PlansItem::class, 'plan_id');
     }
 
 
@@ -30,7 +38,7 @@ class Plans extends Model
      */
     public function get_plans()
     {
-        return $this->with( 'plans_items' )->get();
+        return $this->with('plans_items')->get();
     }
 
 
@@ -41,7 +49,7 @@ class Plans extends Model
      */
     public function plans_rule()
     {
-        return $this->hasOne( PlanRules::class, 'plan_id', 'id' );
+        return $this->hasOne(PlanRules::class, 'plan_id', 'id');
     }
 
 
@@ -52,24 +60,24 @@ class Plans extends Model
      * 
      *   @return Illuminate\Database\Eloquent\QueryBuilder  Return a query build to get the plan data
      */
-    private function get_plan( string $id )
+    private function get_plan(string $id)
     {
-        return $this->select( '*' )
-            ->where( 'id', $id );
+        return $this->select('*')
+            ->where('id', $id);
     }
 
 
-    public function get_plan_with_id( string $id )
+    public function get_plan_with_id(string $id)
     {
         return $this->get_plan($id)
-                    ->first();
+            ->first();
     }
 
 
-    public function get_plan_with_rules( string $id )
+    public function get_plan_with_rules(string $id)
     {
         return $this->get_plan($id)
-                    ->with( ['plans_rule'] )
-                    ->first();
+            ->with(['plans_rule'])
+            ->first();
     }
 }
