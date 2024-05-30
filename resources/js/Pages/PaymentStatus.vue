@@ -51,7 +51,7 @@
                 </h1>
     
                 <p class="text-base font-normal mb-10 text-[#475569]">
-                    O pagamento foi confirmado con sucesso. <br />
+                    O pagamento foi confirmado com sucesso. <br />
                     Atualizamos o seu plano para o plano <b>{{ paymentState.planName }}</b>!
                 </p>
     
@@ -76,7 +76,7 @@
                 </h1>
 
                 <p class="text-base font-normal mb-10 text-[#475569]">
-                    O pagamento foi confirmado cancelado, tente novamente. <br />
+                    O pagamento foi cancelado, tente novamente. <br />
                 </p>
 
                 <Link
@@ -134,7 +134,7 @@ async function handlerCheckStatus() {
         }))
 
 
-        if (response.status == 200 && response.data.status == 'confirmed')
+        if (response.status == 200 && ['canceled', 'confirmed'].includes(response.data.status))
         {
             paymentState.value = { 
                 status: response.data.status,
