@@ -7,7 +7,7 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Support\Facades\Log;
 
-class AssasClient 
+class AssasClient
 {
 
     private Client $assasHttpClient;
@@ -21,7 +21,7 @@ class AssasClient
 
         $this->headers = [
             'access_token' => env('ASSAS_API_KEY'),
-            
+
             'accept' => 'application/json',
             'content-type' => 'application/json',
         ];
@@ -29,11 +29,10 @@ class AssasClient
 
 
 
-    public function create_customer( $body )
+    public function create_customer($body)
     {
 
-        try 
-        {
+        try {
             $response = $this->assasHttpClient->post(env('ASSAS_API_URL') . '/customers', [
                 'headers' => $this->headers,
                 'body' => json_encode($body),
@@ -43,10 +42,7 @@ class AssasClient
             dd($response->getBody()->getContents());
 
             return json_decode($response->getBody()->getContents());
-        }
-
-        catch (GuzzleException $err)
-        {
+        } catch (GuzzleException $err) {
 
             Log::error('AssasClient http error: ', [
                 'body' => $body,
@@ -54,10 +50,7 @@ class AssasClient
             ]);
 
             throw $err;
-        }
-        
-        catch (Exception $err) 
-        {
+        } catch (Exception $err) {
             Log::error('AssasClient error: ', [
                 'body' => $body,
                 'message' => $err->getMessage(),
@@ -72,10 +65,9 @@ class AssasClient
 
     public function createCreditCardPayment(array $data)
     {
-        try 
-        {
+        try {
 
-            $response = $this->assasHttpClient->post( env('ASSAS_API_URL') . '/payments', [
+            $response = $this->assasHttpClient->post(env('ASSAS_API_URL') . '/payments', [
                 'headers' => $this->headers,
 
                 'body' => json_encode([
@@ -89,10 +81,10 @@ class AssasClient
                     'creditCard' => [
                         'holderName' => $data['name'],
                         'number' => $data['creditCardNumber'],
-                        
+
                         'expiryMonth' => $data['expiryMonth'],
                         'expiryYear' => $data['expiryYear'],
-        
+
                         'ccv' => $data['cvv'],
                     ],
 
@@ -101,7 +93,7 @@ class AssasClient
                         'name' => $data['name'],
                         'email' => $data['email'],
                         'cpfCnpj' => $data['cpf'],
-                        
+
                         'postalCode' => $data['postalCode'],
                         'addressNumber' => $data['addressNumber'],
 
@@ -113,10 +105,7 @@ class AssasClient
             ]);
 
             return json_decode($response->getBody()->getContents());
-        }
-
-        catch (GuzzleException $err)
-        {
+        } catch (GuzzleException $err) {
 
             Log::error('AssasClient http error: ', [
                 'body' => $data,
@@ -124,10 +113,7 @@ class AssasClient
             ]);
 
             throw $err;
-        }
-        
-        catch (Exception $err) 
-        {
+        } catch (Exception $err) {
             Log::error('AssasClient error: ', [
                 'body' => $data,
                 'message' => $err->getMessage(),
