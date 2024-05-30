@@ -5,11 +5,14 @@ namespace App\Jobs;
 
 use Carbon\Carbon;
 
+use Exception;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Log;
+
 
 use App\Constants\PaymentsStatus;
 use App\Logic\AssasClient;
@@ -57,46 +60,55 @@ class CreditCardPaymentJob implements ShouldQueue
 
     public function handle()
     {
-
         $transactionModel = new Transaction();
 
-        $dueData = Carbon::now()->addDay()->format('Y-m-d');
+        try {
+            $dueData = Carbon::now()->addDay()->format('Y-m-d');
 
-        [$monthExpired, $yearExpired] = explode('/', $this->form['dateExpired']);
-
-
-        $assasService = new AssasClient();
+            [$monthExpired, $yearExpired] = explode('/', $this->form['dateExpired']);
 
 
-        $response = $assasService->createCreditCardPayment([
-            'customer' => $this->user->customer,
-            'value' => $this->plan->price,
-            'dueDate' => $dueData,
-
-            'name' => $this->form['name'],
-            'creditCardNumber' => str_replace(' ', '', $this->form['creditCardNumber']),
-
-            'expiryMonth' => $monthExpired,
-            'expiryYear' => $yearExpired,
-
-            'cvv' => $this->form['cvv'],
-
-            'email' => $this->user->email,
-            'cpf' => $this->user->document,
-
-            'postalCode' => $this->user->address->zip_code,
-            'addressNumber' => $this->user->address->numero,
-
-            'phone' => preg_replace('/[^0-9]/', '', $this->user->phone),
-
-            'ip' => $this->form['ip'],
-        ]);
+            $assasService = new AssasClient();
 
 
-        $transactionModel->updateCreditCardTransaction($this->transactionId, [
-            'externId' => $response->id,
-            'status' => $this->getStatusEnumValue($response->status),
-        ]);
+            $response = $assasService->createCreditCardPayment([
+                'customer' => $this->user->customer,
+                'value' => $this->plan->price,
+                'dueDate' => $dueData,
+
+                'name' => $this->form['name'],
+                'creditCardNumber' => str_replace(' ', '', $this->form['creditCardNumber']),
+
+                'expiryMonth' => $monthExpired,
+                'expiryYear' => $yearExpired,
+
+                'cvv' => $this->form['cvv'],
+
+                'email' => $this->user->email,
+                'cpf' => $this->user->document,
+
+                'postalCode' => $this->user->address->zip_code,
+                'addressNumber' => $this->user->address->numero,
+
+                'phone' => preg_replace('/[^0-9]/', '', $this->user->phone),
+
+                'ip' => $this->form['ip'],
+            ]);
+
+
+            $transactionModel->updateCreditCardTransaction($this->transactionId, [
+                'externId' => $response->id,
+                'status' => $this->getStatusEnumValue($response->status),
+            ]);
+        } catch (Exception $err) {
+            $transactionModel->updateCreditCardTransaction($this->transactionId, [
+                'status' => $this->getStatusEnumValue('REFUNDED'),
+            ]);
+
+            Log::error('Error CreditCardPaymentJob', [
+                'message' => $err->getMessage(),
+            ]);
+        }
 
     }
 }
