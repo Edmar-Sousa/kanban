@@ -5,7 +5,7 @@
 
   <aside 
     aria-label="Navegação principal" 
-    class="absolute w-[175px] top-0 bottom-0 pl-9 py-8 bg-[#7C3AED] z-10 transition-all duration-300 md:relative"
+    class="absolute w-[175px] top-0 bottom-0 pl-9 py-8 bg-[#7C3AED] transition-all duration-300 md:relative"
     :class="{ 'left-0 md:left-0': openMenu, '-left-full md:left-0': !openMenu }">
       <button class="absolute right-2 top-4 text-[#FFFFFF] md:hidden" @click="openMenu = !openMenu">
         <X size="25" class="pointer-events-none" />

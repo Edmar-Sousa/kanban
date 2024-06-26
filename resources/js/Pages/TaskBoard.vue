@@ -39,6 +39,14 @@
               <p class="my-2.5 text-sm font-medium text-[#756966]">{{ taskboard.description }}</p>
 
               <div class="w-full flex justify-end gap-2">
+                <button
+                  aria-label="Adicionar amigo ao quadro de tarefas"
+                  class="hidden group-hover/item:block"
+                  @click="handlerAddFriendToBoard(taskboard.id)">
+                    <user-plus size="20"
+                      class="w-[20px] h-[20px]" />
+                </button>
+
                 <button 
                   arial-label="Deletar taskboard" 
                   class="hidden group-hover/item:block"
@@ -58,6 +66,41 @@
         </div>
       </div>
     </main>
+
+    <Modal
+      ref="modalAddFriedToBoard"
+      title="Adicionar amigo ao quadro de tarefas">
+        <template #modal-body>
+
+          <ul
+            v-for="friend in friendsList"
+            :key="friend.id" 
+            class="w-full">
+              <li class="w-full flex items-center py-1 my-4">
+                <check-box />
+
+                <img 
+                  :src="loadImage(
+                    friend.source_user_data.id == id ?
+                    friend.destination_user_data.image :
+                    friend.source_user_data.image
+                  )" 
+                  alt="Foto de perfil do usuario"
+                  class="w-[40px] h-[40px] mx-4 rounded-full"/>
+
+                <p class="">
+                  {{ 
+                    friend.source_user_data.id == id ? 
+                    friend.destination_user_data.name : 
+                    friend.source_user_data.name 
+                  }}
+                </p>
+              </li>
+          </ul>
+
+        </template>
+    </Modal>
+
 
     <Modal 
       ref="modalCreateTaskboard" 
@@ -116,20 +159,22 @@
 
 <script setup>
 
+import axios from 'axios'
 import { ref, onMounted } from 'vue'
 import { Link, useForm, usePage } from "@inertiajs/inertia-vue3"
-import { Plus, Trash } from 'lucide-vue-next'
+import { Plus, Trash, UserPlus } from 'lucide-vue-next'
 
 import jwttoken from '@/Utils/jwttoken'
 
 import FormAlert from '@/Components/FormAlert.vue'
 import Layout from '@/Template/Layout.vue'
 import InputForm from '@/Components/InputForm.vue'
+import CheckBox from '@/Components/CheckBox.vue'
 
 import Notification from '@/Components/Notification.vue'
 import Modal from '@/Components/Modal.vue'
 
-const props = defineProps( ['taskboards', 'image', 'token'] )
+const props = defineProps( ['id', 'taskboards', 'image', 'token'] )
 
 
 onMounted(() => jwttoken.setToken(props.token)) 
@@ -174,6 +219,29 @@ const page = usePage()
 function clearMessages() {
   if ( page.props.value.flash )
     page.props.value.flash = {}
+}
+
+
+const modalAddFriedToBoard = ref(null)
+const friendsList = ref(null)
+
+async function findFriends() {
+  try {
+    const response = await axios.get(route('team.list'))
+
+    friendsList.value = response.data
+  }
+  catch {
+    // TODO adicionar toast notification
+  }
+}
+
+async function handlerAddFriendToBoard() {
+  if (!modalAddFriedToBoard.value)
+    return
+  
+  await findFriends()
+  modalAddFriedToBoard.value.showModal()
 }
 
 </script>
