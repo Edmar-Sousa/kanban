@@ -71,13 +71,14 @@
       ref="modalAddFriedToBoard"
       title="Adicionar amigo ao quadro de tarefas">
         <template #modal-body>
-
           <ul
             v-for="friend in friendsList"
             :key="friend.id" 
             class="w-full">
               <li class="w-full flex items-center py-1 my-4">
-                <check-box />
+                <check-box 
+                  v-model="friendsToAddInBoard"
+                  :value="friend.id" />
 
                 <img 
                   :src="loadImage(
@@ -98,6 +99,12 @@
               </li>
           </ul>
 
+          <button 
+              aria-label="Botão para adicionar a equipe"
+              class="flex justify-center align-items text-sm font-normal gap-2 text-white bg-[#7C3AED] p-3 w-[135px] rounded hover:scale-95"
+              >
+                Adicionar
+            </button>
         </template>
     </Modal>
 
@@ -178,6 +185,10 @@ const props = defineProps( ['id', 'taskboards', 'image', 'token'] )
 
 
 onMounted(() => jwttoken.setToken(props.token)) 
+
+
+
+const friendsToAddInBoard = ref([])
 
 
 const form = useForm({
