@@ -1,10 +1,10 @@
 <template>
 
-    <input 
-      type="checkbox"
-      class="w-[24px] h-[24px] appearance-none rounded-md border-2 border-[#E2D6FF] hover:border-[#7C3AED] cursor-pointer checked:bg-[#7C3AED] checked:border-[#7C3AED] custom-checkbox relative"
-      v-model="selected"
-      :value="value" />
+  <input 
+    type="checkbox"
+    class="w-[24px] h-[24px] appearance-none rounded-md border-2 border-[#E2D6FF] hover:border-[#7C3AED] cursor-pointer checked:bg-[#7C3AED] checked:border-[#7C3AED] custom-checkbox relative"
+    v-model="selected"
+    :value="value" />
 
 </template>
 

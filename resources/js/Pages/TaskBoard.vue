@@ -102,7 +102,7 @@
           <button 
               aria-label="Botão para adicionar a equipe"
               class="flex justify-center align-items text-sm font-normal gap-2 text-white bg-[#7C3AED] p-3 w-[135px] rounded hover:scale-95"
-              >
+              @click="handlerInviteToTeam">
                 Adicionar
             </button>
         </template>
@@ -170,6 +170,7 @@ import axios from 'axios'
 import { ref, onMounted } from 'vue'
 import { Link, useForm, usePage } from "@inertiajs/inertia-vue3"
 import { Plus, Trash, UserPlus } from 'lucide-vue-next'
+import { useToast } from 'vue-toast-notification'
 
 import jwttoken from '@/Utils/jwttoken'
 
@@ -236,6 +237,10 @@ function clearMessages() {
 const modalAddFriedToBoard = ref(null)
 const friendsList = ref(null)
 
+const toast = useToast({
+  position: 'top-right',
+})
+
 async function findFriends() {
   try {
     const response = await axios.get(route('team.list'))
@@ -243,7 +248,7 @@ async function findFriends() {
     friendsList.value = response.data
   }
   catch {
-    // TODO adicionar toast notification
+    toast.error('Erro ao busca lista de amigos')
   }
 }
 
@@ -253,6 +258,20 @@ async function handlerAddFriendToBoard() {
   
   await findFriends()
   modalAddFriedToBoard.value.showModal()
+}
+
+
+async function handlerInviteToTeam() {
+  try {
+    const response = await axios.post(route('team.invite.team'))
+  
+    if (response.status == 200)
+      toast.success('Convite enviado com sucesso')
+  }
+
+  catch {
+    toast.error('Erro ao enviar convite')
+  }
 }
 
 </script>

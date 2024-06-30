@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\InviteController;
 use App\Http\Controllers\PaymentController;
 use Illuminate\Support\Facades\Route;
 
@@ -57,7 +58,14 @@ Route::middleware('auth')->group(function () {
     ], function () {
         Route::get('/', [TeamController::class, 'index'])->name('index');
         Route::get('/list', [TeamController::class, 'list'])->name('list');
-        Route::get('/invites', [TeamController::class, 'invites'])->name('invites');
+
+        Route::group([
+            'as' => 'invite.',
+            'prefix' => '/invites',
+        ], function () {
+            Route::get('/', [TeamController::class, 'invites'])->name('invites');
+            Route::post('/', [InviteController::class, 'create'])->name('team');
+        });
 
         Route::delete('/{id}', [TeamController::class, 'delete'])->name('delete');
     });
