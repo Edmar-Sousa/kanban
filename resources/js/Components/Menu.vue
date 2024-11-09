@@ -58,7 +58,7 @@
 <script setup>
 
 import { Menu, X,  } from 'lucide-vue-next'
-import { Link } from "@inertiajs/inertia-vue3"
+import { Link } from "@inertiajs/vue3"
 import { shallowRef } from 'vue'
 
 import TabletIcon from "@/Icon/Table.vue"
