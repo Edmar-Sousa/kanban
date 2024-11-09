@@ -52,7 +52,7 @@
 
 <script setup>
 
-import { Link } from '@inertiajs/inertia-vue3'
+import { Link } from '@inertiajs/vue3'
 import ArrowIcon from "@/Icon/Arrow.vue"
 
 const props = defineProps( [ 'title', 'plans', 'activite_plan' ] )

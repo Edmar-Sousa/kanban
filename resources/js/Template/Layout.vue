@@ -7,11 +7,11 @@
 
 <script setup>
 
-import { usePage } from '@inertiajs/inertia-vue3'
+import { usePage } from '@inertiajs/vue3'
 import { useToast } from 'vue-toast-notification'
 
 import Menu from "@/Components/Menu.vue"
-import { watch } from 'vue';
+import { watch } from 'vue'
 
 
 const toast = useToast({

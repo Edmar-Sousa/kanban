@@ -98,7 +98,7 @@
 <script setup>
 
 import { ref, computed, onMounted, onUnmounted } from 'vue'
-import { Head, Link } from '@inertiajs/inertia-vue3'
+import { Head, Link } from '@inertiajs/vue3'
 
 import { Check, X } from 'lucide-vue-next'
 import axios from 'axios';
