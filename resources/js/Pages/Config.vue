@@ -166,7 +166,7 @@
 <script setup>
 
 import { ref } from 'vue'
-import { useForm } from '@inertiajs/inertia-vue3'
+import { useForm } from '@inertiajs/vue3'
 import { useToast } from 'vue-toast-notification'
 
 import { useVuelidate } from '@vuelidate/core'
