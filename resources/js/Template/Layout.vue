@@ -30,6 +30,11 @@ watch(() => page.props, handlerFlashMessage,
 
 
 function handlerFlashMessage() {
+
+    if (!page.props.value?.flash)
+        return
+
+    
     const { status, message } = page.props.value?.flash
 
     switch (status) {
@@ -39,9 +44,11 @@ function handlerFlashMessage() {
 
         case 'warning':
             toast.warning(message)
+            break
 
         case 'error':
             toast.error(message)
+            break
     }
 }
 
