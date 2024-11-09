@@ -30,12 +30,10 @@ watch(() => page.props, handlerFlashMessage,
 
 
 function handlerFlashMessage() {
-
-    if (!page.props.value?.flash)
+    if (!page.props?.flash)
         return
 
-    
-    const { status, message } = page.props.value?.flash
+    const { status, message } = page.props?.flash
 
     switch (status) {
         case 'success':
