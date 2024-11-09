@@ -94,7 +94,7 @@
 
 <script setup>
 
-import { Link, useForm } from "@inertiajs/inertia-vue3"
+import { Link, useForm } from "@inertiajs/vue3"
 
 import { useVuelidate } from '@vuelidate/core'
 import { helpers, required,  } from '@vuelidate/validators'
