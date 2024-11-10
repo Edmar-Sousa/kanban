@@ -75,8 +75,8 @@ import axios from 'axios'
 import { Bell, AlertTriangle } from 'lucide-vue-next'
 import { shallowRef, computed, onMounted, onUnmounted } from 'vue'
 
-import socket from '@/Utils/websocket'
-import jwttoken from '@/Utils/jwttoken'
+import { usePage } from '@inertiajs/vue3'
+
 
 const openNotificationMenu = shallowRef( false )
 const menuElement = shallowRef( null )
@@ -86,14 +86,14 @@ const notifications = shallowRef( [] )
 
 const hasUnrededNotification = computed( () => notifications.value.filter( notification => !notification.visible ).length )
 
+const page = usePage()
 
 onMounted( () => {
     window.addEventListener( 'click', handleClick ) 
-
-    socket.connect(jwttoken.getToken())
-    findNotifications()
     
-    socket.recv('notification', () => findNotifications())
+    window.Echo
+        .private(`notification.${page.props.id}`)
+        .listen('NotificationEvent', e => console.log(e))
 } )
 
 onUnmounted( () => window.removeEventListener( 'click', handleClick ) )
