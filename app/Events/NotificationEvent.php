@@ -2,6 +2,7 @@
 
 namespace App\Events;
 
+use App\Models\Notification;
 use App\Models\User;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Broadcasting\Channel;
@@ -20,17 +21,12 @@ class NotificationEvent implements ShouldBroadcastNow
 
     public function __construct(
         private User $user,
+        public Notification $notification
     ) {
     }
 
-    /**
-     * Get the channels the event should broadcast on.
-     *
-     * @return \Illuminate\Broadcasting\Channel
-     */
     public function broadcastOn(): Channel
     {
-        Log::info('notification.' . $this->user->id);
         return new PrivateChannel('notification.' . $this->user->id);
     }
 }
