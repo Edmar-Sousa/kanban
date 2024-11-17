@@ -35,7 +35,7 @@ class Friends extends Model
     }
 
 
-    public function list_friends( int $id )
+    public function list_friends(int $id)
     {
         return $this->select([
             'id',
@@ -43,15 +43,16 @@ class Friends extends Model
             'source_user',
             'status',
         ])
-            ->where(fn ($query) =>
-                $query->where('destination_user', $id )
+            ->where(
+                fn($query) =>
+                $query->where('destination_user', $id)
                     ->orWhere('source_user', $id)
             )
             ->where('status', self::STATUS_ACEPTED)
 
             ->with([
-                'source_user_data' => fn ($query) => $query->select([ 'id', 'name', 'email', 'image' ]),
-                'destination_user_data' => fn ($query) => $query->select([ 'id', 'name', 'email', 'image' ]),
+                'source_user_data' => fn($query) => $query->select(['id', 'name', 'email', 'image']),
+                'destination_user_data' => fn($query) => $query->select(['id', 'name', 'email', 'image']),
             ])
             ->where('status', self::STATUS_ACEPTED)
             ->get();
@@ -64,15 +65,23 @@ class Friends extends Model
             $query->where('destination_user', $id)
                 ->orWhere('destination_user', $logged_user_id);
         })
-        ->where(function ($query) use ($id, $logged_user_id) {
-            $query->where('source_user', $id)
-                ->orWhere('source_user', $logged_user_id);
-        })
-        ->delete();
+            ->where(function ($query) use ($id, $logged_user_id) {
+                $query->where('source_user', $id)
+                    ->orWhere('source_user', $logged_user_id);
+            })
+            ->delete();
     }
 
 
-    public function find_user_invites( int $id ) 
+    public function alredy_exists_invite(int $source, int $destination)
+    {
+        return $this->where('destination_user', $destination)
+            ->where('source_user', $source)
+            ->where('status', self::STATUS_INVITED)
+            ->exists();
+    }
+
+    public function find_user_invites(int $id)
     {
         return $this->where('destination_user', $id)
             ->where('status', self::STATUS_INVITED)
