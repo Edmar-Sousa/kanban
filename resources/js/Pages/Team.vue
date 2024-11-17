@@ -103,18 +103,14 @@
         title="Enviar convite"
         @close-modal="clearMessages">
             <template #modal-body>
-                <form-alert 
-                    v-if="messageresponse.status"
-                    :message="messageresponse.message"
-                    :type="messageresponse.status" /> 
-
                 <form action="#" method="POST" @submit.prevent>
                     <div class="my-4">
                         <InputForm
                             type="email"
                             name="username"
                             placeholder="Email do usuario"
-                            v-model="email" />
+                            v-model="inviteForm.email" 
+                            :error="inviteForm.errors.email" />
                     </div>
 
                     <button 
@@ -189,14 +185,12 @@ import { UserPlus2, UserCheck, UserX } from 'lucide-vue-next'
 import { computed, shallowRef, ref, onMounted } from 'vue'
 import { useToast } from 'vue-toast-notification'
 
-import FormAlert from '@/Components/FormAlert.vue'
 import Layout from '@/Template/Layout.vue'
 import InputForm from '@/Components/InputForm.vue'
 import Notification from '@/Components/Notification.vue'
 import Modal from '@/Components/Modal.vue'
+import { useForm } from '@inertiajs/vue3'
 
-import websocket from '@/Utils/websocket'
-import jwttoken from '@/Utils/jwttoken'
 
 const props = defineProps( [ 'image', 'id' ] )
 
@@ -210,8 +204,6 @@ const getFirstLetterFriendsList = computed( () => new Set( friendsList.value.map
 } ) ) )
 
 onMounted(() => {
-    websocket.connect(jwttoken.getToken())
-
     findFrinds()
 })
 
@@ -228,57 +220,55 @@ function filterByLetter( letter ) {
 }
 
 
-const email = shallowRef('')
-const messageresponse = ref({
-    status: '',
-    message: '',
+const inviteForm = useForm({
+    email: '',
 })
 
-function clearMessages() {
-    messageresponse.value = {
-        status: '',
-        message: '',
-    }
 
-    email.value = ''
+function clearMessages() {
+    inviteForm.reset()
+    inviteForm.email = ''
 }
 
 async function submitForm() {
-    websocket.send({
-        event: 'invite-friend',
-        token: jwttoken.getToken(),
-        data: {
-            email: email.value,
-        }
-    })
 
-    websocket.recv('invite-friend-success', data => messageresponse.value = data)
-    websocket.recv('invite-friend-error', data => messageresponse.value = data)
+    inviteForm.post(route('team.invite.create'))
+
+    // websocket.send({
+    //     event: 'invite-friend',
+    //     token: jwttoken.getToken(),  
+    //     data: {
+    //         email: email.value,
+    //     }
+    // })
+
+    // websocket.recv('invite-friend-success', data => messageresponse.value = data)
+    // websocket.recv('invite-friend-error', data => messageresponse.value = data)
 }
 
 
 function handleAcceptInvite(id) {
 
-    websocket.send({
-        event: 'accept-invite',
-        token: jwttoken.getToken(),
-        data: {
-            inviteId: id,
-        },
-    })
+    // websocket.send({
+    //     event: 'accept-invite',
+    //     token: jwttoken.getToken(),
+    //     data: {
+    //         inviteId: id,
+    //     },
+    // })
 
-    websocket.recv('accept-invite-success', data => {
-        messageresponse.value = data
+    // websocket.recv('accept-invite-success', data => {
+    //     messageresponse.value = data
 
-        handleViewInvites()
-        findFrinds()
-    })
-    websocket.recv('accept-invite-error', data => {
-        messageresponse.value = data
+    //     handleViewInvites()
+    //     findFrinds()
+    // })
+    // websocket.recv('accept-invite-error', data => {
+    //     messageresponse.value = data
 
-        handleViewInvites()
-        findFrinds()
-    })
+    //     handleViewInvites()
+    //     findFrinds()
+    // })
 
 }
 
