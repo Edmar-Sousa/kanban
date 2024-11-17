@@ -3,14 +3,15 @@
 namespace App\Events;
 
 use App\Models\User;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Broadcasting\Channel;
-use Illuminate\Broadcasting\InteractsWithSockets;
-use Illuminate\Broadcasting\PresenceChannel;
+use Illuminate\Queue\SerializesModels;
 use Illuminate\Broadcasting\PrivateChannel;
+use Illuminate\Broadcasting\PresenceChannel;
+use Illuminate\Foundation\Events\Dispatchable;
+use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
-use Illuminate\Foundation\Events\Dispatchable;
-use Illuminate\Queue\SerializesModels;
 
 class NotificationEvent implements ShouldBroadcastNow
 {
@@ -29,6 +30,7 @@ class NotificationEvent implements ShouldBroadcastNow
      */
     public function broadcastOn(): Channel
     {
-        return new PrivateChannel('notification' . $this->user->id);
+        Log::info('notification.' . $this->user->id);
+        return new PrivateChannel('notification.' . $this->user->id);
     }
 }
