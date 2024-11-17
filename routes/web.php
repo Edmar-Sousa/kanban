@@ -64,7 +64,7 @@ Route::middleware('auth')->group(function () {
             'prefix' => '/invites',
         ], function () {
             Route::get('/', [TeamController::class, 'invites'])->name('invites');
-            Route::post('/', [InviteController::class, 'create'])->name('team');
+            Route::post('/', [InviteController::class, 'create'])->name('create');
         });
 
         Route::delete('/{id}', [TeamController::class, 'delete'])->name('delete');
