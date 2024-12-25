@@ -47,7 +47,7 @@ class InviteController extends Controller
 
         $sourceUser->friends()->attach($destinationUser->id);
 
-        NotificationEvent::dispatch($destinationUser, $notification);
+        NotificationEvent::dispatch($destinationUser, $notification, $sourceUser);
 
         return redirect()->back()
             ->with('type', 'success')
