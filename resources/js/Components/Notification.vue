@@ -73,7 +73,7 @@
 import axios from 'axios'
 
 import { Bell, AlertTriangle } from 'lucide-vue-next'
-import { shallowRef, computed, onMounted, onUnmounted } from 'vue'
+import { shallowRef, computed, onMounted, onUnmounted, ref } from 'vue'
 
 import { usePage } from '@inertiajs/vue3'
 
@@ -81,7 +81,7 @@ import { usePage } from '@inertiajs/vue3'
 const openNotificationMenu = shallowRef( false )
 const menuElement = shallowRef( null )
 
-const notifications = shallowRef( [] )
+const notifications = ref( [] )
 
 
 const hasUnrededNotification = computed( () => notifications.value.filter( notification => !notification.visible ).length )
@@ -93,11 +93,16 @@ onMounted( () => {
     
     window.Echo
         .private(`notification.${page.props.id}`)
-        .listen('NotificationEvent', e => console.log(e))
+        .listen('NotificationEvent', handlerReciveNotification)
+
+    findNotifications()
 } )
 
 onUnmounted( () => window.removeEventListener( 'click', handleClick ) )
 
+function handlerReciveNotification(event) {
+    notifications.value.push(event.notification)
+}
 
 function handleClick( event ) {
     if ( !menuElement.value.contains( event.target ) )
