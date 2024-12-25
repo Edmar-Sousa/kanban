@@ -75,6 +75,7 @@ import axios from 'axios'
 import { Bell, AlertTriangle } from 'lucide-vue-next'
 import { shallowRef, computed, onMounted, onUnmounted, ref } from 'vue'
 
+import { useToast } from 'vue-toast-notification'
 import { usePage } from '@inertiajs/vue3'
 
 
@@ -115,6 +116,9 @@ function handleOpenMenu() {
     openNotificationMenu.value = !openNotificationMenu.value
 }
 
+const toastNotification = useToast({
+    position: 'top-right',
+})
 
 async function findNotifications() {
     try {
@@ -123,7 +127,7 @@ async function findNotifications() {
     }
 
     catch ( err ) {
-        console.log( err )
+        toastNotification.error('Erro ao buscar notificações')
     }
 }
 
@@ -136,7 +140,7 @@ async function handleMarkVisible(id) {
     }
 
     catch ( err ) {
-        console.log( err )
+        toastNotification.error('Erro ao marcar notificação como vista')
     }
 }
 
