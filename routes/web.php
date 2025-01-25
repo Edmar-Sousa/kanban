@@ -63,7 +63,7 @@ Route::middleware('auth')->group(function () {
             'as' => 'invite.',
             'prefix' => '/invites',
         ], function () {
-            Route::get('/', [TeamController::class, 'invites'])->name('invites');
+            Route::get('/', [TeamController::class, 'invites'])->name('index');
             Route::post('/', [InviteController::class, 'create'])->name('create');
         });
 

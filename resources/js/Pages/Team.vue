@@ -7,28 +7,28 @@
         <main class="flex-1 bg-white rounded-tl-2xl px-8 py-12 overflow-y-auto">
             <header class="w-full flex justify-between items-center">
                 <h1 class="text-3xl text-[#403937] font-bold inline-block">Adicionar Membro a Equipe</h1>
-                
+
                 <div class="flex items-center gap-10">
                     <notification />
 
-                    <img 
-                        :src="loadImage( image )" 
+                    <img
+                        :src="loadImage( image )"
                         alt="imagem de perfil"
                         class="w-16 h-16 rounded-full" />
                 </div>
             </header>
 
             <div class="my-10">
-                <button 
-                    type="button" 
+                <button
+                    type="button"
                     class="w-[200px] rounded-md bg-[#7C3AED] inline-flex items-center gap-2 justify-center h-10 text-white text-base text-center"
                     @click="handleOpenModal">
                         <user-plus-2 size="20" />
                         <span>Convidar</span>
                 </button>
 
-                <button 
-                    type="button" 
+                <button
+                    type="button"
                     class="w-[200px] rounded-md text-[#7C3AED] bg-[#7C3AED]/30 inline-flex items-center gap-2 justify-center h-10 text-base text-center ml-4"
                     @click="handleViewInvites">
                         <user-plus-2 size="20" />
@@ -39,31 +39,31 @@
             <template v-if="friendsList.length">
                 <div v-for="letter in getFirstLetterFriendsList" :key="letter" class="my-6">
                     <div class="w-10 h-10 rounded bg-[#7C3AED] text-white leading-10 text-xl text-center uppercase">{{ letter }}</div>
-    
+
                     <ul class="mt-5">
                         <li class="px-10 mt-4 flex items-center" v-for="( friend, i ) in filterByLetter( letter )" :key="i">
-                            <img 
-                                :src="loadImage( 
+                            <img
+                                :src="loadImage(
                                     friend.source_user_data.id == id ?
                                     friend.destination_user_data.image :
                                     friend.source_user_data.image
                                 )"
                                 alt="imagem de perfil"
                                 class="w-16 h-16 mx-7 rounded-full" />
-                            
+
                             <div class="flex-1">
                                 <p class="font-bold text-xl">
-                                    {{ 
-                                        friend.source_user_data.id == id ? 
-                                        friend.destination_user_data.name : 
-                                        friend.source_user_data.name 
+                                    {{
+                                        friend.source_user_data.id == id ?
+                                        friend.destination_user_data.name :
+                                        friend.source_user_data.name
                                     }}
                                 </p>
                                 <p class="text-base text-[#1E293B]">
-                                    {{ 
-                                        friend.source_user_data.id == id ? 
-                                        friend.destination_user_data.email : 
-                                        friend.source_user_data.email 
+                                    {{
+                                        friend.source_user_data.id == id ?
+                                        friend.destination_user_data.email :
+                                        friend.source_user_data.email
                                     }}
                                 </p>
                             </div>
@@ -90,7 +90,7 @@
                     Adicione amigos para interagir com suas tarrefas
                 </p>
 
-                <img 
+                <img
                     src="/images/undraw_social_friends.svg"
                     class="w-1/2 mx-auto max-w-[500px]" />
 
@@ -98,8 +98,8 @@
         </main>
     </Layout>
 
-    <modal 
-        ref="modalSendInvite" 
+    <modal
+        ref="modalSendInvite"
         title="Enviar convite"
         @close-modal="clearMessages">
             <template #modal-body>
@@ -109,12 +109,12 @@
                             type="email"
                             name="username"
                             placeholder="Email do usuario"
-                            v-model="inviteForm.email" 
+                            v-model="inviteForm.email"
                             :error="inviteForm.errors.email" />
                     </div>
 
-                    <button 
-                        type="button" 
+                    <button
+                        type="button"
                         class="w-[200px] float-right rounded-md bg-[#7C3AED] flex items-center gap-2 justify-center h-10 text-white text-base text-center"
                         @click="submitForm">
                             <user-plus-2 size="20" />
@@ -125,7 +125,7 @@
     </modal>
 
 
-    <modal 
+    <modal
         ref="modalFriendsInvite"
         title="Seu convites de amizade">
             <template #modal-body>
@@ -136,7 +136,7 @@
                         class="mt-4">
 
                             <div class="inline-block">
-                                <img 
+                                <img
                                     :src="loadImage(invite.source_user_data?.image)"
                                     class="w-10 h-10 rounded-full" />
                             </div>
@@ -147,7 +147,7 @@
                             </div>
 
                             <div class="inline-block float-right">
-                                <button 
+                                <button
                                     type="button"
                                     class="w-9 h-9 bg-green-500/50 text-green-700 leading-10 rounded-md mr-4 hover:scale-95"
                                     @click="handleAcceptInvite(invite.id)">
@@ -164,7 +164,7 @@
                 </ul>
 
                 <div v-else>
-                    <img 
+                    <img
                         src="/images/undraw_invite_re_rrcp.svg"
                         class="w-1/2 mx-auto my-5" />
 
@@ -197,10 +197,10 @@ const props = defineProps( [ 'image', 'id' ] )
 
 const friendsList = ref([])
 
-const getFirstLetterFriendsList = computed( () => new Set( friendsList.value.map( friend => { 
+const getFirstLetterFriendsList = computed( () => new Set( friendsList.value.map( friend => {
     return friend.source_user_data.id == props.id       ?
            friend.destination_user_data.name.charAt(0)  :
-           friend.source_user_data.name.charAt(0) 
+           friend.source_user_data.name.charAt(0)
 } ) ) )
 
 onMounted(() => {
@@ -209,13 +209,13 @@ onMounted(() => {
 
 
 function filterByLetter( letter ) {
-    return friendsList.value.filter( friend => { 
+    return friendsList.value.filter( friend => {
         const firstLetter = friend.source_user_data.id == props.id  ?
            friend.destination_user_data.name.charAt(0) :
-           friend.source_user_data.name.charAt(0) 
+           friend.source_user_data.name.charAt(0)
 
 
-        return firstLetter == letter 
+        return firstLetter == letter
     })
 }
 
@@ -236,7 +236,7 @@ async function submitForm() {
 
     // websocket.send({
     //     event: 'invite-friend',
-    //     token: jwttoken.getToken(),  
+    //     token: jwttoken.getToken(),
     //     data: {
     //         email: email.value,
     //     }
@@ -248,6 +248,8 @@ async function submitForm() {
 
 
 function handleAcceptInvite(id) {
+
+
 
     // websocket.send({
     //     event: 'accept-invite',
@@ -290,7 +292,7 @@ const modalFriendsInvite = shallowRef(null)
 
 async function handleViewInvites() {
     try {
-        const response = await axios.get(route('team.invites'));
+        const response = await axios.get(route('team.invite.index'));
 
         invitesData.value = response.data
 
@@ -320,7 +322,7 @@ async function handleDeleteFriend(id) {
     try {
         const response = await axios.delete(route('team.delete', { id }))
 
-        if (response.status == 200)
+        if (response.status === 200)
         {
             toast.success(response.data?.message)
             findFrinds()
