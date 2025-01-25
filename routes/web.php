@@ -65,6 +65,8 @@ Route::middleware('auth')->group(function () {
         ], function () {
             Route::get('/', [TeamController::class, 'invites'])->name('index');
             Route::post('/', [InviteController::class, 'create'])->name('create');
+
+            Route::put('/{id}', [InviteController::class, 'update'])->name('update');
         });
 
         Route::delete('/{id}', [TeamController::class, 'delete'])->name('delete');

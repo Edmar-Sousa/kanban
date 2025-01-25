@@ -90,4 +90,19 @@ class Friends extends Model
             ])
             ->paginate(10);
     }
+
+
+    public function get_by_id(int $id)
+    {
+        return $this->where('id', $id)->first();
+    }
+
+
+    public function accept_invite(int $id)
+    {
+        return $this->where('id', $id)
+            ->update([
+                'status' => self::STATUS_ACEPTED,
+            ]);
+    }
 }

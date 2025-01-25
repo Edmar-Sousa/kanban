@@ -247,9 +247,23 @@ async function submitForm() {
 }
 
 
-function handleAcceptInvite(id) {
+async function handleAcceptInvite(id) {
 
+    try {
+        const response = await axios.put(route('team.invite.update', { id }))
 
+        if (response.status === 200)
+            toast.success('Convite aceito com sucesso')
+    }
+
+    catch (err) {
+        if (axios.isAxiosError(err)) {
+            toast.error(err.response.data.message)
+            return
+        }
+
+        toast.error('Erro ao aceitar convite')
+    }
 
     // websocket.send({
     //     event: 'accept-invite',

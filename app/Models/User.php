@@ -81,7 +81,7 @@ class User extends Authenticatable
 
     /**
      *   This function return the user with the plan activite
-     * 
+     *
      *   @return Illuminate\Database\Eloquent\QueryBuilder  Return a query builder to select data
      */
     public function withPlan()
@@ -92,11 +92,11 @@ class User extends Authenticatable
 
     /**
      *   This function will create a new register of user in database
-     * 
+     *
      *   @param array $userdata  The data of user to register in database
-     * 
+     *
      *   @return Illuminate\Database\Eloquent\Model  The model with data registred in database
-     * 
+     *
      *   @throws Illuminate\Database\QueryException  Return a exception in case of failure
      */
     public function store(array $userdata): User
@@ -115,9 +115,9 @@ class User extends Authenticatable
 
     /**
      *   Find and return the first user with email in database
-     * 
+     *
      *   @param string $email  The email of user to find
-     * 
+     *
      *   @return Illuminate\Database\Eloquent\Model|null  Return a model with data from user or null
      */
     public function find_by_email(string $email)
@@ -128,10 +128,10 @@ class User extends Authenticatable
 
     /**
      *   Update the register from user with id
-     * 
+     *
      *   @param int $id  The id of user to update data
      *   @param array $data  The data to update register
-     * 
+     *
      *   @return Illuminate\Database\Eloquent\Model  The model with data of register
      */
     public function update_user(int $id, array $data)
@@ -143,10 +143,10 @@ class User extends Authenticatable
 
     /**
      *   The function to update of column plan_id of user
-     * 
+     *
      *   @param int $user_id  The user id to update column
      *   @param int $plan_id  The id of plan
-     * 
+     *
      *   @throws Illuminate\Database\QueryExcption  Return a excption in case of failure
      */
     public function update_plan(int $user_id, int $plan_id)

@@ -53,5 +53,38 @@ class InviteController extends Controller
             ->with('type', 'success')
             ->with('message', 'Convite enviado com sucesso');
     }
+    public function update(int $id)
+    {
+        try {
+            $friendInvite = $this->friendsModel->get_by_id($id);
+            $sourceUser = Auth::user();
+
+            $this->friendsModel->accept_invite($friendInvite->id);
+
+            $notification = $this->notificationModel->store([
+                'destination_user' => $friendInvite->source_user_data->id,
+                'source_user' => $sourceUser->id,
+                'message' => 'Seu convite foi aceito, agora vocês são amigos',
+                'type' => Notification::TYPE_SYSTEM,
+            ]);
+
+            NotificationEvent::dispatch(
+                $friendInvite->source_user_data,
+                $notification,
+                $sourceUser
+            );
+
+            return response()->json([
+                'message' => 'Convite aceito com sucesso'
+            ]);
+        }
+
+        catch (Exception $err) {
+            return response()
+                ->json([
+                    'message' => 'Erro ao aceitar convite'
+                ], 500);
+        }
+    }
 
 }
