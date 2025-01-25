@@ -42,8 +42,6 @@ class TaskBoardController extends Controller
         try {
             $task_boards = $this->task_board_model->get_task_board_user(Auth::user()->id);
 
-            sleep(10);
-
             return response()->json([
                 'taskboards' => $task_boards,
             ]);
