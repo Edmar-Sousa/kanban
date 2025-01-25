@@ -7,63 +7,39 @@
     <main class="flex-1 bg-white rounded-tl-2xl px-8 py-12 overflow-y-auto">
       <header class="flex justify-between items-center">
         <h1 class="text-3xl font-bold text-[#403937]">Boards</h1>
-        
+
         <div class="flex items-center gap-10">
           <notification />
 
-          <img 
-            :src="loadImage( image )" 
+          <img
+            :src="loadImage( image )"
             alt="imagem de perfil"
             class="w-16 h-16 rounded-full" />
         </div>
       </header>
-      
+
       <div class="w-full min-h-[821px] mt-8">
         <div class="w-full flex justify-between items-center">
           <h2 class="font-bold text-xl text-[#403937]">Seus boards</h2>
 
-          <button 
+          <button
             arial-label="Criar um novo board"
-            class="bg-[#7C3AED] text-[#ffffff] rounded hover:scale-95" 
+            class="bg-[#7C3AED] text-[#ffffff] rounded hover:scale-95"
             @click="handleOpenModal">
               <plus size="25" />
           </button>
         </div>
 
-        <div class="w-full grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-          <div 
-            class="group/item w-full my-6 p-6 rounded-lg shadow-[0_4px_16px_0px_rgba(22,22,22,0.1)]" 
-            v-for="taskboard in taskboards" 
-            :key="taskboard.id">
-              <h3 class="text-sm font-bold">{{ taskboard.title }}</h3>
-              <p class="my-2.5 text-sm font-medium text-[#756966]">{{ taskboard.description }}</p>
+        <Suspense>
+            <template #default>
+                <AsyncTasksBoardsComponent />
+            </template>
 
-              <div class="w-full flex justify-end gap-2">
-                <button
-                  aria-label="Adicionar amigo ao quadro de tarefas"
-                  class="hidden group-hover/item:block"
-                  @click="handlerAddFriendToBoard(taskboard.id)">
-                    <user-plus size="20"
-                      class="w-[20px] h-[20px]" />
-                </button>
+            <template #fallback>
+                <SkeletonTasksBoards :number-tasks-boards="3" />
+            </template>
+        </Suspense>
 
-                <button 
-                  arial-label="Deletar taskboard" 
-                  class="hidden group-hover/item:block"
-                  @click="deleteTaskBoards( taskboard.id )">
-                    <trash size="20"
-                      class="w-[20px] h-[20px]" />
-                </button>
-
-                <Link 
-                  :href="route('taskboard.task.index', { id: taskboard.id })" 
-                  class="text-sm py-1 px-2 font-medium rounded bg-[#E2D6FF] text-[#7C3AED]">
-                    Visualizar
-                </Link>
-              </div>
-          </div>
-
-        </div>
       </div>
     </main>
 
@@ -73,33 +49,33 @@
         <template #modal-body>
           <ul
             v-for="friend in friendsList"
-            :key="friend.id" 
+            :key="friend.id"
             class="w-full">
               <li class="w-full flex items-center py-1 my-4">
-                <check-box 
+                <check-box
                   v-model="friendsToAddInBoard"
                   :value="friend.id" />
 
-                <img 
+                <img
                   :src="loadImage(
                     friend.source_user_data.id == id ?
                     friend.destination_user_data.image :
                     friend.source_user_data.image
-                  )" 
+                  )"
                   alt="Foto de perfil do usuario"
                   class="w-[40px] h-[40px] mx-4 rounded-full"/>
 
                 <p class="">
-                  {{ 
-                    friend.source_user_data.id == id ? 
-                    friend.destination_user_data.name : 
-                    friend.source_user_data.name 
+                  {{
+                    friend.source_user_data.id == id ?
+                    friend.destination_user_data.name :
+                    friend.source_user_data.name
                   }}
                 </p>
               </li>
           </ul>
 
-          <button 
+          <button
               aria-label="Botão para adicionar a equipe"
               class="flex justify-center align-items text-sm font-normal gap-2 text-white bg-[#7C3AED] p-3 w-[135px] rounded hover:scale-95"
               @click="handlerInviteToTeam">
@@ -109,48 +85,48 @@
     </Modal>
 
 
-    <Modal 
-      ref="modalCreateTaskboard" 
+    <Modal
+      ref="modalCreateTaskboard"
       title="Adicionar nova Board"
       @close-modal="clearMessages">
         <template #modal-body>
-          <form-alert 
+          <form-alert
             v-if="$page.props?.flash?.status"
             :message="$page.props?.flash?.message"
-            :type="$page.props?.flash?.status" /> 
+            :type="$page.props?.flash?.status" />
 
           <form action="#" method="POST" @submit.prevent>
-            <label 
+            <label
               for="input-title"
               class="block my-2 text-sm font-semibold text-[#1E293B]">Titulo</label>
 
-            <input-form 
+            <input-form
               type="text"
-              name="title" 
+              name="title"
               placeholder="Digite o titulo"
               v-model="form.title"
               :error="errors.title" />
 
-            <label 
+            <label
               for="input-title"
               class="block my-2 text-sm font-semibold text-[#1E293B]">
                 Descrição
             </label>
 
-            <textarea 
-              name="description" 
+            <textarea
+              name="description"
               class="w-full h-[150px] border border-[#E2E8F0] rounded text-sm p-3 outline-none hover:border-[#7C3AED] focus:border-[#7C3AED]"
               :class="{ 'border-red-400': errors.description }"
               v-model="form.description"
               :error="errors.description">
-            </textarea> 
+            </textarea>
 
             <p v-show="errors.description" class="text-xs text-red-400 mt-2">
               {{ errors.description }}
-            </p> 
+            </p>
 
             <div class="w-full flex justify-end">
-              <button 
+              <button
                 aria-label="Botão para filtrar tarefas"
                 class="flex justify-center align-items text-sm font-normal gap-2 text-white bg-[#7C3AED] p-3 w-[135px] rounded hover:scale-95"
                 @click="createTaskBoard()">
@@ -167,12 +143,12 @@
 <script setup>
 
 import axios from 'axios'
-import { ref, onMounted } from 'vue'
-import { Link, useForm, usePage } from "@inertiajs/vue3"
-import { Plus, Trash, UserPlus } from 'lucide-vue-next'
+import { ref, defineAsyncComponent } from 'vue'
+
+import { useForm, usePage } from "@inertiajs/vue3"
+import { Plus } from 'lucide-vue-next'
 import { useToast } from 'vue-toast-notification'
 
-import jwttoken from '@/Utils/jwttoken'
 
 import FormAlert from '@/Components/FormAlert.vue'
 import Layout from '@/Template/Layout.vue'
@@ -181,15 +157,17 @@ import CheckBox from '@/Components/CheckBox.vue'
 
 import Notification from '@/Components/Notification.vue'
 import Modal from '@/Components/Modal.vue'
+import SkeletonTasksBoards from "@/Components/Skeletons/SkeletonTasksBoards.vue";
 
-const props = defineProps( ['id', 'taskboards', 'image', 'token'] )
-
-
-onMounted(() => jwttoken.setToken(props.token)) 
+const props = defineProps( ['id', 'image'] )
 
 
 
 const friendsToAddInBoard = ref([])
+
+const AsyncTasksBoardsComponent = defineAsyncComponent({
+    loader: () => import("@/Components/TasksBoardsPanel.vue"),
+})
 
 
 const form = useForm({
@@ -204,8 +182,8 @@ const errors = ref({
 
 function createTaskBoard() {
   form.post(route('taskboard.create'), {
-    onSuccess: () => { 
-      form.title = '' 
+    onSuccess: () => {
+      form.title = ''
       form.description = ''
     },
     onError: (error) => errors.value = error
@@ -255,7 +233,7 @@ async function findFriends() {
 async function handlerAddFriendToBoard() {
   if (!modalAddFriedToBoard.value)
     return
-  
+
   await findFriends()
   modalAddFriedToBoard.value.showModal()
 }
@@ -264,7 +242,7 @@ async function handlerAddFriendToBoard() {
 async function handlerInviteToTeam() {
   try {
     const response = await axios.post(route('team.invite.team'))
-  
+
     if (response.status == 200)
       toast.success('Convite enviado com sucesso')
   }

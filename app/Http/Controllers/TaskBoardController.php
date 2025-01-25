@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -32,11 +33,28 @@ class TaskBoardController extends Controller
         return Inertia::render('TaskBoard', [
             'id' => Auth::user()->id,
             'image' => Auth::user()->image,
-            'taskboards' => $this->task_board_model->get_task_board_user(Auth::user()->id),
-            'token' => Session::get('jwt_token'),
+//            'token' => Session::get('jwt_token'),
         ]);
     }
 
+    public function list()
+    {
+        try {
+            $task_boards = $this->task_board_model->get_task_board_user(Auth::user()->id);
+
+            sleep(10);
+
+            return response()->json([
+                'taskboards' => $task_boards,
+            ]);
+        }
+
+        catch (Exception $error) {
+            return response()->json([
+                'message' => 'Erro ao buscar os task boards',
+            ], 500);
+        }
+    }
 
     public function store(TaskBoardStoreRequest $request)
     {

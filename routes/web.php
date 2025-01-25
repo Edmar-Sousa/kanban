@@ -35,6 +35,8 @@ Route::middleware('auth')->group(function () {
     ], function () {
 
         Route::get('/', [TaskBoardController::class, 'index'])->name('index');
+        Route::get('/list', [TaskBoardController::class, 'list'])->name('list');
+
         Route::post('/', [TaskBoardController::class, 'store'])->name('create');
         Route::delete('/', [TaskBoardController::class, 'delete'])->name('delete');
 
