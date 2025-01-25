@@ -1,5 +1,5 @@
 <template>
-    <div class="w-full grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+    <div class="w-full grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3" v-once>
         <div
             class="w-full my-6 p-6 rounded-lg shadow-[0_4px_16px_0px_rgba(22,22,22,0.1)] h-[136px]"
             v-for="taskboard in numberTasksBoards"

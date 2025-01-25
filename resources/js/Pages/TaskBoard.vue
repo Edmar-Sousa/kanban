@@ -36,7 +36,7 @@
             </template>
 
             <template #fallback>
-                <SkeletonTasksBoards :number-tasks-boards="3" v-once />
+                <SkeletonTasksBoards :number-tasks-boards="3" />
             </template>
         </Suspense>
 
