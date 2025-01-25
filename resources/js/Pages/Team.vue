@@ -131,7 +131,7 @@
             <template #modal-body>
 
                 <ul v-if="invitesData?.data.length">
-                    <li v-for="invite in invitesData.data"
+                    <li v-for="(invite, index) in invitesData.data"
                         :key="invite.id"
                         class="mt-4">
 
@@ -150,7 +150,7 @@
                                 <button
                                     type="button"
                                     class="w-9 h-9 bg-green-500/50 text-green-700 leading-10 rounded-md mr-4 hover:scale-95"
-                                    @click="handleAcceptInvite(invite.id)">
+                                    @click="handleAcceptInvite(invite.id, index)">
                                         <user-check size="20" class="mx-auto" />
                                 </button>
 
@@ -246,14 +246,18 @@ async function submitForm() {
     // websocket.recv('invite-friend-error', data => messageresponse.value = data)
 }
 
+const invitesData = ref(null)
+const modalFriendsInvite = shallowRef(null)
 
-async function handleAcceptInvite(id) {
+async function handleAcceptInvite(id, index) {
 
     try {
         const response = await axios.put(route('team.invite.update', { id }))
 
-        if (response.status === 200)
+        if (response.status === 200) {
             toast.success('Convite aceito com sucesso')
+            invitesData.value.data.splice(index, 1)
+        }
     }
 
     catch (err) {
@@ -264,28 +268,6 @@ async function handleAcceptInvite(id) {
 
         toast.error('Erro ao aceitar convite')
     }
-
-    // websocket.send({
-    //     event: 'accept-invite',
-    //     token: jwttoken.getToken(),
-    //     data: {
-    //         inviteId: id,
-    //     },
-    // })
-
-    // websocket.recv('accept-invite-success', data => {
-    //     messageresponse.value = data
-
-    //     handleViewInvites()
-    //     findFrinds()
-    // })
-    // websocket.recv('accept-invite-error', data => {
-    //     messageresponse.value = data
-
-    //     handleViewInvites()
-    //     findFrinds()
-    // })
-
 }
 
 
@@ -300,9 +282,6 @@ function handleOpenModal() {
 const toast = useToast({
   position: 'top-right',
 })
-
-const invitesData = shallowRef(null)
-const modalFriendsInvite = shallowRef(null)
 
 async function handleViewInvites() {
     try {
