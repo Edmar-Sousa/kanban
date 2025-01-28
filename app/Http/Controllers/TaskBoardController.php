@@ -11,8 +11,6 @@ use App\Http\Requests\TaskBoardStoreRequest;
 use App\Models\Notification;
 use App\Models\TaskBoards;
 use App\Models\Plans;
-use Illuminate\Support\Facades\Session;
-use Tymon\JWTAuth\Facades\JWTAuth;
 
 class TaskBoardController extends Controller
 {
@@ -33,7 +31,6 @@ class TaskBoardController extends Controller
         return Inertia::render('TaskBoard', [
             'id' => Auth::user()->id,
             'image' => Auth::user()->image,
-//            'token' => Session::get('jwt_token'),
         ]);
     }
 

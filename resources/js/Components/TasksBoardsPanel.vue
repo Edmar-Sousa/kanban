@@ -13,7 +13,7 @@
                         class="hidden group-hover/item:block"
                         @click="handlerAddFriendToBoard(taskboard.id)">
                         <user-plus size="20"
-                                   class="w-[20px] h-[20px]" />
+                           class="w-[20px] h-[20px]" />
                     </button>
 
                     <button
