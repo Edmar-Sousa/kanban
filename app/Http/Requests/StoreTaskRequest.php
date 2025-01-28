@@ -19,7 +19,7 @@ class StoreTaskRequest extends FormRequest
             'title'  => ['required', 'min:3'],
             'description' => ['required'],
             'date_start' => ['date', 'after:now'],
-            'date_end' => ['date', 'after:date_start'],
+            'date_end' => ['date'],
         ];
     }
 
