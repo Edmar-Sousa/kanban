@@ -157,6 +157,7 @@
 
 import { Plus } from 'lucide-vue-next'
 import { useForm } from "@inertiajs/vue3"
+import {useToast} from "vue-toast-notification"
 import { computed, ref } from "vue"
 
 import Layout from "@/Template/Layout.vue"
@@ -173,6 +174,9 @@ const taskToDo  = computed( () => props.taskboard?.tasks.filter( task => task.st
 const taskDoing = computed( () => props.taskboard?.tasks.filter( task => task.state == 2 ) )
 const taskDone  = computed( () => props.taskboard?.tasks.filter( task => task.state == 3 ) )
 
+const toast = useToast({
+    position: 'top-right',
+})
 
 function dragStart( event, item ) {
   event.dataTransfer.dropEffect = "move"
@@ -188,8 +192,7 @@ function drop( event, state ) {
 
   form.put(route('taskboard.task.update', { id: task.id, }), {
     onSuccess: () => task.state = state,
-    // TODO: mudar o tratamento de errors para notificação toast
-    onError: err => console.log(err)
+    onError: err => toast.error('Erro ao atualizar status da tarefa')
   })
 
 }
@@ -217,8 +220,7 @@ function resetForm() {
 function addNewTask() {
     formInputTasks.post(route("taskboard.task.create"), {
         onSuccess: () => resetForm(),
-        // TODO: mudar o tratamento de errors para notificação toast
-        onError: errors => console.log(errors)
+        onError: errors => toast.error('Erro ao tentar criar a tarefa')
     })
 }
 
