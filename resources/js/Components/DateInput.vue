@@ -1,6 +1,6 @@
 <template>
 
-    <input 
+    <input
         type="text"
         :name="name"
         :id="`input-${name}`"
@@ -10,18 +10,17 @@
         v-model="inputValue"
         :disabled="disabled"
         @input="handlerInput"
-        @change="$event => $emit('change', $event)"
         v-maska
         data-maska="##/##/#### ##:##" />
-    
-    <p v-show="error" class="text-xs text-red-400 mt-2">{{ error }}</p>
+
+    <p v-show="hasError" class="text-xs text-red-400 mt-2">{{ error }}</p>
 
 </template>
 
 
 <script setup>
 
-import { ref } from 'vue'
+import {computed, ref} from 'vue'
 import { vMaska } from 'maska/vue'
 
 
@@ -31,8 +30,7 @@ const emit = defineEmits( ['update:modelValue'] )
 
 const inputValue = ref(props.modelValue)
 
-
-
+const hasError = computed(() => props.error?.length)
 
 function handlerInput()  {
     emit('update:modelValue', inputValue.value.replace(/(\d{2})\/(\d{2})\/(\d{4})\s(\d{2})\:(\d{2})/, '$3-$2-$1 $4:$5'))
