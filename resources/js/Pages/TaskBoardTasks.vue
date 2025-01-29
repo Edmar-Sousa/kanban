@@ -225,11 +225,21 @@ function addNewTask() {
 }
 
 
-// TODO: mudar isso para axios
-function DeleteTask(task) {
-  const form = useForm( { id: task.id } )
+// TODO: remover a tarefa da lista de tarefas
+async function DeleteTask(task) {
+    try {
+        const response = await axios.delete(route("taskboard.task.delete", { id: task.id }))
 
-  form.delete(route("taskboard.task.delete"))
+        if (response.status === 200)
+            toast.success('Tarefa deletada com sucesso')
+    }
+    catch (err) {
+        if (axios.isAxiosError(err))
+            toast.error(err.response.data?.message)
+
+        else
+            toast.error('Ocorreu um erro ao deletar tarefa')
+    }
 }
 
 
