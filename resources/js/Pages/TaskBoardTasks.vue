@@ -3,10 +3,6 @@
     <title>Taskboard</title>
   </Head>
 
-    <div>
-        {{ formInputTasks.errors }}
-    </div>
-
   <Layout>
     <main class="flex-1 bg-white rounded-tl-2xl px-8 py-12 overflow-y-auto">
       <header class="w-full flex justify-between items-center">
@@ -207,7 +203,6 @@ const formInputTasks = useForm({
   description: "",
 })
 
-// TODO: reset the value from date_start and date_end
 function closeModal() {
     resetForm()
 }
