@@ -3,6 +3,10 @@
     <title>Taskboard</title>
   </Head>
 
+    <div>
+        {{ formInputTasks.errors }}
+    </div>
+
   <Layout>
     <main class="flex-1 bg-white rounded-tl-2xl px-8 py-12 overflow-y-auto">
       <header class="w-full flex justify-between items-center">
@@ -88,7 +92,7 @@
                   name="date-start"
                   placeholder="00/00/0000 00:00"
                   v-model="formInputTasks.date_start"
-                  :error="formInputTasksErrors.date_start">
+                  :error="formInputTasks.errors.date_start">
                 </date-input>
               </div>
 
@@ -103,7 +107,7 @@
                   name="date-end"
                   placeholder="00/00/0000 00:00"
                   v-model="formInputTasks.date_end"
-                  :error="formInputTasksErrors.date_end">
+                  :error="formInputTasks.errors.date_end">
                 </date-input>
               </div>
 
@@ -120,7 +124,7 @@
               name="title"
               placeholder="Digite o titulo da terfa"
               v-model="formInputTasks.title"
-              :error="formInputTasksErrors.title" />
+              :error="formInputTasks.errors.title" />
 
             <label
               for="input-description"
@@ -132,11 +136,11 @@
               id="input-description"
               name="description"
               class="w-full h-[150px] border border-[#E2E8F0] rounded text-sm p-3 outline-none hover:border-[#7C3AED] focus:border-[#7C3AED]"
-              :class="{ 'border-red-400': formInputTasksErrors.description }"
+              :class="{ 'border-red-400': formInputTasks.errors.description }"
               v-model="formInputTasks.description">
             </textarea>
 
-            <p v-show="formInputTasksErrors.description" class="text-xs text-red-400 mt-2">{{ formInputTasksErrors.description }}</p>
+            <p v-show="formInputTasks.errors.description" class="text-xs text-red-400 mt-2">{{ formInputTasks.errors.description }}</p>
 
             <div class="w-full flex justify-end">
               <button
@@ -188,13 +192,14 @@ function drop( event, state ) {
 
   form.put(route('taskboard.task.update', { id: task.id, }), {
     onSuccess: () => task.state = state,
+    // TODO: mudar o tratamento de errors para notificação toast
     onError: err => console.log(err)
   })
 
 }
 
 
-const formInputTasks = ref({
+const formInputTasks = useForm({
   id: props.taskboard?.id,
   date_start: null,
   date_end: null,
@@ -202,25 +207,28 @@ const formInputTasks = ref({
   description: "",
 })
 
+// TODO: reset the value from date_start and date_end
 function closeModal() {
-  formInputTasks.value = { title: "", description: "" }
+    resetForm()
 }
 
-const formInputTasksErrors = ref({
-  title: "",
-  description: "",
-})
+function resetForm() {
+    formInputTasks.title = ""
+    formInputTasks.description = ""
+    formInputTasks.date_end = null
+    formInputTasks.date_start = null
+}
 
 function addNewTask() {
-  const form = useForm( { ...formInputTasks.value } )
-
-  form.post(route("taskboard.task.create"), {
-    onSuccess: () => formInputTasks.value = { ...formInputTasks.value, title: "", description: "", date_start: null, date_end: null },
-    onError: errors => formInputTasksErrors.value = errors
-  })
+    formInputTasks.post(route("taskboard.task.create"), {
+        onSuccess: () => resetForm(),
+        // TODO: mudar o tratamento de errors para notificação toast
+        onError: errors => console.log(errors)
+    })
 }
 
 
+// TODO: mudar isso para axios
 function DeleteTask(task) {
   const form = useForm( { id: task.id } )
 
