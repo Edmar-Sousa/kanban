@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\User;
+use App\Models\Transaction;
 use Illuminate\Support\Facades\Broadcast;
 
 Broadcast::channel('App.Models.User.{id}', function ($user, $id) {
@@ -10,5 +11,9 @@ Broadcast::channel('App.Models.User.{id}', function ($user, $id) {
 
 Broadcast::channel('notification.{userId}', function (User $user, int $userId) {
     return $user->id == $userId;
+});
+
+Broadcast::channel('payment.{transactionId}', function (User $user, Transaction $transaction) {
+    return $transaction->isPaymentFromUser($user->id);
 });
 
