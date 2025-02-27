@@ -57,7 +57,7 @@ class PaymentController extends Controller
 
             $plan = $this->planModel->get_plan_with_id($forms['planId']);
 
-            // temporario
+            // TODO: temporario
             if (is_null($plan))
                 return abort(404);
 
