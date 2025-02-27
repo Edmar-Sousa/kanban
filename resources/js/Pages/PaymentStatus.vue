@@ -8,30 +8,30 @@
         <template v-if="isPendding">
             <div class="flex flex-col items-center md:flex-row-reverse justify-center">
                 <div>
-                    <img 
+                    <img
                         src="/images/undraw_transfer_money.svg"
                         alt="imagem de uma moça com um cartão"
                         class="mx-auto w-11/12 max-w-[400px]" />
                 </div>
-        
+
                 <div class="">
                     <h1 class="text-4xl font-bold mt-10 mb-4 text-[#25282c]">
                         Pagamento Pendente!
                     </h1>
-        
+
                     <p class="text-base font-normal mb-10 text-[#475569]">
                         Estamos esperando a confirmação do pagamento! <br />
                         Você sera notificado por email, quando o pagamento for confirmado!
                     </p>
-        
+
                     <p class="text-base font-normal mb-4 text-[#475569]">
                         Espere aqui ou vá para a pagina principal!
                     </p>
-        
+
                     <Link
                         :href="route('taskboard.index')"
                         arial-label="Link para voltar a pagina principal"
-                        type="submit" 
+                        type="submit"
                         class="block w-full h-10 text-base text-center leading-10 font-bold rounded text-white my-9 bg-[#7C3AED] hover:bg-[#9F67FF]">
                             Voltar para a pagina principal
                     </Link>
@@ -49,16 +49,16 @@
                 <h1 class="text-4xl font-bold mt-10 mb-4 text-[#25282c]">
                     Pagamento Confirmado!!!
                 </h1>
-    
+
                 <p class="text-base font-normal mb-10 text-[#475569]">
                     O pagamento foi confirmado com sucesso. <br />
                     Atualizamos o seu plano para o plano <b>{{ paymentState.planName }}</b>!
                 </p>
-    
+
                 <Link
                     :href="route('taskboard.index')"
                     arial-label="Link para voltar a pagina principal"
-                    type="submit" 
+                    type="submit"
                     class="block w-full h-10 text-base text-center leading-10 font-bold rounded text-white my-9 bg-[#7C3AED] hover:bg-[#9F67FF]">
                         Voltar para a pagina principal
                 </Link>
@@ -82,14 +82,14 @@
                 <Link
                     :href="route('taskboard.index')"
                     arial-label="Link para voltar a pagina principal"
-                    type="submit" 
+                    type="submit"
                     class="block w-full h-10 text-base text-center leading-10 font-bold rounded text-white my-9 bg-[#7C3AED] hover:bg-[#9F67FF]">
                         Voltar para a pagina principal
                 </Link>
             </div>
 
         </template>
-    
+
     </div>
 
 
@@ -113,48 +113,21 @@ const paymentState = ref({
 })
 
 
-const isPendding = computed(() => paymentState.value.status == 'pendding')
-const isConfirmed = computed(() => paymentState.value.status == 'confirmed')
-const isCanceled = computed(() => paymentState.value.status == 'canceled')
+const isPendding = computed(() => paymentState.value.status === 'pendding')
+const isConfirmed = computed(() => paymentState.value.status === 'confirmed')
+const isCanceled = computed(() => paymentState.value.status === 'canceled')
 
-let intervalId = null
-
-onMounted(() => {
-    intervalId = setInterval(handlerCheckStatus, 2000)
-})
-
-onUnmounted(() => {
-    handlerStopInterval()
-})
-
-async function handlerCheckStatus() {
-    try {
-        const response = await axios.get(route('payment.check', { 
-            id: props.paymentId 
-        }))
+onMounted(handlerConnectOnChannel)
 
 
-        if (response.status == 200 && ['canceled', 'confirmed'].includes(response.data.status))
-        {
-            paymentState.value = { 
-                status: response.data.status,
-                planName: response.data.plan
-            }
-
-            handlerStopInterval()
-        }
-    }
-
-    catch {
-
-        handlerStopInterval()
-    }
+function handlerConnectOnChannel() {
+    window.Echo
+        .private(`payment.${ props.paymentId }`)
+        .listen('ConfirmPaymentEvent', handlerUpdatePaymentEvent)
 }
 
-
-function handlerStopInterval() {
-    if (intervalId)
-        clearInterval(intervalId)
+function handlerUpdatePaymentEvent(event) {
+    console.log(event)
 }
 
 </script>
