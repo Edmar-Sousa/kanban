@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AssasWebHookController;
 use App\Http\Controllers\InviteController;
 use App\Http\Controllers\PaymentController;
 use Illuminate\Support\Facades\Route;
@@ -110,3 +111,6 @@ Route::group([
 });
 
 Route::redirect('/', '/task-board');
+
+
+Route::post('/webhook/assas', AssasWebhookController::class)->name('webhook.assas');
