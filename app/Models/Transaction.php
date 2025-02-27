@@ -37,6 +37,15 @@ class Transaction extends Model
         return $this->hasOne(Plans::class, 'id', 'plan_id');
     }
 
+    public function user()
+    {
+        return $this->hasOne(User::class, 'id', 'user_id');
+    }
+
+    public function isPaymentFromUser(int $userId): bool
+    {
+        return $this->user()->id == $userId;
+    }
 
     public function createCreditCardTransaction(array $data)
     {
