@@ -127,7 +127,6 @@ function handlerConnectOnChannel() {
 }
 
 function handlerUpdatePaymentEvent(event) {
-    console.log(event)
     if (event.status === paymentState.value.status)
         return
 
