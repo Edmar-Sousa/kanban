@@ -19,12 +19,14 @@ class ConfirmPaymentEvent implements ShouldBroadcastNow
 
     public string $paymentId;
     public string $status;
+    public string $planName;
 
 
     public function __construct(Transaction $transaction)
     {
         $this->paymentId = $transaction->id;
         $this->status = $transaction->status;
+        $this->planName = $transaction->plan->title;
     }
 
 

@@ -128,6 +128,13 @@ function handlerConnectOnChannel() {
 
 function handlerUpdatePaymentEvent(event) {
     console.log(event)
+    if (event.status === paymentState.value.status)
+        return
+
+    paymentState.value = {
+        status: event.status,
+        planName: event.planName
+    }
 }
 
 </script>
