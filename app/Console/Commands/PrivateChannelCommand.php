@@ -2,8 +2,9 @@
 
 namespace App\Console\Commands;
 
+use App\Events\ConfirmPaymentEvent;
 use App\Events\NotificationEvent;
-use App\Models\User;
+use App\Models\Transaction;
 use Illuminate\Console\Command;
 
 class PrivateChannelCommand extends Command
@@ -27,7 +28,7 @@ class PrivateChannelCommand extends Command
      */
     public function handle()
     {
-        $user = User::where('id', 7)->first();
-        NotificationEvent::dispatch($user);
+        $transaction = Transaction::select('*')->where('id', 3)->first();
+        ConfirmPaymentEvent::dispatch($transaction);
     }
 }
