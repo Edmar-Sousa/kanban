@@ -13,7 +13,7 @@ Broadcast::channel('notification.{userId}', function (User $user, int $userId) {
     return $user->id == $userId;
 });
 
-Broadcast::channel('payment.{transactionId}', function (User $user, Transaction $transaction) {
-    return $transaction->isPaymentFromUser($user->id);
+Broadcast::channel('payment.{transactionId}', function (User $user, string $transactionId) {
+    return $user->hasPaymentWithIdAssociated($transactionId);
 });
 
