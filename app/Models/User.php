@@ -36,6 +36,16 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    public function payment()
+    {
+        return $this->belongsTo(Transaction::class, 'id', 'user_id');
+    }
+
+
+    public function hasPaymentWithIdAssociated(int $paymentId)
+    {
+        return $this->payment()->where('id', $paymentId)->exists();
+    }
 
 
     public function getJWTIdentifier()
