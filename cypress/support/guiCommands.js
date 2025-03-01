@@ -25,8 +25,8 @@
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
 
 Cypress.Commands.add('guiLoginUser', (
-    email, 
-    password
+    email = Cypress.env('user_email'), 
+    password = Cypress.env('user_password')
 ) => {
     cy.visit('/login')
     
