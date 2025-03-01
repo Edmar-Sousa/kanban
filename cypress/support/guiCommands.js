@@ -35,6 +35,15 @@ Cypress.Commands.add('guiLoginUser', (
     cy.get('button[type="submit"]').click()
 })
 
+Cypress.Commands.add('guiCreateTaskboard', (taskboard) => {
+    cy.get('[data-qa-selector="create-taskboard"]').click()
+
+    cy.get('#input-title').type(taskboard.title)
+    cy.get('textarea[name="description"]').type(taskboard.description)
+
+    cy.get('[data-qa-selector="send-form-taskboard"]').click()
+})
+
 Cypress.Commands.add('guiTryLoginEmptyUser', () => {
     cy.visit('/login')
     cy.get('button[type="submit"]').click()
