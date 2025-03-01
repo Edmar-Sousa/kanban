@@ -1,6 +1,7 @@
 <template>
 
     <div 
+        v-bind="$attrs"
         class="w-full p-4  border-[2px] my-2 rounded-md"
         :class="mapStyle[props.type]?.alertStyle">
             <p class="text-base font-bold text-[#1E293B]">

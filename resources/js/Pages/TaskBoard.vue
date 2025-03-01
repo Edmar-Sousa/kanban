@@ -25,7 +25,8 @@
           <button
             arial-label="Criar um novo board"
             class="bg-[#7C3AED] text-[#ffffff] rounded hover:scale-95"
-            @click="handleOpenModal">
+            @click="handleOpenModal"
+            data-qa-selector="create-taskboard">
               <plus size="25" />
           </button>
         </div>
@@ -91,6 +92,7 @@
       @close-modal="clearMessages">
         <template #modal-body>
           <form-alert
+            data-qa-selector="form-alert"
             v-if="$page.props?.flash?.status"
             :message="$page.props?.flash?.message"
             :type="$page.props?.flash?.status" />
@@ -129,7 +131,8 @@
               <button
                 aria-label="Botão para filtrar tarefas"
                 class="flex justify-center align-items text-sm font-normal gap-2 text-white bg-[#7C3AED] p-3 w-[135px] rounded hover:scale-95"
-                @click="createTaskBoard()">
+                @click="createTaskBoard()"
+                data-qa-selector="send-form-taskboard">
                   Criar
               </button>
             </div>
