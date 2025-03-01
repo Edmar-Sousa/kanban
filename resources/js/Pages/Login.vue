@@ -22,7 +22,8 @@
                             name="email"
                             placeholder="Digite seu email"
                             v-model="form.email"
-                            :error="errors.email || v$.email.$errors[0]?.$message" />
+                            :error="errors.email || v$.email.$errors[0]?.$message"
+                            data-qa-selector="email" />
                     </div>
 
                     <div class="mt-4">
@@ -39,7 +40,8 @@
                             name="password"
                             placeholder="Digite sua senha"
                             v-model="form.password"
-                            :error="errors.password || v$.password.$errors[0]?.$message" />
+                            :error="errors.password || v$.password.$errors[0]?.$message"
+                            data-qa-selector="password" />
                     </div>
 
                     <button

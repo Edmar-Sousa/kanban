@@ -11,7 +11,8 @@
         @input="handlerInput"
         @change="$event => $emit('change', $event)"
         v-maska
-        :data-maska="mask" />
+        :data-maska="mask"
+        v-bind="$attrs" />
     
     <p v-show="error" class="text-xs text-red-400 mt-2">{{ error }}</p>
 </template>
