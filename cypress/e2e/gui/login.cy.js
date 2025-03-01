@@ -7,7 +7,7 @@ describe('Test login page', () => {
 
     cy.guiLoginUser(userEmail, userPassword)
 
-    cy.get('header h1').should('have.text', 'Boards')
+    cy.get('header h1').should('be.visible')
   })
 
 

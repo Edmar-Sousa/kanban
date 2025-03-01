@@ -24,12 +24,14 @@
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
 
-Cypress.Commands.add('guiLoginUser', (email, password) => {
+Cypress.Commands.add('guiLoginUser', (
+    email, 
+    password
+) => {
     cy.visit('/login')
-
+    
     cy.get('[data-qa-selector="email"]').type(email)
     cy.get('[data-qa-selector="password"]').type(password)
-
     cy.get('button[type="submit"]').click()
 })
 
