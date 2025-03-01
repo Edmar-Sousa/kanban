@@ -1,5 +1,5 @@
 describe('Test login page', () => {
-  it('Login with error data', () => {
+  it('Login with correct data', () => {
     const userEmail = Cypress.env('user_email')
     const userPassword = Cypress.env('user_password')
 
