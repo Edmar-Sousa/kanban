@@ -15,4 +15,11 @@ describe('Test create a taskboard', () => {
         cy.guiCreateTaskboard(taskboard)
         cy.get('[data-qa-selector="form-alert"]').should('be.visible')
     })
+
+
+    it('Test try create task board without data', () => {
+        cy.guiCreateTaskboardWithoutData()
+        cy.get('#input-title ~ p').eq(0).should('have.text', 'O campo tarefa é obrigatorio.')
+        cy.get('textarea[name="description"] ~ p').should('have.text', 'O campo descrição é obrigatorio.')
+    })
 })
