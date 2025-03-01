@@ -32,3 +32,8 @@ Cypress.Commands.add('guiLoginUser', (email, password) => {
 
     cy.get('button[type="submit"]').click()
 })
+
+Cypress.Commands.add('guiTryLoginEmptyUser', () => {
+    cy.visit('/login')
+    cy.get('button[type="submit"]').click()
+})

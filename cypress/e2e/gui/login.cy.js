@@ -19,4 +19,11 @@ describe('Test login page', () => {
 
     cy.get('[data-qa-selector="email"] ~ p').should('have.text', 'O email informado não foi encontrado.')
   })
+
+  it('Try login without data', () => {
+    cy.guiTryLoginEmptyUser()
+
+    cy.get('[data-qa-selector="email"] ~ p').should('have.text', 'Este campo é obrigatorio.')
+    cy.get('[data-qa-selector="password"] ~ p').should('have.text', 'Este campo é obrigatorio.')
+  })
 })
