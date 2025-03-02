@@ -33,7 +33,7 @@
 
         <Suspense>
             <template #default>
-                <AsyncTasksBoardsComponent />
+                <AsyncTasksBoardsComponent ref="taskBoardsPanelRef" />
             </template>
 
             <template #fallback>
@@ -146,7 +146,7 @@
 <script setup>
 
 import axios from 'axios'
-import { ref, defineAsyncComponent } from 'vue'
+import { ref, defineAsyncComponent, useTemplateRef } from 'vue'
 
 import { useForm, usePage } from "@inertiajs/vue3"
 import { Plus } from 'lucide-vue-next'
@@ -168,8 +168,9 @@ const props = defineProps( ['id', 'image'] )
 
 const friendsToAddInBoard = ref([])
 
+const tasksBoardsPanelRef = useTemplateRef('taskBoardsPanelRef')
 const AsyncTasksBoardsComponent = defineAsyncComponent({
-    loader: () => import("@/Components/TasksBoardsPanel.vue"),
+  loader: () => import("@/Components/TasksBoardsPanel.vue"),
 })
 
 
@@ -188,15 +189,11 @@ function createTaskBoard() {
     onSuccess: () => {
       form.title = ''
       form.description = ''
+
+      tasksBoardsPanelRef.value.getTasksboards()
     },
     onError: (error) => errors.value = error
   })
-}
-
-
-function deleteTaskBoards( id ) {
-  const deleteForm = useForm({ id })
-  deleteForm.delete(route('taskboard.delete'))
 }
 
 const modalCreateTaskboard = ref(null)
@@ -210,7 +207,7 @@ function handleOpenModal() {
 const page = usePage()
 
 function clearMessages() {
-  if ( page.props.value.flash )
+  if ( page.props?.value?.flash )
     page.props.value.flash = {}
 }
 
