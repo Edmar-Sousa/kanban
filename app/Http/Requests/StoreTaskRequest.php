@@ -18,7 +18,7 @@ class StoreTaskRequest extends FormRequest
             'id'     => ['exists:task_boards,id'],
             'title'  => ['required', 'min:3'],
             'description' => ['required'],
-            'date_start' => ['date', 'after:now'],
+            'date_start' => ['date'],
             'date_end' => ['date'],
         ];
     }
