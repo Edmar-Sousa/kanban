@@ -25,6 +25,7 @@
                     </button>
 
                     <Link
+                        :data-qa-selector="taskboard.title"
                         :href="route('taskboard.task.index', { id: taskboard.id })"
                         class="text-sm py-1 px-2 font-medium rounded bg-[#E2D6FF] text-[#7C3AED]">
                             Visualizar
@@ -40,9 +41,29 @@ import axios from "axios"
 
 import {Trash, UserPlus} from "lucide-vue-next"
 import {Link} from "@inertiajs/vue3"
-import {shallowRef} from "vue";
+import {ref} from "vue"
+import { useForm } from "@inertiajs/vue3"
 
-const response = await axios.get(route('taskboard.list'))
-const taskboards = shallowRef(response.data.taskboards)
+
+defineExpose({ getTasksboards })
+
+const taskboards = ref(null)
+getTasksboards()
+
+async function getTasksboards() {
+    const response = await axios.get(route('taskboard.list'))
+    taskboards.value = response.data.taskboards
+
+    console.log(taskboards.value)
+}
+
+
+function deleteTaskBoards( id ) {
+  const deleteForm = useForm({ id })
+
+  deleteForm.delete(route('taskboard.delete'), {
+    onFinish: () => getTasksboards()
+  })
+}
 
 </script>
