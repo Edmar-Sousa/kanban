@@ -140,6 +140,7 @@
 
             <div class="w-full flex justify-end">
               <button
+                data-qa-selector="create-new-task"
                 aria-label="Botão para filtrar tarefas"
                 class="flex justify-center align-items text-sm font-normal gap-2 text-white bg-[#7C3AED] p-3 w-[135px] rounded hover:scale-95"
                 @click="addNewTask()">
