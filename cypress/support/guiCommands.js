@@ -44,6 +44,21 @@ Cypress.Commands.add('guiCreateTaskboard', (taskboard) => {
     cy.get('[data-qa-selector="send-form-taskboard"]').click()
 })
 
+Cypress.Commands.add('guiCreateTaskInTaskboard', (task) => {
+    cy.visit('/task-board')
+
+    cy.get(`[data-qa-selector="${task.taskboard.title}"]`).click()
+
+    cy.get('button[arial-label="Adicionar tarefa"]').click()
+
+    cy.get('#input-date-start').type(task.datestart)
+    cy.get('#input-date-end').type(task.dateend)
+    cy.get('#input-title').type(task.title)
+    cy.get('#input-description').type(task.description)
+
+    cy.get('[data-qa-selector="create-new-task"]').click()
+})
+
 Cypress.Commands.add('guiCreateTaskboardWithoutData', () => {
     cy.get('[data-qa-selector="create-taskboard"]').click()
     cy.get('[data-qa-selector="send-form-taskboard"]').click()
