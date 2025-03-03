@@ -1,52 +1,50 @@
 <template>
-    <Layout>
-        <Head>
-            <title>Equipes</title>
-        </Head>
+    <Head>
+        <title>Equipes</title>
+    </Head>
 
-        <main class="flex-1 bg-white rounded-tl-2xl px-8 py-12 overflow-y-auto">
-            <header class="w-full flex justify-between items-center">
-                <h1 class="text-3xl text-[#403937] font-bold inline-block">Adicionar Membro a Equipe</h1>
+    <main class="flex-1 bg-white rounded-tl-2xl px-8 py-12 overflow-y-auto">
+        <header class="w-full flex justify-between items-center">
+            <h1 class="text-3xl text-[#403937] font-bold inline-block">Adicionar Membro a Equipe</h1>
 
-                <div class="flex items-center gap-10">
-                    <notification />
+            <div class="flex items-center gap-10">
+                <notification />
 
-                    <img
-                        :src="loadImage( image )"
-                        alt="imagem de perfil"
-                        class="w-16 h-16 rounded-full" />
-                </div>
-            </header>
-
-            <div class="my-10">
-                <button
-                    type="button"
-                    class="w-[200px] rounded-md bg-[#7C3AED] inline-flex items-center gap-2 justify-center h-10 text-white text-base text-center"
-                    @click="handleOpenModal">
-                        <user-plus-2 size="20" />
-                        <span>Convidar</span>
-                </button>
-
-                <button
-                    type="button"
-                    class="w-[200px] rounded-md text-[#7C3AED] bg-[#7C3AED]/30 inline-flex items-center gap-2 justify-center h-10 text-base text-center ml-4"
-                    @click="handleViewInvites">
-                        <user-plus-2 size="20" />
-                        <span>Convites</span>
-                </button>
+                <img
+                    :src="loadImage( image )"
+                    alt="imagem de perfil"
+                    class="w-16 h-16 rounded-full" />
             </div>
+        </header>
 
-            <Suspense>
-                <template #default>
-                    <AsyncListContactsPanel :id="id" />
-                </template>
+        <div class="my-10">
+            <button
+                type="button"
+                class="w-[200px] rounded-md bg-[#7C3AED] inline-flex items-center gap-2 justify-center h-10 text-white text-base text-center"
+                @click="handleOpenModal">
+                    <user-plus-2 size="20" />
+                    <span>Convidar</span>
+            </button>
 
-                <template #fallback>
-                    <SkeletonFriends />
-                </template>
-            </Suspense>
-        </main>
-    </Layout>
+            <button
+                type="button"
+                class="w-[200px] rounded-md text-[#7C3AED] bg-[#7C3AED]/30 inline-flex items-center gap-2 justify-center h-10 text-base text-center ml-4"
+                @click="handleViewInvites">
+                    <user-plus-2 size="20" />
+                    <span>Convites</span>
+            </button>
+        </div>
+
+        <Suspense>
+            <template #default>
+                <AsyncListContactsPanel :id="id" />
+            </template>
+
+            <template #fallback>
+                <SkeletonFriends />
+            </template>
+        </Suspense>
+    </main>
 
     <modal
         ref="modalSendInvite"
@@ -132,8 +130,8 @@
 import axios from 'axios'
 
 import { UserCheck, UserPlus2, UserX } from 'lucide-vue-next'
-import { shallowRef, ref, defineAsyncComponent} from 'vue'
-import { useToast } from 'vue-toast-notification'
+import { shallowRef, ref, defineAsyncComponent, inject } from 'vue'
+import { toastProviderKey } from '@/Keys/Provider'
 
 import Layout from '@/Template/Layout.vue'
 import InputForm from '@/Components/InputForm.vue'
@@ -145,6 +143,8 @@ import { useForm } from '@inertiajs/vue3'
 
 
 const props = defineProps( [ 'image', 'id' ] )
+
+defineOptions({ layout: Layout })
 
 const AsyncListContactsPanel = defineAsyncComponent({
     loader: () => import('@/Components/ListContactsPanel.vue'),
@@ -167,24 +167,26 @@ async function submitForm() {
 const invitesData = ref(null)
 const modalFriendsInvite = shallowRef(null)
 
+const handleShowMessage = inject(toastProviderKey)
+
 async function handleAcceptInvite(id, index) {
 
     try {
         const response = await axios.put(route('team.invite.update', { id }))
 
         if (response.status === 200) {
-            toast.success('Convite aceito com sucesso')
+            handleShowMessage('success', 'Convite aceito com sucesso')
             invitesData.value.data.splice(index, 1)
         }
     }
 
     catch (err) {
         if (axios.isAxiosError(err)) {
-            toast.error(err.response.data.message)
+            handleShowMessage('error', err.response.data.message)
             return
         }
 
-        toast.error('Erro ao aceitar convite')
+        handleShowMessage('error', 'Erro ao aceitar convite')
     }
 }
 
@@ -197,10 +199,6 @@ function handleOpenModal() {
 }
 
 
-const toast = useToast({
-  position: 'top-right',
-})
-
 async function handleViewInvites() {
     try {
         const response = await axios.get(route('team.invite.index'));
@@ -211,7 +209,7 @@ async function handleViewInvites() {
             modalFriendsInvite.value.showModal()
     }
     catch {
-        toast.error('Erro ao buscar convites, tente mais tarde')
+        handleShowMessage('error', 'Erro ao buscar convites, tente mais tarde')
     }
 }
 

@@ -3,7 +3,6 @@
     <title>TaskBoard</title>
   </Head>
 
-  <Layout>
     <main class="flex-1 bg-white rounded-tl-2xl px-8 py-12 overflow-y-auto">
       <header class="flex justify-between items-center">
         <h1 class="text-3xl font-bold text-[#403937]">Boards</h1>
@@ -139,19 +138,17 @@
           </form>
         </template>
     </Modal>
-
-  </Layout>
 </template>
 
 <script setup>
 
 import axios from 'axios'
-import { ref, defineAsyncComponent, useTemplateRef } from 'vue'
+import {ref, defineAsyncComponent, useTemplateRef, inject} from 'vue'
 
 import { useForm, usePage } from "@inertiajs/vue3"
 import { Plus } from 'lucide-vue-next'
-import { useToast } from 'vue-toast-notification'
 
+import { toastProviderKey } from '@/Keys/Provider'
 
 import FormAlert from '@/Components/FormAlert.vue'
 import Layout from '@/Template/Layout.vue'
@@ -164,7 +161,7 @@ import SkeletonTasksBoards from "@/Components/Skeletons/SkeletonTasksBoards.vue"
 
 const props = defineProps( ['id', 'image'] )
 
-
+defineOptions({ layout: Layout })
 
 const friendsToAddInBoard = ref([])
 
@@ -215,9 +212,7 @@ function clearMessages() {
 const modalAddFriedToBoard = ref(null)
 const friendsList = ref(null)
 
-const toast = useToast({
-  position: 'top-right',
-})
+const handleShowMessage = inject(toastProviderKey)
 
 async function findFriends() {
   try {
@@ -226,7 +221,7 @@ async function findFriends() {
     friendsList.value = response.data
   }
   catch {
-    toast.error('Erro ao busca lista de amigos')
+      handleShowMessage('error', 'Erro ao busca lista de amigos')
   }
 }
 
@@ -243,12 +238,12 @@ async function handlerInviteToTeam() {
   try {
     const response = await axios.post(route('team.invite.team'))
 
-    if (response.status == 200)
-      toast.success('Convite enviado com sucesso')
+    if (response.status === 200)
+        handleShowMessage('success', 'Convite enviado com sucesso')
   }
 
   catch {
-    toast.error('Erro ao enviar convite')
+      handleShowMessage('error', 'Erro ao enviar convite')
   }
 }
 

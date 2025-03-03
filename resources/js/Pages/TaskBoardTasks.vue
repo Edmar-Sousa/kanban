@@ -3,7 +3,6 @@
     <title>Taskboard</title>
   </Head>
 
-  <Layout>
     <main class="flex-1 bg-white rounded-tl-2xl px-8 py-12 overflow-y-auto">
       <header class="w-full flex justify-between items-center">
         <h1 class="text-3xl text-[#403937] font-bold inline-block">{{ taskboard.title }}</h1>
@@ -151,15 +150,14 @@
         </template>
     </Modal>
 
-  </Layout>
 </template>
 
 <script setup>
 
+import {computed, inject, ref} from "vue"
 import { Plus } from 'lucide-vue-next'
 import { useForm } from "@inertiajs/vue3"
-import {useToast} from "vue-toast-notification"
-import { computed, ref } from "vue"
+import { toastProviderKey } from "@/Keys/Provider"
 
 import Layout from "@/Template/Layout.vue"
 import Task from "@/Components/Task.vue"
@@ -170,14 +168,13 @@ import Modal from "@/Components/Modal.vue"
 
 const props = defineProps( ["taskboard", "image"] )
 
+defineOptions({ layout: Layout })
 
-const taskToDo  = computed( () => props.taskboard?.tasks.filter( task => task.state == 1 ) )
-const taskDoing = computed( () => props.taskboard?.tasks.filter( task => task.state == 2 ) )
-const taskDone  = computed( () => props.taskboard?.tasks.filter( task => task.state == 3 ) )
+const taskToDo  = computed( () => props.taskboard?.tasks.filter( task => task.state === 1 ) )
+const taskDoing = computed( () => props.taskboard?.tasks.filter( task => task.state === 2 ) )
+const taskDone  = computed( () => props.taskboard?.tasks.filter( task => task.state === 3 ) )
 
-const toast = useToast({
-    position: 'top-right',
-})
+const handleShowMessage = inject(toastProviderKey)
 
 function dragStart( event, item ) {
   event.dataTransfer.dropEffect = "move"
@@ -187,13 +184,13 @@ function dragStart( event, item ) {
 
 function drop( event, state ) {
   const taskId = event.dataTransfer.getData("id")
-  const task = props.taskboard?.tasks.find( task => task.id == taskId )
+  const task = props.taskboard?.tasks.find( task => task.id === taskId )
 
   const form = useForm( { id: task.id, state } )
 
   form.put(route('taskboard.task.update', { id: task.id, }), {
     onSuccess: () => task.state = state,
-    onError: err => toast.error('Erro ao atualizar status da tarefa')
+    onError: err => handleShowMessage('error', 'Erro ao atualizar status da tarefa')
   })
 
 }
@@ -221,7 +218,7 @@ function resetForm() {
 function addNewTask() {
     formInputTasks.post(route("taskboard.task.create"), {
         onSuccess: () => resetForm(),
-        onError: errors => toast.error('Erro ao tentar criar a tarefa')
+        onError: errors => handleShowMessage('error', 'Erro ao tentar criar a tarefa')
     })
 }
 
@@ -232,14 +229,14 @@ async function DeleteTask(task) {
         const response = await axios.delete(route("taskboard.task.delete", { id: task.id }))
 
         if (response.status === 200)
-            toast.success('Tarefa deletada com sucesso')
+            handleShowMessage('success', 'Tarefa deletada com sucesso')
     }
     catch (err) {
         if (axios.isAxiosError(err))
-            toast.error(err.response.data?.message)
+            handleShowMessage('error', err.response.data?.message)
 
         else
-            toast.error('Ocorreu um erro ao deletar tarefa')
+            handleShowMessage('error', 'Ocorreu um erro ao deletar tarefa')
     }
 }
 
