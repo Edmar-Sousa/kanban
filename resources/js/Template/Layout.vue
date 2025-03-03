@@ -7,11 +7,12 @@
 
 <script setup>
 
+import { watch, provide } from 'vue'
 import { usePage } from '@inertiajs/vue3'
 import { useToast } from 'vue-toast-notification'
+import { toastProviderKey } from '@/Keys/Provider'
 
 import Menu from "@/Components/Menu.vue"
-import { watch } from 'vue'
 
 
 const toast = useToast({
@@ -28,13 +29,9 @@ watch(() => page.props, handlerFlashMessage,
     }
 )
 
+provide(toastProviderKey, handleShowMessage)
 
-function handlerFlashMessage() {
-    if (!page.props?.flash)
-        return
-
-    const { status, message } = page.props?.flash
-
+function handleShowMessage(status, message) {
     switch (status) {
         case 'success':
             toast.success(message)
@@ -48,6 +45,14 @@ function handlerFlashMessage() {
             toast.error(message)
             break
     }
+}
+
+function handlerFlashMessage() {
+    if (!page.props?.flash)
+        return
+
+    const { status, message } = page.props?.flash
+    handleShowMessage(status, message)
 }
 
 </script>
