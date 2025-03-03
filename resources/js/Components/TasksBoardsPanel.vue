@@ -53,8 +53,6 @@ getTasksboards()
 async function getTasksboards() {
     const response = await axios.get(route('taskboard.list'))
     taskboards.value = response.data.taskboards
-
-    console.log(taskboards.value)
 }
 
 
