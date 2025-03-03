@@ -4,7 +4,7 @@ import axios from "axios"
 
 import {UserX} from "lucide-vue-next"
 import {useToast} from "vue-toast-notification"
-import {computed, ref} from "vue"
+import {computed, ref, shallowRef} from "vue"
 
 
 const props = defineProps({
@@ -19,8 +19,13 @@ const toast = useToast({
 })
 
 const friendsList = ref([])
+const isLoading = shallowRef(true)
+
 findFriends()
+
 async function findFriends() {
+    isLoading.value = true
+
     try {
         const response = await axios.get(route('team.list'))
         friendsList.value = response.data
@@ -29,6 +34,8 @@ async function findFriends() {
     catch {
         toast.error('Erro ao fazer convite, tente mais tarde')
     }
+
+    isLoading.value = false
 }
 
 function filterByLetter( letter ) {
@@ -71,7 +78,7 @@ async function handleDeleteFriend(id) {
 
 <template>
 
-    <template v-if="friendsList.length">
+    <template v-if="friendsList.length && !isLoading">
         <div v-for="letter in getFirstLetterFriendsList" :key="letter" class="my-6">
             <div class="w-10 h-10 rounded bg-[#7C3AED] text-white leading-10 text-xl text-center uppercase">{{ letter }}</div>
 
@@ -116,18 +123,18 @@ async function handleDeleteFriend(id) {
         </div>
     </template>
 
-<!--    <div v-else class="mt-10">-->
-<!--        <h2 class="text-xl font-bold text-center mb-1 text-[#403937]">-->
-<!--            Nenhum amigo encontrado-->
-<!--        </h2>-->
+    <div v-else-if="!friendsList.length && !isLoading" class="mt-10">
+        <h2 class="text-xl font-bold text-center mb-1 text-[#403937]">
+            Nenhum amigo encontrado
+        </h2>
 
-<!--        <p class="text-center text-base mb-8 text-[#403937]">-->
-<!--            Adicione amigos para interagir com suas tarrefas-->
-<!--        </p>-->
+        <p class="text-center text-base mb-8 text-[#403937]">
+            Adicione amigos para interagir com suas tarrefas
+        </p>
 
-<!--        <img-->
-<!--            src="/images/undraw_social_friends.svg"-->
-<!--            class="w-1/2 mx-auto max-w-[500px]" />-->
-<!--    </div>-->
+        <img
+            src="/images/undraw_social_friends.svg"
+            class="w-1/2 mx-auto max-w-[500px]" />
+    </div>
 
 </template>
