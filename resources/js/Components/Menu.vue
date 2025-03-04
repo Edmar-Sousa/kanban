@@ -3,8 +3,8 @@
     <Menu size="25" />
   </button>
 
-  <aside 
-    aria-label="Navegação principal" 
+  <aside
+    aria-label="Navegação principal"
     class="absolute w-[175px] top-0 bottom-0 pl-9 py-8 bg-[#7C3AED] transition-all duration-300 md:relative"
     :class="{ 'left-0 md:left-0': openMenu, '-left-full md:left-0': !openMenu }">
       <button class="absolute right-2 top-4 text-[#FFFFFF] md:hidden" @click="openMenu = !openMenu">
@@ -14,36 +14,36 @@
       <img src="/images/logo.svg" alt="Logo do site" />
       <nav class="mt-14">
         <ul class="flex flex-col gap-9">
-          <li 
-            class="flex gap-4 items-center text-[#CAB3FF] hover:text-[#FFFFFF]" 
+          <li
+            class="flex gap-4 items-center text-[#CAB3FF] hover:text-[#FFFFFF]"
             :class="{ 'text-[#FFFFFF]': $page.url.startsWith('/task-board') }">
               <TabletIcon />
               <Link :href="route('taskboard.index')" class="font-bold text-4">Boards</Link>
           </li>
-          
-          <li 
+
+          <li
             class="flex gap-4 items-center text-[#CAB3FF] hover:text-[#FFFFFF]"
             :class="{ 'text-[#FFFFFF]': $page.url.startsWith('/team') }">
               <PeopleIcon />
               <Link :href="route('team.index')" class="font-medium text-4">Equipes</Link>
           </li>
-          
+
           <li class="flex gap-4 items-center text-[#CAB3FF] hover:text-[#FFFFFF]">
             <DocumentIcon />
             <a href="#" class="font-medium text-4">Relatórios</a>
           </li>
-          
-          <li 
+
+          <li
             class="flex gap-4 items-center text-[#CAB3FF] hover:text-[#FFFFFF]"
             :class="{ 'text-[#FFFFFF]': $page.url == '/config' }">
               <ConfigIcon />
               <Link :href="route('config')" class="font-medium text-4">Ajustes</Link>
           </li>
 
-          <li 
+          <li
             class="flex gap-4 items-center text-[#CAB3FF] hover:text-[#FFFFFF]">
               <DollarIcon />
-              <Link :href="route('plans')" class="font-medium text-4">Planos</Link>
+              <Link :href="route('plans.index')" class="font-medium text-4">Planos</Link>
           </li>
 
           <li class="flex gap-4 items-center text-[#CAB3FF] hover:text-[#FFFFFF]">

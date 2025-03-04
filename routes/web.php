@@ -78,7 +78,14 @@ Route::middleware('auth')->group(function () {
     Route::get('/config', [ConfigController::class, 'index'])->name('config');
 
     Route::post('/user', [UserController::class, 'update'])->name('user');
-    Route::get('/plans', [PlansController::class, 'index'])->name('plans');
+
+    Route::group([
+        'as' => 'plans.',
+        'prefix' => '/plans',
+    ], function () {
+        Route::get('/', [PlansController::class, 'index'])->name('index');
+        Route::get('/list', [PlansController::class, 'list'])->name('list');
+    });
 
     Route::group([
         'as' => 'notifications.',
