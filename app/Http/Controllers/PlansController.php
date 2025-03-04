@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -13,7 +14,7 @@ class PlansController extends Controller
     protected Plans $plans_model;
 
 
-    public function __construct( Plans $plans ) 
+    public function __construct( Plans $plans )
     {
         $this->plans_model = $plans;
     }
@@ -22,8 +23,13 @@ class PlansController extends Controller
     {
         return Inertia::render('Plans', [
             'title' => 'Planos de assinatura',
-            'plans' => $this->plans_model->get_plans(),
-            'activite_plan' => Auth::user()->plan_id,
+            'activitePlan' => Auth::user()->plan_id,
         ]);
+    }
+
+
+    public function list(): JsonResponse
+    {
+        return response()->json($this->plans_model->get_plans());
     }
 }
