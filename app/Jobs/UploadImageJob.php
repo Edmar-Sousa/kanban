@@ -29,7 +29,7 @@ class UploadImageJob implements ShouldQueue
         $this->filename = $filename;
     }
 
-    
+
     public function handle()
     {
         $image_manager = new ImageManager(Driver::class);
@@ -43,7 +43,7 @@ class UploadImageJob implements ShouldQueue
 
         $user = User::where('id', $this->user_id)
             ->first();
-        
+
         if (file_exists(public_path($user->image)))
             unlink(public_path($user->image));
 
