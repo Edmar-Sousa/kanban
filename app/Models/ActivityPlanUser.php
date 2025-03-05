@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Constants\Subscription;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
@@ -14,6 +15,7 @@ class ActivityPlanUser extends Model
         'plan_id',
         'sign_date',
         'expire_date',
+        'status',
     ];
 
 
@@ -26,8 +28,9 @@ class ActivityPlanUser extends Model
     {
         return $this->create([
             'user_id' => $userId,
-            'plan_id' => 1, // TODO change to find in database
+            'plan_id' => 1,
             'sign_date' => Carbon::now(),
+            'status' => Subscription::ACTIVE,
         ]);
     }
 
