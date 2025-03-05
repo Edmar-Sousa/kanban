@@ -14,7 +14,7 @@
 
         <Suspense>
             <template #default>
-                <AsyncPlans :activite-plan="activitePlan" />
+                <AsyncPlans :activity-plan="activityPlan" />
             </template>
 
             <template #fallback>
@@ -32,7 +32,7 @@ import { Link } from '@inertiajs/vue3'
 import ArrowIcon from "@/Icon/Arrow.vue"
 import SkeletonPlans from "@/Components/Skeletons/SkeletonPlans.vue"
 
-const props = defineProps( [ 'title', 'activitePlan' ] )
+const props = defineProps( [ 'title', 'activityPlan' ] )
 
 
 const AsyncPlans = defineAsyncComponent({

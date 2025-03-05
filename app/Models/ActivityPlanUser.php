@@ -32,6 +32,14 @@ class ActivityPlanUser extends Model
     }
 
 
+    public function getPlanActivityFromUser(int $userId)
+    {
+        return $this->where('user_id', $userId)
+            ->with('plan')
+            ->first();
+    }
+
+
     public function getPlanWithRulesFromUser(int $userId)
     {
         return $this->where('user_id', $userId)

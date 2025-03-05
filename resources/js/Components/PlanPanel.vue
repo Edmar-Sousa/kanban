@@ -7,7 +7,7 @@ import { ref } from "vue"
 import { Link } from "@inertiajs/vue3"
 
 defineProps({
-    activitePlan: {
+    activityPlan: {
         type: Number,
         required: true
     }
@@ -56,7 +56,7 @@ async function getPlans() {
 
             <Link
                 :href="route('payment.index', { id: plan.id })"
-                v-if="plan.id !== activitePlan"
+                v-if="plan.id !== activityPlan"
                 class="flex items-center justify-center w-full h-14 mt-4 border border-[#1E293B] rounded-md text-[#1E293B] text-sm font-bold">
                     Assinar Agora
             </Link>
