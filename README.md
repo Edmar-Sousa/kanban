@@ -11,6 +11,33 @@
 ## Design
 ![gif com o design do projeto](https://github.com/Edmar-Sousa/kanban/blob/master/readme.gif)
 
+## ToDo
+- [x] CRUD de tarefas 
+  - [x] Criar tarefa
+  - [x] Atualizar tarefa
+  - [x] Excluir tarefa
+  - [x] Atualizar tarefa
+- [ ] CRUD de times
+  - [x] Adicionar amigo ao time
+  - [x] Excluir amigo do time
+  - [ ] Adicionar ao quadro de tarefas
+  - [ ] Iteração em tempo real usando o WebRTC
+- [x] Notificações em tempo real usando o laravel reverb
+- [ ] Sistemas de assinatura
+  - [x] Permitir adicionar amigos de acordo com o plano atual
+  - [x] Numero de quadro de tarefas de acordo com o plano
+  - [x] Itegração com meios de pagamento
+  - [ ] Webhook dos meios de pagamento
+  - [ ] Cron para verificar se o plano ja expirou
+- [x] Pagina de configuração
+- [ ] Pagina de relatorios
+  - [ ] Gerar relatorios de acordo com as tarefas concluida
+  - [ ] Gerar relatorio de acordo com o plano
+- [ ] Teste unitarios e e2e
+  - [x] Login
+  - [x] Logout
+  - [x] Criar quadros de tarefas 
+
 ## tecnologias
  - PHP
  - Laravel
