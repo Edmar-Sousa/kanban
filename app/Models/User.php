@@ -89,16 +89,6 @@ class User extends Authenticatable
     }
 
 
-    /**
-     *   This function return the user with the plan activite
-     *
-     *   @return Illuminate\Database\Eloquent\QueryBuilder  Return a query builder to select data
-     */
-    public function withPlan()
-    {
-        return $this->belongsTo(Plans::class, 'plan_id', 'id');
-    }
-
 
     /**
      *   This function will create a new register of user in database
