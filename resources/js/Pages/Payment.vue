@@ -7,7 +7,7 @@
     <div class="w-screen h-screen">
         <header class="p-5">
             <nav>
-                <Link class="flex items-center text-[#7C3AED]">
+                <Link class="flex items-center text-[#7C3AED]" :href="route('plans.index')">
                     <arrow-icon /> Voltar para pagina principal
                 </Link>
             </nav>
@@ -21,7 +21,7 @@
                         class="block mb-4 text-sm font-semibold text-[#1E293B]">
                             Número do cartão
                     </label>
-    
+
                     <input-form
                         type="text"
                         name="credit-card-number"
@@ -29,13 +29,13 @@
                         mask="#### #### #### ####"
                         v-model="form.creditCardNumber"
                         :error="form.errors.creditCardNumber || v$?.creditCardNumber.$errors[0]?.$message" />
-    
+
                     <label
                         for="credit-card-name"
                         class="block my-4 text-sm font-semibold text-[#1E293B]">
                             Nome do titular
                     </label>
-    
+
                     <input-form
                         type="text"
                         name="credit-card-name"
@@ -117,19 +117,19 @@ const form = useForm({
 
 
 const rules = {
-    creditCardNumber: { 
+    creditCardNumber: {
         required: helpers.withMessage('O numero do cartão é obrigatorio', required)
     },
 
-    name: { 
+    name: {
         required: helpers.withMessage('O nome é obrigatorio', required)
     },
 
-    dateExpired: { 
+    dateExpired: {
         required: helpers.withMessage('O data expiração é obrigatorio', required)
     },
 
-    cvv: { 
+    cvv: {
         required: helpers.withMessage('O cvv é obrigatorio', required)
     },
 }
@@ -146,7 +146,7 @@ function handlerSubmit() {
     if (v$.value.$error)
         return
 
-    
+
     form.post(route('payment.create'))
 
 }
