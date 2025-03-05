@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 
+use App\Models\ActivityPlanUser;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -24,13 +25,15 @@ class UserController extends Controller
 {
     protected User $user_model;
     protected Address $address_model;
+    protected ActivityPlanUser $activity_plan_user_model;
 
 
-    public function __construct( User $user_model, Address $address_model )
+    public function __construct( User $user_model, Address $address_model, ActivityPlanUser $activity_plan_user_model )
     {
         $this->user_model = $user_model;
         $this->address_model = $address_model;
-    } 
+        $this->activity_plan_user_model = $activity_plan_user_model;
+    }
 
 
     public function create()
@@ -44,6 +47,7 @@ class UserController extends Controller
         $validated = $request->validated();
 
         $createdUser = $this->user_model->store( $validated );
+        $this->activity_plan_user_model->createFreePlanToUser($createdUser->id);
 
         if ($request->hasFile('image'))
             ProcessFile::processUploadFile($request, $createdUser);
@@ -80,7 +84,7 @@ class UserController extends Controller
         $this->user_model->update_user( Auth::user()->id, $user_data );
         $this->address_model->create_or_update_address( $data, Auth::user()->id );
 
-        
+
         return redirect()->route('config')
                          ->with('status', 'success')
                          ->with('message', 'Perfil atualizado com sucesso');
