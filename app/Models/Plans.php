@@ -12,17 +12,9 @@ class Plans extends Model
     protected $fillable = ['title', 'small_description', 'price'];
 
 
-    public $appends = ['isPrimium'];
-
-    public function getIsPrimiumAttribute()
-    {
-        return $this->plans_rule->limit_boards == 0 && $this->plans_rule->limit_users == 0 && $this->plans_rule->limit_reports == 0;
-    }
-
-
     /**
      *   This function get relationship from Plans model and PlansItem Model
-     * 
+     *
      *   @return Illuminate\Database\Eloquent\Collection[]  Return a collection of PlansItem or empty array
      */
     public function plans_items()
@@ -33,7 +25,7 @@ class Plans extends Model
 
     /**
      *   This function will return all plans registred in database
-     * 
+     *
      *   @return Illuminate\Database\Eloquent\Collection[]  Return a collection of plans or empty array
      */
     public function get_plans()
@@ -44,7 +36,7 @@ class Plans extends Model
 
     /**
      *   This function get the plan with rule
-     * 
+     *
      *   @return Illuminate\Database\Eloquent\Model|null  Return a model with rule data or null
      */
     public function plans_rule()
@@ -55,9 +47,9 @@ class Plans extends Model
 
     /**
      *   This function will find and return the plan with id
-     * 
+     *
      *   @param string $id  The id of plan to find in database
-     * 
+     *
      *   @return Illuminate\Database\Eloquent\QueryBuilder  Return a query build to get the plan data
      */
     private function get_plan(string $id)
