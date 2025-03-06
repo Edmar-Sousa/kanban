@@ -38,9 +38,6 @@ class AssasClient
                 'body' => json_encode($body),
             ]);
 
-
-            dd($response->getBody()->getContents());
-
             return json_decode($response->getBody()->getContents());
         } catch (GuzzleException $err) {
 
