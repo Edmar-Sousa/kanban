@@ -24,6 +24,7 @@ class Transaction extends Model
 
     public function getStatusAttribute($value)
     {
+        Log::info('Status: ', [ 'value' => $value ]);
         return match ($value) {
             'created', 'pedding' => PaymentsStatus::PENDDING->value,
             'canceled' => PaymentsStatus::CANCELED->value,
@@ -60,14 +61,24 @@ class Transaction extends Model
 
 
 
+    public function getTransactionWithId(string $id)
+    {
+        return $this->where('id', $id)
+            ->firstOrFail();
+    }
 
     public function updateCreditCardTransaction(string $id, array $data)
     {
-        return $this->where('id', $id)
-            ->update([
-                'status' => $data['status'],
-                'extern_id' => $data['externId'],
-            ]);
+        $transaction = $this->getTransactionWithId($id);
+
+        $transaction->status = $data['status'];
+
+        if (isset($data['externId']))
+            $transaction->extern_id = $data['externId'];
+
+        $transaction->update();
+
+        return $transaction;
     }
 
 
