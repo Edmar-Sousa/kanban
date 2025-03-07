@@ -21,8 +21,8 @@ class CreateCustomerAssas implements ShouldQueue
 
     public function __construct(
         private int    $user_id,
-        private string $name, 
-        private string $document, 
+        private string $name,
+        private string $document,
         private string $phone,
     )
     {
@@ -34,11 +34,11 @@ class CreateCustomerAssas implements ShouldQueue
     {
         $body = [
             'name'    => $this->name,
-            'cpfCnpj' => preg_replace('/[^\d]/', '', $this->document),
-            'phone'   => preg_replace('/[^\d]/', '', $this->phone),
+            'cpfCnpj' => preg_replace('/\D/', '', $this->document),
+            'phone'   => preg_replace('/\D/', '', $this->phone),
         ];
 
-        
+
         $assasClient = new AssasClient();
         $response = $assasClient->create_customer($body);
 
