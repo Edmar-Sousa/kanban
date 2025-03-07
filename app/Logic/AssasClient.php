@@ -60,19 +60,20 @@ class AssasClient
 
 
 
-    public function createCreditCardPayment(array $data)
+    public function createSubscriberWithCreditCard(array $data)
     {
         try {
-
-            $response = $this->assasHttpClient->post(env('ASSAS_API_URL') . '/payments', [
+            $response = $this->assasHttpClient->post(env('ASSAS_API_URL') . '/subscriptions', [
                 'headers' => $this->headers,
 
                 'body' => json_encode([
                     'customer' => $data['customer'],
                     'billingType' => 'CREDIT_CARD',
 
+                    'cycle' => 'MONTHLY',
                     'value' => $data['value'],
-                    'dueDate' => $data['dueDate'],
+                    'nextDueDate' => $data['nextDueDate'],
+                    'externalReference' => $data['plan_id'],
 
 
                     'creditCard' => [
