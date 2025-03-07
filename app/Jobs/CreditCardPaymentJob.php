@@ -3,6 +3,8 @@
 namespace App\Jobs;
 
 
+use App\Events\ConfirmPaymentEvent;
+use App\Models\ActivityPlanUser;
 use Carbon\Carbon;
 
 use Exception;
@@ -43,17 +45,13 @@ class CreditCardPaymentJob implements ShouldQueue
 
 
 
-    public function getStatusEnumValue(string $status)
+    public function getStatusEnumValue(string $status): PaymentsStatus
     {
-
-        $status = match ($status) {
+        return match ($status) {
             'PENDING', 'RECEIVED' => PaymentsStatus::PENDDING,
-            'CONFIRMED' => PaymentsStatus::CONFIRMED,
+            'CONFIRMED', 'ACTIVE' => PaymentsStatus::CONFIRMED,
             'REFUNDED' => PaymentsStatus::CANCELED,
         };
-
-
-        return $status->value;
     }
 
 
@@ -61,21 +59,21 @@ class CreditCardPaymentJob implements ShouldQueue
     public function handle()
     {
         $transactionModel = new Transaction();
-        $userModel = new User();
+        $activityPlanUserModel = new ActivityPlanUser();
 
         try {
-            $dueData = Carbon::now()->addDay()->format('Y-m-d');
+            $dueData = Carbon::now()->endOfMonth()->format('Y-m-d');
 
             [$monthExpired, $yearExpired] = explode('/', $this->form['dateExpired']);
-
 
             $assasService = new AssasClient();
 
 
-            $response = $assasService->createCreditCardPayment([
+            $response = $assasService->createSubscriberWithCreditCard([
                 'customer' => $this->user->customer,
                 'value' => $this->plan->price,
-                'dueDate' => $dueData,
+                'nextDueDate' => $dueData,
+                'plan_id' => $this->plan->id,
 
                 'name' => $this->form['name'],
                 'creditCardNumber' => str_replace(' ', '', $this->form['creditCardNumber']),
@@ -86,31 +84,40 @@ class CreditCardPaymentJob implements ShouldQueue
                 'cvv' => $this->form['cvv'],
 
                 'email' => $this->user->email,
-                'cpf' => $this->user->document,
+                'cpf' => preg_replace('/\D/', '', $this->user->document),
 
                 'postalCode' => $this->user->address->zip_code,
                 'addressNumber' => $this->user->address->numero,
 
-                'phone' => preg_replace('/[^0-9]/', '', $this->user->phone),
+                'phone' => preg_replace('/\D/', '', $this->user->phone),
 
                 'ip' => $this->form['ip'],
             ]);
 
 
-            $transactionModel->updateCreditCardTransaction($this->transactionId, [
+            $statusTransaction = $this->getStatusEnumValue($response->status);
+
+            $transaction = $transactionModel->updateCreditCardTransaction($this->transactionId, [
                 'externId' => $response->id,
-                'status' => $this->getStatusEnumValue($response->status),
+                'status' => $statusTransaction->value,
             ]);
 
-            $userModel->update_plan($this->user->id, $this->plan->id);
+            if ($statusTransaction == PaymentsStatus::CONFIRMED) {
+                $activityPlanUserModel->updatePlanUser($this->user->id, $this->plan->id, $dueData);
+                ConfirmPaymentEvent::dispatch($transaction);
+            }
+
         } catch (Exception $err) {
-            $transactionModel->updateCreditCardTransaction($this->transactionId, [
-                'status' => $this->getStatusEnumValue('REFUNDED'),
+            $statusTransaction = $this->getStatusEnumValue('REFUNDED');
+            $transaction = $transactionModel->updateCreditCardTransaction($this->transactionId, [
+                'status' => $statusTransaction->value,
             ]);
 
             Log::error('Error CreditCardPaymentJob', [
                 'message' => $err->getMessage(),
             ]);
+
+            ConfirmPaymentEvent::dispatch($transaction);
         }
 
     }
