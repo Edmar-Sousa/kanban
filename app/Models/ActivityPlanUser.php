@@ -37,7 +37,11 @@ class ActivityPlanUser extends Model
 
     public function getPlanActivityFromUser(int $userId)
     {
+        $now = Carbon::now();
+
         return $this->where('user_id', $userId)
+            ->where('sign_date', '<=', $now)
+            ->where('status', Subscription::ACTIVE)
             ->with('plan')
             ->first();
     }
@@ -50,5 +54,23 @@ class ActivityPlanUser extends Model
                 'plan' => fn ($query) => $query->with('plans_rule'),
             ])
             ->first();
+    }
+
+
+    public function updatePlanUser(int $userId, int $planId, string $dateEndSubscription)
+    {
+        $activityPlan = $this->getPlanActivityFromUser($userId);
+
+        $startDateSubscription = Carbon::parse($activityPlan->sign_date);
+        $endDateSubscription = Carbon::parse($dateEndSubscription)
+            ->setHours($startDateSubscription->hour)
+            ->setMinutes($startDateSubscription->minute);
+
+        return $this->where('user_id', $userId)
+            ->update([
+                'plan_id' => $planId,
+                'expire_date' => $endDateSubscription,
+                'status' => Subscription::ACTIVE,
+            ]);
     }
 }
