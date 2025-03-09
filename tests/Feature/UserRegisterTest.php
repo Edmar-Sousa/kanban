@@ -10,9 +10,11 @@ use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Queue;
 use Tests\TestCase;
+use Tests\Traits\HasFaker;
 
 class UserRegisterTest extends TestCase
 {
+    use HasFaker;
 
     public function setUp(): void
     {
@@ -24,13 +26,12 @@ class UserRegisterTest extends TestCase
     {
         $image = UploadedFile::fake()->image('avatar.jpg', 200, 200);
 
-        $faker = Faker::create('pt_BR');
         return [
-            'username' => $faker->userName(),
-            'email' => $faker->unique()->safeEmail(),
-            'password' => $faker->password(),
-            'document' => $faker->cpf(),
-            'phone' => $faker->cellphoneNumber(),
+            'username' => $this->faker->userName(),
+            'email' => $this->faker->unique()->safeEmail(),
+            'password' => $this->faker->password(),
+            'document' => $this->faker->cpf(),
+            'phone' => $this->faker->cellphoneNumber(),
             'image' => $image,
         ];
     }
