@@ -163,7 +163,7 @@
         </div>
 
         <div class="hidden lg:block h-full">
-            <img src="/images/background-login.svg" alt="" class="w-full" />
+            <img src="/images/background-login.svg" alt="" class="w-full h-full" />
         </div>
     </div>
 </template>
