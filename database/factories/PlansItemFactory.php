@@ -14,10 +14,8 @@ class PlansItemFactory extends Factory
 
     public function definition(): array
     {
-        $faker = Faker::create('pt_BR');
-
         return [
-            'title' => $faker->words(2, true),
+            'title' => $this->faker->words(2, true),
             'plan_id' => Plans::factory(),
         ];
     }

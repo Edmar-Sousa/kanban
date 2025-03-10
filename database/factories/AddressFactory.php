@@ -13,17 +13,15 @@ class AddressFactory extends Factory
 {
     public function definition(): array
     {
-        $faker = Faker::create('pt_BR');
-
         return [
             'user_id' => User::factory(),
-            'street' => $faker->words(4, true),
-            'numero' => $faker->numberBetween(),
-            'complement' => $faker->words(7, true),
-            'neighborhood' => $faker->word(),
-            'city' => $faker->word(),
-            'uf' => $faker->countryCode(),
-            'zip_code' => $faker->numerify('#####-###')
+            'street' => $this->faker->words(4, true),
+            'numero' => $this->faker->numberBetween(),
+            'complement' => $this->faker->words(7, true),
+            'neighborhood' => $this->faker->word(),
+            'city' => $this->faker->word(),
+            'uf' => $this->faker->countryCode(),
+            'zip_code' => $this->faker->numerify('#####-###')
         ];
     }
 }

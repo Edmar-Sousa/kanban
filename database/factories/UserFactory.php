@@ -25,15 +25,13 @@ class UserFactory extends Factory
      */
     public function definition(): array
     {
-        $faker = Faker::create('pt_BR');
-
         return [
-            'name' => $faker->name(),
-            'email' => $faker->unique()->safeEmail(),
-            'image' => $faker->imageUrl(),
+            'name' => $this->faker->name(),
+            'email' => $this->faker->unique()->safeEmail(),
+            'image' => $this->faker->imageUrl(),
             'password' => Hash::make('12345678'),
-            'document' => $faker->cpf(),
-            'phone' => $faker->cellphoneNumber(),
+            'document' => $this->faker->cpf(),
+            'phone' => $this->faker->cellphoneNumber(),
         ];
     }
 
