@@ -17,8 +17,8 @@ class PlansFactory extends Factory
     public function definition(): array
     {
         return [
-            'title' => $this->faker->words(3),
-            'small_description' => $this->faker->words(5),
+            'title' => $this->faker->words(3, true),
+            'small_description' => $this->faker->words(5, true),
             'price' => $this->faker->randomFloat(2, 10, 100),
         ];
     }
