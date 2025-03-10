@@ -44,6 +44,7 @@
  - Inertia
  - VueJs
  - Tailwind
+ - Laravel Reverb
 
 ## Como executar o projeto
 ```bash
