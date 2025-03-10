@@ -14,7 +14,7 @@ trait HasFaker
     public function __construct(?string $name = null)
     {
         parent::__construct($name);
-        $this->faker = FakerFactory::create('pt_BR');
+        $this->faker = FakerFactory::create();
     }
 
 }
