@@ -62,7 +62,7 @@ class CreditCardPaymentJob implements ShouldQueue
         $activityPlanUserModel = new ActivityPlanUser();
 
         try {
-            $dueData = Carbon::now()->endOfMonth()->format('Y-m-d');
+            $dueData = Carbon::now()->addMonth()->format('Y-m-d');
 
             [$monthExpired, $yearExpired] = explode('/', $this->form['dateExpired']);
 
