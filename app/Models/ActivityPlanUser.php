@@ -4,11 +4,12 @@ namespace App\Models;
 
 use App\Constants\Subscription;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class ActivityPlanUser extends Model
 {
-
+    use HasFactory;
 
     protected $fillable = [
         'user_id',
