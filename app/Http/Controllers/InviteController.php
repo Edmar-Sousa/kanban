@@ -2,13 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use Exception;
+
 use App\Events\NotificationEvent;
 use App\Models\Friends;
 use App\Models\Notification;
-use Auth;
 use App\Models\User;
-use Illuminate\Http\Request;
 use App\Http\Requests\InviteUserRequest;
+
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class InviteController extends Controller
 {
@@ -31,7 +34,6 @@ class InviteController extends Controller
         $destinationUser = $this->userModel->find_by_email($request->get('email'));
         $sourceUser = Auth::user();
 
-        // TODO: verificar o plano de usuario
         if ($this->friendsModel->alredy_exists_invite($sourceUser->id, $destinationUser->id)) {
             return redirect()->back()
                 ->with('type', 'warning')
