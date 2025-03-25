@@ -38,7 +38,7 @@
   - [x] Logout
   - [x] Criar quadros de tarefas 
 
-## tecnologias
+## Tecnologias
  - PHP
  - Laravel
  - Inertia
