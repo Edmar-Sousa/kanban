@@ -24,7 +24,6 @@ class Transaction extends Model
 
     public function getStatusAttribute($value)
     {
-        Log::info('Status: ', [ 'value' => $value ]);
         return match ($value) {
             'created', 'pedding' => PaymentsStatus::PENDDING->value,
             'canceled' => PaymentsStatus::CANCELED->value,
