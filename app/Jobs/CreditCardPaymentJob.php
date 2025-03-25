@@ -68,12 +68,11 @@ class CreditCardPaymentJob implements ShouldQueue
 
             $assasService = new AssasClient();
 
-
             $response = $assasService->createSubscriberWithCreditCard([
                 'customer' => $this->user->customer,
                 'value' => $this->plan->price,
                 'nextDueDate' => $dueData,
-                'plan_id' => $this->plan->id,
+                'transaction_id' => $this->transactionId,
 
                 'name' => $this->form['name'],
                 'creditCardNumber' => str_replace(' ', '', $this->form['creditCardNumber']),

@@ -73,7 +73,7 @@ class AssasClient
                     'cycle' => 'MONTHLY',
                     'value' => $data['value'],
                     'nextDueDate' => $data['nextDueDate'],
-                    'externalReference' => $data['plan_id'],
+                    'externalReference' => $data['transaction_id'],
 
 
                     'creditCard' => [
