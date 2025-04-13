@@ -1,10 +1,21 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Class Plans
+ * 
+ * @property-read int $id
+ * 
+ * @property string $title
+ * @property string $small_description
+ * @property float $price
+ */
 class Plans extends Model
 {
     use HasFactory;

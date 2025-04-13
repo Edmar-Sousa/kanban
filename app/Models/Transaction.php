@@ -1,12 +1,29 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
 use App\Constants\PaymentsMethods;
 use App\Constants\PaymentsStatus;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
+
+/**
+ * Class Transaction
+ * 
+ * @property-read int $id
+ * 
+ * @property string $extern_id
+ * @property string $method
+ * @property string $status
+ * @property int $plan_id
+ * @property int $user_id
+ * 
+ * @property-read Plans|null $plan
+ */
 class Transaction extends Model
 {
     use HasFactory;
@@ -32,12 +49,24 @@ class Transaction extends Model
     }
 
 
-    public function plan()
+    /**
+     * Return the relationship with plan, registred when create
+     * a transaction to active plan
+     * 
+     * @return HasOne<Plans, Transaction>
+     */
+    public function plan(): HasOne
     {
         return $this->hasOne(Plans::class, 'id', 'plan_id');
     }
 
-    public function user()
+
+    /**
+     * Return the relationship with User
+     * 
+     * @return HasOne<User, Transaction>
+     */
+    public function user(): HasOne
     {
         return $this->hasOne(User::class, 'id', 'user_id');
     }
