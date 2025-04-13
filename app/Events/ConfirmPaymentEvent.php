@@ -17,8 +17,13 @@ class ConfirmPaymentEvent implements ShouldBroadcastNow
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public string $paymentId;
+    /** @var int $paymentId */
+    public int $paymentId;
+
+    /** @var string $status */
     public string $status;
+
+    /** @var string $planName */
     public string $planName;
 
 
@@ -26,7 +31,8 @@ class ConfirmPaymentEvent implements ShouldBroadcastNow
     {
         $this->paymentId = $transaction->id;
         $this->status = $transaction->status;
-        $this->planName = $transaction->plan->title;
+
+        $this->planName = $transaction->plan->title ?? 'Plano Desconhecido';
     }
 
 
