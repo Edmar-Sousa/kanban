@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -10,6 +12,19 @@ use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Support\Facades\Hash;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
+/**
+ * Class User
+ * 
+ * @property-read int $id
+ * 
+ * @property string $name
+ * @property string $email
+ * @property string $image
+ * @property string $password
+ * @property string $document
+ * @property string $phone
+ * @property string $customer
+ */
 class User extends Authenticatable
 {
     use HasFactory, Notifiable;

@@ -1,10 +1,23 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Class Notification
+ * 
+ * @property-read int $id
+ * 
+ * @property int $destination_user
+ * @property int $source_user
+ * @property string $message
+ * @property string $type
+ * @property bool $visible
+ */
 class Notification extends Model
 {
     use HasFactory;
