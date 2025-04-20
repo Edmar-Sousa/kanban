@@ -2,9 +2,20 @@
 
 namespace App\Models;
 
+use App\Exceptions\UserNotFoundException;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * @property-read int $id
+ * 
+ * @property int destination_user
+ * @property int source_user
+ * @property int status
+ * 
+ * @property-read User $source_user_data
+ * @property-read User $destination_user_data
+ */
 class Friends extends Model
 {
     use HasFactory;
@@ -92,9 +103,25 @@ class Friends extends Model
     }
 
 
-    public function get_by_id(int $id)
+    /**
+     * Return the friend with id informed
+     * 
+     * @param int $id
+     * @throws \App\Exceptions\UserNotFoundException
+     * @return Friends
+     */
+    public function getById(int $id): Friends
     {
-        return $this->where('id', $id)->first();
+        $friend = $this->where('id', $id)->first();
+
+        if ($friend == null) {
+            throw new UserNotFoundException(
+                'User with id not found', [
+                    'friend' => 'Usuario não encontrado.'
+            ]);
+        }
+
+        return $friend;
     }
 
 

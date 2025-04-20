@@ -10,6 +10,8 @@ use App\Models\Notification;
 use App\Models\User;
 use App\Http\Requests\InviteUserRequest;
 
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -29,11 +31,17 @@ class InviteController extends Controller
     }
 
 
-    public function create(InviteUserRequest $request)
+    public function create(InviteUserRequest $request): RedirectResponse
     {
-        $destinationUser = $this->userModel->findByEmail($request->get('email'));
+        /** @var string */
+        $email = $request->get('email');
+
+        /** @var \App\Models\User */
         $sourceUser = Auth::user();
 
+
+        $destinationUser = $this->userModel->findByEmail($email);
+        
         if ($this->friendsModel->alredy_exists_invite($sourceUser->id, $destinationUser->id)) {
             return redirect()->back()
                 ->with('type', 'warning')
@@ -56,11 +64,14 @@ class InviteController extends Controller
             ->with('type', 'success')
             ->with('message', 'Convite enviado com sucesso');
     }
-    public function update(int $id)
+
+    public function update(int $id): JsonResponse
     {
         try {
-            $friendInvite = $this->friendsModel->get_by_id($id);
+            /** @var \App\Models\User */
             $sourceUser = Auth::user();
+
+            $friendInvite = $this->friendsModel->getById($id);
 
             $this->friendsModel->accept_invite($friendInvite->id);
 
