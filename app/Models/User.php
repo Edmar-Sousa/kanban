@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Exceptions\UserNotFoundException;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -132,11 +133,21 @@ class User extends Authenticatable
      *
      *   @param string $email  The email of user to find
      *
-     *   @return Illuminate\Database\Eloquent\Model|null  Return a model with data from user or null
+     *   @throws UserNotFoundException If the user not exists in database
+     *   @return User  Return a model with data from user or null
      */
-    public function find_by_email(string $email)
+    public function findByEmail(string $email): User
     {
-        return $this->where('email', $email)->first();
+        $userWithEmail = $this->where('email', $email)->first();
+
+        if ($userWithEmail == null) {
+            throw new UserNotFoundException(
+                "Error find user with email: $email", [
+                    'email' => 'Usuario com o email informado não existe'
+            ]);
+        }
+
+        return $userWithEmail;
     }
 
 
