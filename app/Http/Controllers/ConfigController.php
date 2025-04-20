@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Inertia\Response as InertiaResponse;
 
 use App\Models\Address;
 
@@ -20,11 +21,14 @@ class ConfigController extends Controller
     } 
 
 
-    public function index()
+    public function index(): InertiaResponse
     {
+        /** @var \App\Models\User */
+        $user = Auth::user();
+
         return Inertia::render('Config', [
-            'user' => Auth::user(),
-            'address' => $this->address_model->address_from_user( Auth::user()->id ),
+            'user' => $user,
+            'address' => $this->address_model->address_from_user( $user->id ),
             'title' => 'Ajustes'
         ]);
     }
