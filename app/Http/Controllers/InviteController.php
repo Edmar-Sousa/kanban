@@ -31,7 +31,7 @@ class InviteController extends Controller
 
     public function create(InviteUserRequest $request)
     {
-        $destinationUser = $this->userModel->find_by_email($request->get('email'));
+        $destinationUser = $this->userModel->findByEmail($request->get('email'));
         $sourceUser = Auth::user();
 
         if ($this->friendsModel->alredy_exists_invite($sourceUser->id, $destinationUser->id)) {

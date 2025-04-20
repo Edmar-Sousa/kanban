@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -21,21 +22,25 @@ class AuthController extends Controller
     }
 
 
-    public function auth(LoginRequest $request)
+    public function auth(LoginRequest $request): RedirectResponse
     {
-        $user_credentials = $request->validated();
+        /** @var array{email: string, password: string} */
+        $userCredentials = $request->validated();
 
-        $user = $this->user_model->find_by_email($user_credentials['email']);
+        $user = $this->user_model->findByEmail($userCredentials['email']);
 
-        if (Hash::check($user_credentials['password'], $user->password)) {
+        if (Hash::check($userCredentials['password'], $user->password)) {
+            /** @phpstan-ignore-next-line */
             Auth::login($user);
 
             return redirect()->route('taskboard.index');
         }
+
+        return redirect()->back();
     }
 
 
-    public function logout()
+    public function logout(): RedirectResponse
     {
         Auth::logout();
         return redirect()->route('login');
