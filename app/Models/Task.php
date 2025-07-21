@@ -5,8 +5,18 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+
+/**
+ * @property-read int $id
+ * 
+ * @property string $name 
+ * @property string $description 
+ * @property int $taskboard_id 
+ * @property int $state
+ */
 class Task extends Model
 {
+    /** @use HasFactory<\Database\Factories\TaskFactory> */
     use HasFactory;
 
     protected $fillable = ['title', 'description', 'taskboard_id', 'state'];
@@ -15,13 +25,12 @@ class Task extends Model
     /**
      *   This function update state colunm from task
      * 
-     *   @param array $task  The array with id and state to update
+     *   @param array{id: int, state: int} $task  The array with id and state to update
      * 
-     *   @return Illuminate\Database\Eloquent\Model  Return a model with data from register
-     * 
-     *   @throws Illuminate\Database\QueryException  Return a exception in case of failure
+     *   @return int
+     *   @throws \Illuminate\Database\QueryException  Return a exception in case of failure
      */
-    public function update_state( array $task )
+    public function update_state( array $task ): int
     {
         return $this->where( 'id', $task['id'] )
                     ->update( ['state' => $task['state'] ]);
@@ -31,13 +40,12 @@ class Task extends Model
     /**
      *   This fuction will create a new register in database
      * 
-     *   @param array $task  Array with task data to create new register
+     *   @param array{id: int, title: string, description: string} $task  Array with task data to create new register
      * 
-     *   @return Illuminate\Database\Eloquent\Model  Return the model with data of register
-     * 
-     *   @throws Illuminate\Database\QueryException  Return an exception in case of failure
+     *   @return Task  Return the model with data of register
+     *   @throws \Illuminate\Database\QueryException  Return an exception in case of failure
      */
-    public function store( array $task )
+    public function store( array $task ): Task
     {
         return $this->create([
             'taskboard_id' => $task['id'],
@@ -53,10 +61,11 @@ class Task extends Model
      * 
      *   @param int $id The id of task to delete
      * 
-     *   @throws Illuminate\Database\QueryException  Return an exception in case of failure
+     *   @return bool
+     *   @throws \Illuminate\Database\QueryException  Return an exception in case of failure
      */
-    public function delete_task( int $id )
+    public function delete_task( int $id ): bool
     {
-        return $this->where('id', $id)->delete();
+        return $this->where('id', $id)->delete() > 0;
     }
 }

@@ -17,6 +17,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  */
 class TaskBoards extends Model
 {
+    /** @use HasFactory<\Database\Factories\TaskBoardsFactory> */
     use HasFactory;
 
     protected $fillable = ['title', 'description', 'user_id'];
@@ -25,7 +26,7 @@ class TaskBoards extends Model
     /**
      *   This function return the TaskBoards with task
      * 
-     *   @return HasMany<Task, TaskBoards>
+     *   @return HasMany<Task, $this>
      */
     public function tasks(): HasMany
     {

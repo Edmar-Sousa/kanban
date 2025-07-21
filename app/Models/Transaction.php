@@ -26,6 +26,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  */
 class Transaction extends Model
 {
+    /** @use HasFactory<\Database\Factories\TransactionFactory> */
     use HasFactory;
 
 
@@ -39,13 +40,19 @@ class Transaction extends Model
 
 
 
-    public function getStatusAttribute($value)
+    /**
+     * @param string $value
+     * @return string
+     */
+    public function getStatusAttribute(string $value): string
     {
-        return match ($value) {
-            'created', 'pedding' => PaymentsStatus::PENDDING->value,
-            'canceled' => PaymentsStatus::CANCELED->value,
-            'confirmed' => PaymentsStatus::CONFIRMED->value,
-        };
+        if (in_array($value, ['created', 'pedding']))
+            return PaymentsStatus::PENDDING->value;
+
+        else if ($value == 'canceled')
+            return PaymentsStatus::CANCELED->value;
+
+        return PaymentsStatus::CONFIRMED->value;
     }
 
 
@@ -53,7 +60,7 @@ class Transaction extends Model
      * Return the relationship with plan, registred when create
      * a transaction to active plan
      * 
-     * @return HasOne<Plans, Transaction>
+     * @return HasOne<Plans, $this>
      */
     public function plan(): HasOne
     {
@@ -64,19 +71,33 @@ class Transaction extends Model
     /**
      * Return the relationship with User
      * 
-     * @return HasOne<User, Transaction>
+     * @return HasOne<User, $this>
      */
     public function user(): HasOne
     {
         return $this->hasOne(User::class, 'id', 'user_id');
     }
 
+    /**
+     * @param int $userId
+     * @return bool
+     */
     public function isPaymentFromUser(int $userId): bool
     {
-        return $this->user()->id == $userId;
+        $user = $this->user;
+
+        if (!$user)
+            return false;
+
+        return $user->id == $userId;
     }
 
-    public function createCreditCardTransaction(array $data)
+
+    /**
+     * @param array{planId: int, userId: int} $data
+     * @return Transaction
+     */
+    public function createCreditCardTransaction(array $data): Transaction
     {
         return $this->create([
             'method' => PaymentsMethods::CREDIT_CARD->value,
@@ -88,14 +109,23 @@ class Transaction extends Model
     }
 
 
-
-    public function getTransactionWithId(string $id)
+    /**
+     * @param string $id
+     * @return Transaction
+     */
+    public function getTransactionWithId(string $id): Transaction
     {
         return $this->where('id', $id)
             ->firstOrFail();
     }
 
-    public function updateCreditCardTransaction(string $id, array $data)
+    /**
+     * @param string $id
+     * @param array{ status: string, externId?: string } $data
+     * 
+     * @return Transaction
+     */
+    public function updateCreditCardTransaction(string $id, array $data): Transaction
     {
         $transaction = $this->getTransactionWithId($id);
 
@@ -110,7 +140,11 @@ class Transaction extends Model
     }
 
 
-    public function checkStatusTransaction(string $id)
+    /**
+     * @param string $id
+     * @return Transaction|null
+     */
+    public function checkStatusTransaction(string $id): Transaction | null
     {
         return $this->where('id', $id)
             ->with('plan')
