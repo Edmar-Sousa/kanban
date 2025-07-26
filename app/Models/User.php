@@ -28,6 +28,7 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
  */
 class User extends Authenticatable
 {
+    /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
 
 
@@ -51,44 +52,47 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<Transaction, $this>
+     */
     public function payment()
     {
         return $this->belongsTo(Transaction::class, 'id', 'user_id');
     }
 
 
-    public function hasPaymentWithIdAssociated(int $paymentId)
+    /**
+     * @param int $paymentId
+     * @return bool
+     */
+    public function hasPaymentWithIdAssociated(int $paymentId): bool
     {
         return $this->payment()->where('id', $paymentId)->exists();
     }
 
 
-    public function getJWTIdentifier()
-    {
-        return $this->getKey();
-    }
 
-
-    public function getJWTCustomClaims()
-    {
-        return [
-            'id' => $this->id,
-        ];
-    }
-
-
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany<User, $this>
+     */
     public function friends()
     {
         return $this->belongsToMany(User::class, 'friends', 'source_user', 'destination_user');
     }
 
 
-    public function getAuthPassword()
+    /**
+     * @return string
+     */
+    public function getAuthPassword(): string
     {
         return $this->email;
     }
 
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne<Address, $this>
+     */
     public function address()
     {
         return $this->hasOne(Address::class, 'user_id', 'id');
@@ -96,6 +100,10 @@ class User extends Authenticatable
 
 
 
+    /**
+     * @param string $id
+     * @return User|null
+     */
     public function getUserWithAddress(string $id)
     {
         return $this->where('id', $id)
@@ -108,11 +116,15 @@ class User extends Authenticatable
     /**
      *   This function will create a new register of user in database
      *
-     *   @param array $userdata  The data of user to register in database
+     * @param array{
+     *  username: string,
+     *  email: string,
+     *  password: string,
+     *  document: string,
+     *  phone: string,
+     * } $userdata
      *
-     *   @return Illuminate\Database\Eloquent\Model  The model with data registred in database
-     *
-     *   @throws Illuminate\Database\QueryException  Return a exception in case of failure
+     *   @return User
      */
     public function store(array $userdata): User
     {
@@ -152,17 +164,25 @@ class User extends Authenticatable
 
 
     /**
-     *   Update the register from user with id
+     * Update the register from user with id
      *
-     *   @param int $id  The id of user to update data
-     *   @param array $data  The data to update register
-     *
-     *   @return Illuminate\Database\Eloquent\Model  The model with data of register
+     * @param int $id  The id of user to update data
+     * @param array{
+     * 
+     * } $data  The data to update register
+     *  username: string,
+     *  email: string,
+     *  password: string,
+     *  document: string,
+     *  phone: string,
+     * @return bool
      */
-    public function update_user(int $id, array $data)
+    public function update_user(int $id, array $data): bool
     {
-        return $this->where('id', $id)
+        $updatedUser = $this->where('id', $id)
             ->update($data);
+
+        return $updatedUser > 0;
     }
 
 
@@ -172,23 +192,31 @@ class User extends Authenticatable
      *   @param int $user_id  The user id to update column
      *   @param int $plan_id  The id of plan
      *
-     *   @throws Illuminate\Database\QueryExcption  Return a excption in case of failure
      */
-    public function update_plan(int $user_id, int $plan_id)
+    public function update_plan(int $user_id, int $plan_id): bool
     {
-        return $this->where('id', $user_id)
+        $planUpdated = $this->where('id', $user_id)
             ->update([
                 'plan_id' => $plan_id
             ]);
+
+        return $planUpdated > 0;
     }
 
 
 
-    public function update_customer_from_user(int $user_id, string $customer_id)
+    /**
+     * @param int $user_id
+     * @param string $customer_id
+     * @return bool
+     */
+    public function update_customer_from_user(int $user_id, string $customer_id): bool
     {
-        return $this->where('id', $user_id)
+        $updatedCustomer = $this->where('id', $user_id)
             ->update([
                 'customer' => $customer_id,
             ]);
+
+        return $updatedCustomer > 0;
     }
 }
