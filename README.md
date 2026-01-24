@@ -38,6 +38,10 @@
   - [x] Logout
   - [x] Criar quadros de tarefas 
 
+- [ ] UX
+  - [ ] Colocar aviso de cadastro de endereço antes de assinar um plano
+  - [ ] Em case de erro no pagamento, avisar o usuario por meio do websocket
+
 ## Tecnologias
  - PHP
  - Laravel
