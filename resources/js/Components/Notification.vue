@@ -14,7 +14,7 @@
                         {{ hasUnrededNotification }}
                 </span>
         </button>
-    
+
         <div 
             v-show="openNotificationMenu" 
             class="w-full min-w-[300px] py-4 px-3 absolute transition-all duration-300 shadow-[0_4px_16px_0px_rgba(22,22,22,0.1)] right-0 bg-[#ffffff] rounded-md">
@@ -27,7 +27,7 @@
                         class="flex items-center gap-2 my-3 cursor-pointer">
                             <div class="w-[50px] h-[50px] bg-slate-400 rounded-full">
                                 <img 
-                                    :src="loadImage( notification.image )" 
+                                    :src="loadImage( notification.source_user_data.image )" 
                                     alt="imagen de perfil" 
                                     class="w-[50px] h-[50px] bg-slate-400 rounded-full" />
                             </div>
@@ -35,7 +35,7 @@
                             <div class="flex-1">
                                 <p class="text-sm">
                                     {{ notification.message }}
-                                    <span class="font-bold">{{ notification.source_user }}</span>
+                                    <span class="font-bold">{{ notification.source_user_data.name }}</span>
                                 </p>
 
                                 <p>
