@@ -40,6 +40,20 @@ class NotificationEvent implements ShouldBroadcastNow
         $this->source_user_name = $sourceUser->name;
     }
 
+    public function broadcastAs(): string
+    {
+        return 'notification.event';
+    }
+
+    public function broadcastWith(): array
+    {
+        return [
+            'notification' => $this->notification,
+            'image' => $this->image,
+            'source_user_name' => $this->source_user_name,
+        ];
+    }
+
     public function broadcastOn(): Channel
     {
         return new PrivateChannel('notification.' . $this->user->id);

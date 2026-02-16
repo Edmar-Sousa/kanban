@@ -94,7 +94,7 @@ onMounted( () => {
     
     window.Echo
         .private(`notification.${page.props.id}`)
-        .listen('NotificationEvent', handlerReciveNotification)
+        .listen('.notification.event', handlerReciveNotification)
 
     findNotifications()
 } )

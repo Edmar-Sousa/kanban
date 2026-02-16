@@ -41,7 +41,7 @@ class InviteController extends Controller
 
 
         $destinationUser = $this->userModel->findByEmail($email);
-        
+
         if ($this->friendsModel->alredy_exists_invite($sourceUser->id, $destinationUser->id)) {
             return redirect()->back()
                 ->with('type', 'warning')
