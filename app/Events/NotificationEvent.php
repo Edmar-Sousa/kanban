@@ -20,7 +20,14 @@ class NotificationEvent implements ShouldBroadcastNow
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
+    /** @var Notification */
     public Notification $notification;
+
+    /** @var string */
+    public string $image;
+
+    /** @var string */
+    public string $source_user_name;
 
     public function __construct(
         private User $user,
@@ -29,8 +36,8 @@ class NotificationEvent implements ShouldBroadcastNow
     ) {
         $this->notification = $notification;
 
-        $this->notification->image = $sourceUser->image;
-        $this->notification->source_user = $sourceUser->name;
+        $this->image = $sourceUser->image;
+        $this->source_user_name = $sourceUser->name;
     }
 
     public function broadcastOn(): Channel
