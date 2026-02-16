@@ -57,6 +57,9 @@ class NotificationEvent implements ShouldBroadcastNow
         ];
     }
 
+    /**
+     * @return PrivateChannel
+     */
     public function broadcastOn(): Channel
     {
         return new PrivateChannel('notification.' . $this->user->id);
