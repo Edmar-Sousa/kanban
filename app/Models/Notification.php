@@ -6,6 +6,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * Class Notification
@@ -36,7 +37,7 @@ class Notification extends Model
     ];
 
 
-    public function source_user_data()
+    public function source_user_data(): BelongsTo
     {
         return $this->belongsTo(User::class, 'source_user', 'id');
     }

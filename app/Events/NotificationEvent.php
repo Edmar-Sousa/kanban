@@ -45,6 +45,9 @@ class NotificationEvent implements ShouldBroadcastNow
         return 'notification.event';
     }
 
+    /**
+     * @return array{image: string, notification: Notification, source_user_name: string}
+     */
     public function broadcastWith(): array
     {
         return [

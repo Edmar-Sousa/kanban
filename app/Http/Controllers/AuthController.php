@@ -30,7 +30,6 @@ class AuthController extends Controller
         $user = $this->user_model->findByEmail($userCredentials['email']);
 
         if (Hash::check($userCredentials['password'], $user->password)) {
-            /** @phpstan-ignore-next-line */
             Auth::login($user);
 
             return redirect()->route('taskboard.index');
